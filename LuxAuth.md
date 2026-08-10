@@ -177,27 +177,38 @@ La plataforma estará dividida en capas.
 
 ## 6. Monorepo Architecture
 
-El proyecto utiliza un único repositorio.
+El proyecto utiliza un único repositorio. Desktop y Web comparten packages. Mobile es un workspace separado con sus propias dependencias.
 
 ```
-automation-platform/
-apps/
-desktop/
-web/
-mobile/
-packages/
-core/
-ui/
-features/
-automation/
-crm/
-ai/
-analytics/
-plugins/
-sdk/
-shared/
-server/
-docs/
+orca-blitz/
+├── apps/
+│   ├── desktop/             ← Electron
+│   └── web/                 ← Browser
+├── packages/
+│   ├── shared/
+│   ├── core/
+│   ├── infrastructure/
+│   ├── ui/
+│   ├── features/
+│   ├── ai/
+│   ├── plugins/
+│   └── sdk/
+├── server/
+├── relay/
+├── plugins/
+├── config/
+├── docs/
+└── tests/
+```
+
+Mobile vive aparte:
+
+```
+orca-blitz/
+└── mobile/                  ← PROYECTO SEPARADO
+    ├── pnpm-workspace.yaml  ← Sus propias dependencias
+    ├── pnpm-lock.yaml
+    └── package.json
 ```
 
 ---
@@ -352,29 +363,56 @@ packages/ui/Button.tsx
 
 La aplicación se organiza por capacidades.
 
+Ubicación:
+
+```
+packages/features/
+```
+
 Ejemplo:
 
 ```
-features/
-crm/
-automation/
-analytics/
-ai/
-browser/
-marketing/
-inventory/
+packages/features/
+├── index.ts
+├── crm/
+├── automation/
+├── analytics/
+├── sales-engine/
+├── self-learning/
+├── advisor/
+├── reporting/
+├── marketing/
+└── ...
 ```
 
 Cada feature contiene:
 
 ```
 feature/
-components/
-services/
-hooks/
-models/
-api/
-tests/
+├── index.ts
+├── domain/
+├── application/
+├── infrastructure/
+├── ui/
+└── events/
+```
+
+#### Ejemplo CRM
+
+```
+crm/
+domain/
+Customer.ts
+Company.ts
+Lead.ts
+application/
+CreateCustomer.ts
+ConvertLead.ts
+infrastructure/
+CRMRepository.ts
+ui/
+CustomerTable.tsx
+CustomerCard.tsx
 ```
 
 ---
@@ -576,15 +614,14 @@ Ejemplo:
 
 ```
 packages/
-core/
-automation/
-crm/
-ai/
-ui/
-plugins/
-browser/
-shared/
-sdk/
+├── shared/
+├── core/
+├── infrastructure/
+├── ui/
+├── features/
+├── ai/
+├── plugins/
+└── sdk/
 ```
 
 ---
@@ -862,13 +899,31 @@ No puede:
 
 ```
 main/
-window-manager/
-ipc/
-browser/
-filesystem/
-notifications/
-updater/
-security/
+├── index.ts
+├── ipc/
+│   ├── register-core-handlers.ts
+│   ├── customers.ts
+│   ├── workflows.ts
+│   ├── integrations.ts
+│   └── reports.ts
+├── persistence/
+│   ├── store.ts
+│   ├── schema.ts
+│   └── migrations/
+├── runtime/
+│   ├── orca-runtime.ts
+│   └── rpc/
+├── window/
+├── browser/
+├── plugins/
+│   ├── plugin-host-entry.ts
+│   ├── plugin-host-process.ts
+│   ├── plugin-event-bus.ts
+│   ├── plugin-content-safety.ts
+│   └── plugin-registry.ts
+├── notifications/
+├── updater/
+└── daemon/
 ```
 
 ## 25. Renderer Process
@@ -1277,6 +1332,7 @@ Crear Feature
 Crear UI Component
 Crear Events
 Crear Tests
+Registrar en el Registry
 ```
 
 ## 37. Golden Architecture Rule
@@ -1401,40 +1457,49 @@ Nunca contiene:
 
 ## 42. Design Tokens
 
-Todos los valores visuales deben estar centralizados.
+Todos los valores visuales se definen como CSS variables en un archivo CSS separado, nunca en componentes ni en TypeScript.
 
-Ejemplo:
-
-```
-packages/ui/theme/
-colors.ts
-spacing.ts
-typography.ts
-radius.ts
-shadows.ts
-animations.ts
-```
-
----
-
-### Colors
-
-Ejemplo:
+### Ubicación
 
 ```
-export const colors = {
-primary:"#2563EB",
-background:"#FFFFFF",
-danger:"#EF4444",
-success:"#22C55E"
-}
+packages/ui/theme/globals.css
 ```
 
-Nunca:
+### Cómo funciona
 
+Cada color se define como una CSS variable con un nombre semántico:
+
+```
+background/foreground        → Fondo de la app y texto principal
+card/card-foreground         → Paneles elevados
+popover/popover-foreground   → Menús flotantes
+primary/primary-foreground   → Acción principal (botones)
+secondary                    → Acción secundaria
+muted                        → Texto sutil, placeholders
+accent                       → Hover, focus
+destructive                  → Errores, eliminar
+border                       → Bordes
+input                        → Campos de formulario
+ring                         → Focus rings
+sidebar                      → Sidebar
+chart-1 a chart-5            → Gráficas
+```
+
+### Regla
+
+Nunca colores dentro de componentes. El componente solo dice qué es, no cómo se ve.
+
+Incorrecto:
 ```
 <div style={{color:"#2563EB"}}>
 ```
+
+Correcto:
+```
+<div className="text-primary">
+```
+
+Los componentes usan tokens semánticos. El tema define los valores. Cambiar el tema cambia todos los colores.
 
 ## 43. Component Architecture
 
@@ -1784,20 +1849,45 @@ adjustSpacing()
 
 ## 53. Theme System
 
-Debe soportar:
+La app soporta múltiples paletas de colores, no solo light/dark.
 
-- Light mode.
-- Dark mode.
-- Custom themes.
-
-Estructura:
+### Capas del tema
 
 ```
-theme/
-light.ts
-dark.ts
-custom.ts
+Capa 1: Modo
+    Light / Dark
+    (la app es clara u oscura)
+
+Capa 2: Paleta de colores
+    Neutro / Azul / Verde / Púrpura / etc.
+    (los colores de la interfaz)
+
+Capa 3: Custom
+    El usuario crea la suya propia
 ```
+
+### Cómo se combinan
+
+```
+Dark + Azul = App oscura con acentos azules
+Light + Verde = App clara con acentos verdes
+```
+
+### Cambio en tiempo real
+
+```
+Usuario selecciona paleta
+    ↓
+Se cambian las CSS variables
+    ↓
+TODOS los componentes se ven diferentes
+    ↓
+No se toca ningún componente
+```
+
+### Persistencia
+
+La preferencia del usuario se guarda. Al reiniciar la app, el tema seleccionado se restaura automáticamente.
 
 ## 54. Typography System
 
@@ -1816,18 +1906,13 @@ Code
 
 ## 55. Icon System
 
-Todos los iconos viven en:
+Todos los iconos vienen de Lucide React. No se usa otra librería de iconos.
 
 ```
-packages/ui/icons/
+import { IconName } from "lucide-react"
 ```
 
-Nunca:
-
-```
-FeatureA/icons
-FeatureB/icons
-```
+Nunca crear iconos propios ni usar otra librería.
 
 ## 56. Animation System
 
@@ -2020,18 +2105,31 @@ Motivo:
 
 ```
 server/
-src/
-app/
-api/
-auth/
-users/
-organizations/
-automation/
-ai/
-integrations/
-database/
-events/
-workers/
+├── src/
+│   ├── app.ts
+│   ├── middleware/
+│   │   ├── auth.ts
+│   │   ├── validation.ts
+│   │   ├── rate-limit.ts
+│   │   └── error-handler.ts
+│   ├── routes/
+│   │   ├── index.ts
+│   │   ├── auth.routes.ts
+│   │   ├── users.routes.ts
+│   │   ├── organizations.routes.ts
+│   │   ├── customers.routes.ts
+│   │   ├── workflows.routes.ts
+│   │   ├── ai.routes.ts
+│   │   ├── integrations.routes.ts
+│   │   ├── reports.routes.ts
+│   │   └── plugins.routes.ts
+│   ├── services/
+│   ├── workers/
+│   └── websocket/
+│       ├── dispatcher.ts
+│       ├── agent-hook-server.ts
+│       └── fs-handler.ts
+└── drizzle.config.ts
 ```
 
 ---
@@ -3028,22 +3126,35 @@ WhatsApp Plugin
 
 ## 105. Integration Layer
 
+Las integraciones externas nunca viven dentro del Core.
+
+Incorrecto:
+
+```
+Core
+↓
+WhatsApp API
+```
+
+Correcto:
+
+```
+Core
+↓
+Integration Layer
+↓
+WhatsApp Plugin
+```
+
 Ubicación:
 
 ```
-packages/integrations/
-```
-
-Contiene:
-
-```
-whatsapp/
-instagram/
-facebook/
-email/
-crm/
-erp/
-payments/
+plugins/
+├── whatsapp/
+├── instagram/
+├── email/
+├── telegram/
+└── payments/
 ```
 
 ## 106. Integration Adapter Pattern
@@ -3414,15 +3525,27 @@ Migration Script
 Repositorio:
 
 ```
-project/
-apps/
-packages/
-server/
-plugins/
-examples/
-docs/
-scripts/
-tests/
+orca-blitz/
+├── apps/
+│   ├── desktop/
+│   ├── web/
+│   └── mobile/
+├── packages/
+│   ├── shared/
+│   ├── core/
+│   ├── infrastructure/
+│   ├── ui/
+│   ├── features/
+│   ├── ai/
+│   ├── plugins/
+│   └── sdk/
+├── server/
+├── relay/
+├── plugins/
+├── config/
+├── docs/
+├── tests/
+└── scripts/
 ```
 
 ## 125. Community Contribution
@@ -3919,50 +4042,143 @@ Ejemplo:
 npm run dev
 ```
 
-## 155. Recommended Tooling
+## 155. Technology Stack
 
-Package Manager:
+Stack tecnológico completo del proyecto. Todo lo que se usa está aquí definido.
+
+### Lenguaje
+
 ```
-pnpm
+TypeScript (strict mode)
+Node.js
 ```
 
-Monorepo:
+### Frontend Desktop
+
 ```
-Turborepo
+Electron
+React
+Vite + electron-vite
 ```
 
-Build:
+### Frontend Web
+
 ```
+React
 Vite
 ```
 
-Testing:
+### Frontend Mobile
+
 ```
-Vitest
-Playwright
+React Native + Expo
 ```
+
+### UI / Design System
+
+```
+shadcn/ui (librería completa de componentes)
+Radix UI (primitivas headless)
+Tailwind CSS (styling)
+CSS Variables (temas)
+Lucide React (iconos)
+cmdk (command palette - futuro)
+clsx / cn() (class merging)
+CVA (variantes de componentes)
+```
+
+### State Management
+
+```
+Zustand (con slices pattern)
+```
+
+### Backend / Server
+
+```
+Node.js
+Fastify o Hono (por definir)
+WebSocket Relay
+REST API
+```
+
+### Base de Datos
+
+```
+PostgreSQL (cloud)
+SQLite (local)
+Drizzle ORM
+```
+
+### Build / Monorepo
+
+```
+pnpm (package manager)
+Turborepo (monorepo)
+Vite (build web)
+electron-vite (build desktop)
+electron-builder (empaquetado)
+```
+
+### Testing
+
+```
+Vitest (unit tests)
+Playwright (e2e tests)
+```
+
+### Code Quality
+
+```
+TypeScript strict mode
+OxLint (con custom plugins)
+oxfmt (formateo de código)
+Husky (git hooks)
+```
+
+### Comunicación
+
+```
+Event Bus
+WebSocket Relay
+IPC tipado (contextBridge)
+```
+
+### Distribución / Monitoreo
+
+```
+electron-updater (actualizaciones)
+PostHog (telemetry)
+```
+
+### Regla principal
+
+shadcn/ui es la librería completa. No crear componentes nuevos. Si shadcn tiene un componente, usarlo.
 
 ## 156. Repository Structure Final
 
 ```
-enterprise-platform/
-apps/
-    desktop/
-    web/
-    mobile/
-packages/
-    core/
-    ui/
-    shared/
-    automation/
-    ai/
-    crm/
-    plugins/
-    sdk/
-server/
-docs/
-tests/
-scripts/
+orca-blitz/
+├── apps/
+│   ├── desktop/
+│   ├── web/
+│   └── mobile/
+├── packages/
+│   ├── shared/
+│   ├── core/
+│   ├── infrastructure/
+│   ├── ui/
+│   ├── features/
+│   ├── ai/
+│   ├── plugins/
+│   └── sdk/
+├── server/
+├── relay/
+├── plugins/
+├── config/
+├── docs/
+├── tests/
+└── scripts/
 ```
 
 ## 157. Development Roadmap
@@ -4207,13 +4423,1053 @@ La plataforma completa:
 #### Principle 10
 - La arquitectura debe permitir crecer durante años.
 
+---
 
+## 163. Conversational Sales Engine
 
+La plataforma no vende. La plataforma **crea las condiciones para que la IA venda**.
+
+### Qué construye la plataforma
+
+- **Motor de conversación** — Maneja el flujo de mensajes entre cliente y negocio.
+- **Detector de intención** — Clasifica cada mensaje del cliente (quiere comprar, curiosea, tiene duda, objeción).
+- **Gestor de contexto** — Mantiene el historial completo de cada conversación.
+- **Plantillas de conversación** — Define las etapas: Descubrimiento, Interés, Decisión, Cierre.
+- **Captura de datos** — Registra qué funcionó y qué no en cada interacción.
+
+### Qué hace la IA (conectada a través de la plataforma)
+
+- Interpreta el mensaje del cliente.
+- Decide qué tipo de respuesta dar.
+- Genera la respuesta.
+- La plataforma la entrega al canal correcto (WhatsApp, Email, etc.).
+
+### La plataforma NO asume qué IA usar
+
+El usuario puede conectar:
+- OpenAI
+- Anthropic
+- Modelo local
+- Cualquier proveedor a través del SDK
+
+La plataforma solo define **el contrato**: *"El cliente dijo X, responde en el contexto Y"*.
+
+---
+
+## 164. Self-Learning System
+
+La plataforma no aprende sola. La plataforma **crea el mecanismo para que los datos mejoren las respuestas de la IA**.
+
+### Qué construye la plataforma
+
+- **Repositorio de interacciones** — Cada conversación se guarda con resultado (conversión o no).
+- **Sistema de feedback** — Etiqueta cada interacción como éxito o fracaso.
+- **Análisis de patrones** — Detecta qué horarios, qué tipo de mensajes, qué clientes convierten.
+- **Contexto para la IA** — Cuando la IA va a responder, la plataforma le entrega: *"Los clientes como este suelen comprar cuando la respuesta incluye [X]"*.
+
+### Qué hace la IA
+
+- Recibe el contexto enriquecido.
+- Genera una respuesta más informada.
+
+### La plataforma no cambia el modelo de IA
+
+La plataforma **alimenta** al modelo con datos. El modelo decide cómo usarlos. Si mañana el usuario cambia de OpenAI a Anthropic, el sistema de aprendizaje sigue funcionando igual.
+
+---
+
+## 165. Proactive Business Advisor
+
+La plataforma no sugiere campañas. La plataforma **monitorea el calendario y los datos, y genera contexto para que la IA sugiera**.
+
+### Qué construye la plataforma
+
+- **Monitor de calendario** — Revisa fechas futuras y detecta eventos relevantes (Navidad, Halloween, etc.).
+- **Análisis de tendencias** — Compara datos de ventas periodo a periodo.
+- **Detección de clientes inactivos** — Identifica clientes que no compran en X días.
+- **Sistema de notificaciones** — Cuando hay algo que sugerir, la plataforma emite un evento.
+
+### Qué hace la IA
+
+- Recibe el evento: *"Halloween en 2 semanas, este negocio vende [X]"*.
+- Genera la sugerencia concreta.
+- La plataforma la entrega al usuario.
+
+### Ejemplo de flujo
+
+```
+Plataforma detecta: Halloween en 15 días
+    ↓
+Plataforma emite evento: calendar.event_upcoming
+    ↓
+IA recibe contexto + datos del negocio
+    ↓
+IA genera sugerencia: "Crear promoción de disfrazes"
+    ↓
+Plataforma entrega al usuario
+```
+
+La plataforma **no sabe qué sugerir**. Solo sabe que hay un evento y tiene datos. La IA decide la sugerencia.
+
+---
+
+## 166. Reporting System
+
+La plataforma no genera reportes. La plataforma **recopila los datos y expone los formatos para que la IA o el usuario los generen**.
+
+### Qué construye la plataforma
+
+- **Data Warehouse ligero** — Almacena ventas, mensajes, conversiones, productos.
+- **Exportadores de formato** — Excel, PDF, CSV.
+- **Programación de reportes** — El usuario puede pedir: "envíame un reporte cada lunes".
+- **Métricas calculadas** — Tasa de conversión, ventas por periodo, tendencias.
+
+### Qué hace la IA (opcionalmente)
+
+- Puede narrar los datos: *"Las ventas subieron 15% porque..."*
+- Puede sugerir acciones basadas en los números.
+
+### El usuario también puede
+
+- Generar reportes sin IA.
+- Exportar datos crudos.
+- Importar en herramientas externas.
+
+### La plataforma no asume qué formato
+
+El usuario elige: Excel, PDF, CSV. La plataforma provee los exportadores. Si mañana se necesita un formato nuevo, se agrega un exportador sin tocar el resto.
+
+---
+
+## 167. Free & Open Source
+
+La plataforma es **100% gratis**. No es una estrategia de marketing, es el modelo.
+
+### Qué significa
+
+- Sin versiones de pago.
+- Sin funciones premium.
+- Sin límites de usuarios, contactos o automatizaciones.
+- Self-hosted sin costo.
+- Cloud Managed sin costo adicional.
+
+### Open Source
+
+- Código abierto y auditable.
+- Licencia que garantice que siempre será gratis.
+- Comunidad puede contribuir.
+- El usuario es dueño de su instalación y sus datos.
+
+### Sostenibilidad
+
+El modelo no depende de cobrar por funcionalidades. La sostenibilidad puede venir de:
+- Servicios de soporte.
+- Hosting administrado opcional.
+- Marketplace de plugins (comunidad crea, plataforma distribuye).
+
+---
+
+## 168. Architecture Reference: Orca ADE Patterns
+
+La arquitectura de esta plataforma se inspira en patrones probados de Orca ADE (stablyai/orca), una aplicación Electron de 40k+ stars que nunca se cae, es escalable, y no rompe la UI.
+
+### Patrones adoptados
+
+- **Tres procesos estrictos** (Main, Preload, Renderer) con aislamiento total.
+- **Preload como Application API** tipada con namespaces.
+- **Zustand slices + cross-slice cascades** para state management.
+- **Persistencia atómica** con write-then-rename y schema versionado.
+- **Session hydration** al iniciar la aplicación.
+- **Mobile como workspace separado** con dependencias propias.
+- **Plugins en proceso separado** con sandbox.
+- **Relay WebSocket** para multi-cliente (desktop ↔ mobile ↔ CLI).
+- **Quality gates** con max-lines ratchet y reliability budgets.
+- **Shared types como source of truth** entre todos los procesos.
+
+---
+
+## 169. Corrected Folder Structure
+
+```
+orca-blitz/
+│
+├── apps/
+│   ├── desktop/                         ← Electron (Windows, Linux, macOS)
+│   │   ├── src/
+│   │   │   ├── main/                    ← Proceso con permisos del SO
+│   │   │   │   ├── index.ts
+│   │   │   │   ├── ipc/
+│   │   │   │   │   ├── register-core-handlers.ts
+│   │   │   │   │   ├── customers.ts
+│   │   │   │   │   ├── workflows.ts
+│   │   │   │   │   ├── integrations.ts
+│   │   │   │   │   └── reports.ts
+│   │   │   │   ├── persistence/
+│   │   │   │   │   ├── store.ts
+│   │   │   │   │   ├── schema.ts
+│   │   │   │   │   └── migrations/
+│   │   │   │   ├── runtime/
+│   │   │   │   │   ├── orca-runtime.ts
+│   │   │   │   │   └── rpc/
+│   │   │   │   ├── window/
+│   │   │   │   ├── browser/
+│   │   │   │   ├── plugins/
+│   │   │   │   │   ├── plugin-host-entry.ts
+│   │   │   │   │   ├── plugin-host-process.ts
+│   │   │   │   │   ├── plugin-event-bus.ts
+│   │   │   │   │   ├── plugin-content-safety.ts
+│   │   │   │   │   └── plugin-registry.ts
+│   │   │   │   ├── notifications/
+│   │   │   │   ├── updater/
+│   │   │   │   └── daemon/
+│   │   │   │
+│   │   │   ├── preload/
+│   │   │   │   ├── index.ts
+│   │   │   │   └── api-types.ts
+│   │   │   │
+│   │   │   ├── renderer/
+│   │   │   │   ├── App.tsx
+│   │   │   │   ├── main.tsx
+│   │   │   │   ├── components/
+│   │   │   │   │   ├── ui/
+│   │   │   │   │   ├── layout/
+│   │   │   │   │   ├── crm/
+│   │   │   │   │   ├── automation/
+│   │   │   │   │   └── chat/
+│   │   │   │   ├── hooks/
+│   │   │   │   │   └── useIpcEvents.ts
+│   │   │   │   ├── store/
+│   │   │   │   │   ├── index.ts
+│   │   │   │   │   ├── types.ts
+│   │   │   │   │   ├── selectors.ts
+│   │   │   │   │   └── slices/
+│   │   │   │   │       ├── ui.ts
+│   │   │   │   │       ├── customers.ts
+│   │   │   │   │       ├── workflows.ts
+│   │   │   │   │       ├── conversations.ts
+│   │   │   │   │       ├── integrations.ts
+│   │   │   │   │       └── settings.ts
+│   │   │   │   ├── assets/
+│   │   │   │   │   └── main.css
+│   │   │   │   └── web/
+│   │   │   │
+│   │   │   └── shared/
+│   │   │       ├── types.ts
+│   │   │       ├── constants.ts
+│   │   │       └── events.ts
+│   │   │
+│   │   ├── electron.vite.config.ts
+│   │   └── electron-builder.config.ts
+│   │
+│   ├── web/
+│   │   ├── src/
+│   │   │   ├── App.tsx
+│   │   │   ├── web-preload-api.ts
+│   │   │   └── ...
+│   │   ├── vite.config.ts
+│   │   └── package.json
+│   │
+│   └── mobile/                          ← PROYECTO SEPARADO
+│       ├── pnpm-workspace.yaml
+│       ├── pnpm-lock.yaml
+│       ├── package.json
+│       ├── app.json
+│       ├── app/
+│       │   ├── _layout.tsx
+│       │   ├── index.tsx
+│       │   └── settings.tsx
+│       ├── src/
+│       │   ├── components/
+│       │   ├── transport/
+│       │   │   ├── client-context.tsx
+│       │   │   ├── host-store.ts
+│       │   │   └── types.ts
+│       │   ├── storage/
+│       │   └── hooks/
+│       └── packages/
+│
+├── packages/
+│   ├── shared/
+│   │   ├── types/
+│   │   ├── events/
+│   │   ├── constants/
+│   │   └── utils/
+│   │
+│   ├── core/
+│   │   ├── entities/
+│   │   ├── use-cases/
+│   │   ├── services/
+│   │   ├── repositories/
+│   │   ├── events/
+│   │   └── errors/
+│   │
+│   ├── infrastructure/
+│   │   ├── database/
+│   │   │   ├── adapters/
+│   │   │   └── migrations/
+│   │   ├── external/
+│   │   │   ├── ai-providers/
+│   │   │   ├── messaging/
+│   │   │   └── payments/
+│   │   └── storage/
+│   │
+│   ├── ui/
+│   │   ├── theme/
+│   │   ├── icons/
+│   │   ├── primitives/
+│   │   ├── layout/
+│   │   ├── business/
+│   │   └── charts/
+│   │
+│   ├── features/
+│   │   ├── index.ts
+│   │   ├── crm/
+│   │   ├── automation/
+│   │   ├── sales-engine/
+│   │   ├── self-learning/
+│   │   ├── advisor/
+│   │   ├── reporting/
+│   │   ├── marketing/
+│   │   └── analytics/
+│   │
+│   ├── ai/
+│   │   ├── contracts/
+│   │   ├── memory/
+│   │   └── prompts/
+│   │
+│   ├── plugins/
+│   │   ├── plugin-manager/
+│   │   ├── plugin-loader/
+│   │   ├── plugin-sandbox/
+│   │   └── plugin-api/
+│   │
+│   └── sdk/
+│       ├── create-plugin/
+│       ├── api/
+│       └── types/
+│
+├── server/
+│   ├── src/
+│   │   ├── app.ts
+│   │   ├── middleware/
+│   │   ├── routes/
+│   │   ├── services/
+│   │   ├── workers/
+│   │   └── websocket/
+│   │       ├── dispatcher.ts
+│   │       ├── agent-hook-server.ts
+│   │       └── fs-handler.ts
+│   └── drizzle.config.ts
+│
+├── relay/
+│   ├── src/
+│   │   ├── dispatcher.ts
+│   │   ├── auth.ts
+│   │   └── handlers/
+│   └── package.json
+│
+├── plugins/
+│   ├── whatsapp/
+│   ├── instagram/
+│   ├── email/
+│   └── payments/
+│
+├── config/
+│   ├── max-lines-baseline.txt
+│   ├── reliability-gates.jsonc
+│   ├── vitest.config.ts
+│   ├── tsconfig.node.json
+│   ├── tsconfig.web.json
+│   └── tsconfig.cli.json
+│
+├── docs/
+├── tests/
+│   ├── unit/
+│   ├── integration/
+│   └── e2e/
+├── scripts/
+├── package.json
+├── pnpm-workspace.yaml
+├── turbo.json
+└── tsconfig.json
+```
+
+---
+
+## 170. Preload as Application API
+
+El preload es la capa de seguridad entre UI y sistema. Expone `window.api` con namespaces tipados.
+
+### Namespaces
+
+```
+window.api.customers.create(data)
+window.api.customers.list()
+window.api.customers.onChanged(cb)
+
+window.api.workflows.create(data)
+window.api.workflows.execute(id)
+window.api.workflows.onChanged(cb)
+
+window.api.integrations.sendMessage(channel, data)
+window.api.integrations.onMessage(cb)
+
+window.api.reports.generate(config)
+window.api.reports.export(format)
+
+window.api.settings.get()
+window.api.settings.update(prefs)
+
+window.api.plugins.install(manifest)
+window.api.plugins.enable(id)
+```
+
+### Flujo
+
+```
+Renderer
+    ↓ window.api.customers.create(data)
+Preload (contextBridge)
+    ↓ ipcRenderer.invoke('customers:create', data)
+Main Process
+    ↓ CustomerService.create(data)
+Core
+    ↓ CustomerRepository.save()
+Infrastructure
+    ↓ PostgreSQL / SQLite
+```
+
+### Regla
+
+El renderer NUNCA accede a Node.js, filesystem, o procesos. Todo pasa por `window.api`.
+
+---
+
+## 171. Zustand Store Architecture
+
+El store se compone de slices especializados. Cada feature tiene su propio slice.
+
+### Slices
+
+| Slice | Responsabilidad |
+|---|---|
+| ui | Sidebar, modales, filtros, sorting |
+| customers | Clientes, leads, deals |
+| workflows | Automatizaciones, ejecuciones |
+| conversations | Chat con clientes, historial |
+| integrations | Estado de integraciones externas |
+| settings | Preferencias del usuario |
+
+### Cross-Slice Cascades
+
+Cuando se elimina una entidad, se limpia todo el estado relacionado:
+
+```
+Eliminar customer
+    ↓
+Conversations del customer → eliminadas
+Workflows que usan el customer → actualizados
+Tags del customer → eliminados
+Reports que mencionan al customer → invalidated
+```
+
+### Selectores
+
+```
+src/renderer/src/store/selectors.ts
+```
+
+Contiene selectores memoizados que derivan estado complejo sin re-renders innecesarios.
+
+### Session Hydration
+
+Al iniciar la app:
+
+```
+App Start
+    ↓
+Load persisted state (orca-data.json)
+    ↓
+Merge with defaults (deep merge)
+    ↓
+Validate schema
+    ↓
+Clean orphaned state
+    ↓
+Hydrate Zustand store
+    ↓
+Renderer ready
+```
+
+---
+
+## 172. Persistence Layer
+
+La persistencia usa un JSON atomic con write-then-rename.
+
+### Estrategia
+
+```
+1. Write to temp file (orca-data.json.[uuid].tmp)
+2. Check write generation (no sobreescribir cambios recientes)
+3. Rename to orca-data.json (atómico en la mayoría de filesystems)
+4. On shutdown: synchronous flush
+```
+
+### Schema Versioning
+
+```
+SCHEMA_VERSION = 1
+```
+
+Al cargar, se hace deep merge con defaults para manejar versiones anteriores.
+
+### Entidades persistidas
+
+- Projects (organizaciones)
+- Workflows (automatizaciones)
+- Customers (clientes)
+- Conversations (historial de chat)
+- Settings (preferencias)
+- Plugin states (estado de plugins)
+- Session state (tabs abiertos, layout)
+
+### Seguridad
+
+- Datos sensibles encriptados con Electron safeStorage
+- API keys nunca en texto plano
+- SSH passphrases encriptadas
+
+---
+
+## 173. Relay WebSocket Architecture
+
+El relay conecta desktop ↔ mobile ↔ CLI ↔ SSH.
+
+### Conexiones
+
+```
+Desktop (Electron)
+    ↕ WebSocket
+Mobile (React Native)
+    ↕ WebSocket
+CLI (Node.js)
+    ↕ WebSocket
+SSH Remote
+```
+
+### Funciones del relay
+
+- Autenticación de clientes
+- Enrutamiento de mensajes
+- Streaming de terminal output
+- Operaciones de archivos
+- Git operations
+- Port forwarding
+
+### Seguridad
+
+- Cada conexión autenticada
+- Permisos por cliente
+- Auditoría de operaciones
+
+---
+
+## 174. Plugin Process Isolation
+
+Los plugins corren en su propio proceso Electron.
+
+### Flujo
+
+```
+Plugin Manager
+    ↓
+plugin-host-entry.ts (proceso separado)
+    ↓
+Plugin Code (aislado)
+    ↓
+plugin-event-bus.ts (comunicación)
+    ↓
+Core (solo APIs permitidas)
+```
+
+### Seguridad del plugin
+
+- **Sandbox**: Permisos limitados declarados en manifest
+- **Content Safety**: Validación de código antes de ejecutar
+- **Content Integrity**: Hash de integridad
+- **Audit Log**: Registro de todas las operaciones
+- **Kill List**: Revocación de plugins maliciosos
+
+### Si un plugin falla
+
+- El proceso plugin crashea
+- La app principal NO se ve afectada
+- El plugin se desactiva automáticamente
+- Se registra el error
+
+---
+
+## 175. Quality Gates
+
+### Max-Lines Ratchet
+
+Cada archivo tiene un límite de líneas en `config/max-lines-baseline.txt`. El límite solo puede BAJAR, nunca subir. Esto fuerza la modularidad.
+
+```
+src/main/customers.ts: 500
+src/renderer/src/App.tsx: 2000
+packages/core/services/CustomerService.ts: 300
+```
+
+Si un archivo crece más allá de su límite, CI falla.
+
+### Reliability Gates
+
+`config/reliability-gates.jsonc` contiene presupuestos de confiabilidad para cada subsistema. Ejemplo:
+
+```jsonc
+{
+  "customers": {
+    "maxResponseTime": "200ms",
+    "maxMemoryUsage": "50MB",
+    "testCoverage": "90%"
+  },
+  "workflows": {
+    "maxExecutionTime": "30s",
+    "maxConcurrent": 10
+  }
+}
+```
+
+### TypeScript Targets Separados
+
+```
+tsconfig.node.json    ← Main process + Server
+tsconfig.web.json     ← Renderer + Web
+tsconfig.cli.json     ← CLI + Tools
+```
+
+Cada target tiene reglas de strictness diferentes. El renderer es el más estricto.
+
+---
+
+## 176. Feature Contract
+
+Cada feature es una carpeta que entrega un contrato al sistema. El sistema sabe qué consume de ella.
+
+### Qué puede contener una feature
+
+```
+CRM:
+    Ajustes     → Configuración del módulo
+    Rutas       → Páginas que ofrece
+    Eventos     → Qué eventos maneja
+    Store       → Estado que necesita
+    UI          → Componentes visuales
+
+Inventario:
+    Ajustes     → Alertas de stock, umbrales
+    Rutas       → Página de productos
+    Eventos     → stock.low, product.created
+    Store       → Lista de productos
+    UI          → Tabla de productos
+```
+
+### Regla
+
+Si una feature no entrega algo, no lo tiene. Si CRM no entrega `Ajustes`, no tiene pantalla de configuración. Si Inventario no entrega `Rutas`, no tiene página propia. Simple.
+
+---
+
+## 177. Feature Registry
+
+El registry es un archivo central que lista todas las features. Es explícito. Igual que Orca.
+
+### Cómo funciona
+
+```
+packages/features/index.ts
+
+    ← Importa cada feature
+    ← Lista las que están activas
+    ← Expone: "estas son todas las features del sistema"
+```
+
+### Qué consume el sistema del registry
+
+```
+Settings Page
+    → Lee el registry
+    → Renderiza los ajustes de cada feature
+
+Router
+    → Lee el registry
+    → Registra las rutas de cada feature
+
+Store
+    → Lee el registry
+    → Inicializa el estado de cada feature
+
+Event Bus
+    → Lee el registry
+    → Conecta los eventos de cada feature
+```
+
+### Regla
+
+Si una feature no está en el registry, no existe para el sistema. No se renderiza, no se registra, no se escucha.
+
+---
+
+## 178. Registration Flow
+
+Paso a paso para agregar una feature nueva.
+
+### Flujo
+
+```
+1. Crear la carpeta de la feature
+   → Crear domain, application, infrastructure, ui
+   → Crear settings, routes, events, store
+
+2. Registrar en el registry
+   → 1 línea de importación
+   → 1 línea en el array de features
+
+3. Listo.
+   → Los ajustes se renderizan solos
+   → Las rutas se registran solas
+   → Los eventos se conectan solos
+   → El store se inicializa solo
+```
+
+### Qué NO tocas
+
+```
+No tocas:
+    La pantalla de ajustes
+    El router principal
+    El store central
+    El preload
+    El main process
+    Ningún archivo existente
+```
+
+### Archivos a tocar: 2
+
+```
+1. Tu feature (obligatorio)
+2. El registry (1 línea)
+```
+
+---
+
+## 179. shadcn/ui Component Library
+
+La interfaz se construye sobre shadcn/ui.
+
+### Qué es
+
+shadcn/ui es una librería de componentes React construida sobre Radix UI y Tailwind CSS. No es un paquete npm, es código que copias a tu proyecto y controlas completamente.
+
+### Por qué shadcn/ui
+
+- Los componentes son tuyos, no de un paquete externo
+- Puedes modificarlos sin esperar actualizaciones
+- Funciona con CSS variables (temas)
+- Orca ADE lo usa como base
+- Simple, elegante, monocromático
+- 60+ componentes listos
+
+### Componentes principales que usaremos
+
+```
+Botones:        Button, Button Group, Toggle, Toggle Group
+Formularios:    Input, Textarea, Select, Checkbox, Switch, Radio Group
+Navegación:     Sidebar, Tabs, Breadcrumb, Navigation Menu, Pagination
+Datos:          Table, Data Table, Card, Badge
+Feedback:       Alert, Toast, Dialog, Sheet, Drawer
+Gráficas:       Chart
+Otros:          Avatar, Calendar, Command, Popover, Tooltip, Separator
+```
+
+### Regla
+
+Nunca crear un componente visual que ya exista en shadcn/ui. Si shadcn tiene un Button, no crees otro Button.
+
+---
+
+## 180. Theme Palette
+
+El usuario puede cambiar la paleta de colores de toda la app.
+
+### Paletas predefinidas
+
+```
+Neutro (default)
+    → Grises, minimalista, profesional
+
+Azul Profesional
+    → Tonos azules, corporativo
+
+Verde Naturaleza
+    → Tonos verdes, fresco
+
+Púrpura Creativo
+    → Tonos púrpuras, moderno
+
+Rojo Energía
+    → Tonos rojos, dinámico
+
+Océano
+    → Tonos azul-verde, calmado
+
+Atardecer
+    → Tonos naranja-rosa, cálido
+```
+
+### Cada paleta define
+
+```
+Los tokens principales de la app:
+    Fondo, texto, botones, bordes, sidebar, gráficas
+
+Cada paleta tiene variante clara y oscura
+```
+
+### Cómo se aplica
+
+```
+Usuario elige paleta en Ajustes → Temas
+    ↓
+Se cambian las CSS variables
+    ↓
+Toda la app cambia inmediatamente
+```
+
+### Persistencia
+
+La paleta elegida se guarda en las preferencias del usuario. Al reiniciar, se restaura automáticamente.
+
+---
+
+## 181. Community Themes
+
+La app permite importar temas de la comunidad.
+
+### Fuente
+
+tweakcn.com/community tiene paletas creadas por la comunidad.
+
+### Cómo funciona
+
+```
+1. Usuario va a Ajustes → Temas → Comunidad
+2. Ve paletas disponibles con preview
+3. Selecciona una
+4. Se importa y aplica automáticamente
+5. Queda guardada en sus preferencias
+```
+
+### El usuario también puede
+
+- Exportar su propia paleta
+- Compartirla con la comunidad
+- Guardar favoritos
+
+---
+
+## 182. Theme Awareness
+
+Toda la app debe ser consciente del tema activo.
+
+### Reglas
+
+```
+1. Nunca colores hardcoded dentro de componentes
+2. Siempre usar tokens semánticos (bg-primary, text-foreground)
+3. Si shadcn tiene un componente, usarlo en vez de crear uno nuevo
+4. Si un componente necesita un color especial, agregarlo como token nuevo en el CSS
+5. Nunca asumir que el fondo es blanco o negro
+```
+
+### Ejemplo correcto
+
+```
+<Button>Acción</Button>
+```
+
+### Ejemplo incorrecto
+
+```
+<Button style={{background:"#2563EB", color:"white"}}>Acción</Button>
+```
+
+### Flujo para agregar un color nuevo
+
+```
+1. Definir el token en globals.css (tanto :root como .dark)
+2. Exponerlo en @theme inline
+3. Usarlo en componentes con su nombre semántico
+```
+
+---
+
+## 183. UI Toolkit: shadcn/ui
+
+La interfaz se construye sobre la librería completa de shadcn/ui.
+
+### Qué es
+
+shadcn/ui es una librería de componentes React construida sobre Radix UI y Tailwind CSS. No es un paquete npm, es código que copias a tu proyecto y controlas completamente.
+
+### Por qué shadcn/ui
+
+- Los componentes son tuyos, no de un paquete externo
+- Puedes modificarlos sin esperar actualizaciones
+- Funciona con CSS variables (temas)
+- Orca ADE lo usa como base
+- Simple, elegante, monocromático
+- 60+ componentes listos
+
+### Regla principal
+
+Se instala la librería COMPLETA. No se crean componentes nuevos. Si shadcn tiene un componente, se usa ese componente.
+
+### Componentes disponibles
+
+```
+Accordion, Alert, Alert Dialog, Aspect Ratio, Attachment
+Avatar, Badge, Breadcrumb, Bubble
+Button, Button Group
+Calendar, Card, Carousel, Chart, Checkbox, Collapsible
+Combobox, Command, Context Menu
+Data Table, Date Picker, Dialog, Direction, Drawer
+Dropdown Menu
+Empty
+Field
+Hover Card
+Input, Input Group, Input OTP, Item
+Kbd
+Label
+Marker, Menubar, Message, Message Scroller
+Native Select, Navigation Menu
+Pagination, Popover, Progress
+Questionnaire
+Radio Group
+Resizable
+Scroll Area, Select, Separator, Sheet, Sidebar
+Skeleton, Slider, Spinner, Switch
+Table, Tabs, Textarea, Toast, Toggle, Toggle Group
+Tooltip, Typography
+```
+
+### Iconos
+
+Todos los iconos vienen de Lucide React. No se usa otra librería de iconos.
+
+### Command Palette
+
+cmdk se instala para uso futuro. Estará disponible en el stack cuando se necesite.
+
+---
+
+## 184. Build & Distribution
+
+### Desktop
+
+```
+electron-builder (empaquetado para Windows, Linux, macOS)
+electron-updater (actualizaciones automáticas sin romper el sistema)
+```
+
+### Mobile
+
+```
+Fastlane (deploy a App Store y Google Play)
+```
+
+### Web
+
+```
+Vite build (archivos estáticos)
+```
+
+---
+
+## 185. Code Quality
+
+### Linting
+
+```
+OxLint (con custom plugins de Orca)
+    renderer-scrollbar-style
+    app-store-performance
+    quadratic-buffer-concat
+    mobile-pairing
+```
+
+### Formateo
+
+```
+oxfmt (más rápido que Prettier)
+```
+
+### Git Hooks
+
+```
+Husky (pre-commit hooks)
+lint-staged (ejecutar lint solo en archivos modificados)
+```
+
+### TypeScript
+
+```
+Strict mode activado
+Tres targets separados: Node, Web, CLI
+```
+
+---
+
+## 186. Monitoring & Analytics
+
+### Telemetry
+
+```
+PostHog (tracking de uso anónimo)
+```
+
+### Qué se trackea
+
+```
+- Funciones más usadas
+- Errores en producción
+- Rendimiento
+- Uso de plugins
+```
+
+### Qué NO se trackea
+
+```
+- Datos de clientes del usuario
+- Contenido de mensajes
+- API keys
+- Información sensible
+```
+
+### Privacidad
+
+```
+El usuario puede desactivar el telemetry
+Los datos se anonimizan
+Se cumple GDPR
+```
 
 ---
 
 END OF PROJECT ARCHITECTURE DOCUMENT
 
-Version 1.0
+Version 1.5
 
 ---
