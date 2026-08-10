@@ -1,0 +1,10 @@
+packages:
+  - "apps/*"
+  - "packages/*"
+  - "server"
+  - "relay"
+  - "plugins/*"
+allowBuilds:
+  electron: true
+  electron-winstaller: true
+  esbuild: true

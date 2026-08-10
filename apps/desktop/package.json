@@ -1,0 +1,27 @@
+{
+  "name": "@orca-blitz/desktop",
+  "version": "1.0.0",
+  "description": "orca-blitz Desktop Application",
+  "main": "./out/main/index.js",
+  "scripts": {
+    "dev": "electron-vite dev",
+    "build": "electron-vite build",
+    "preview": "electron-vite preview"
+  },
+  "dependencies": {
+    "@orca-blitz/ui": "workspace:*",
+    "clsx": "^2.1.1",
+    "lucide-react": "^0.525.0",
+    "tailwind-merge": "^3.6.0"
+  },
+  "devDependencies": {
+    "@electron-toolkit/preload": "^3.0.0",
+    "@electron-toolkit/utils": "^3.0.0",
+    "@tailwindcss/vite": "^4.1.11",
+    "@vitejs/plugin-react": "^4.3.4",
+    "electron": "^35.0.0",
+    "electron-builder": "^26.0.0",
+    "electron-vite": "^3.1.0",
+    "tailwindcss": "^4.1.11"
+  }
+}
