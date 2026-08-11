@@ -9,7 +9,7 @@ import { ShortcutsSettings } from './pages/shortcuts'
 import { StatisticsSettings } from './pages/statistics'
 import { BillingSettings } from './pages/billing'
 import { IntegrationsSettings } from './pages/integrations'
-import { AISettings } from './pages/ai'
+import { ProvidersSettings } from "./pages/providers";
 import { SecuritySettings } from './pages/security'
 
 interface SettingsPageProps {
@@ -26,7 +26,7 @@ const pages: Record<string, React.ComponentType> = {
   statistics: StatisticsSettings,
   billing: BillingSettings,
   integrations: IntegrationsSettings,
-  ai: AISettings,
+  ai: ProvidersSettings,
   security: SecuritySettings,
 }
 

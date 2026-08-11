@@ -1,4 +1,11 @@
+import { useState } from 'react'
+import { Switch } from '@orca-blitz/ui/components/ui/switch'
+
 export function NotificationsSettings() {
+  const [desktopNotifications, setDesktopNotifications] = useState(true)
+  const [sound, setSound] = useState(true)
+  const [emailDigest, setEmailDigest] = useState(false)
+
   return (
     <div className="space-y-6">
       <div>
@@ -13,7 +20,7 @@ export function NotificationsSettings() {
               <p className="text-sm font-medium">Desktop Notifications</p>
               <p className="text-xs text-muted-foreground">Show system notifications</p>
             </div>
-            <span className="text-sm text-muted-foreground">On</span>
+            <Switch checked={desktopNotifications} onCheckedChange={setDesktopNotifications} />
           </div>
         </div>
 
@@ -23,7 +30,7 @@ export function NotificationsSettings() {
               <p className="text-sm font-medium">Sound</p>
               <p className="text-xs text-muted-foreground">Play sound for notifications</p>
             </div>
-            <span className="text-sm text-muted-foreground">On</span>
+            <Switch checked={sound} onCheckedChange={setSound} />
           </div>
         </div>
 
@@ -33,7 +40,7 @@ export function NotificationsSettings() {
               <p className="text-sm font-medium">Email Digest</p>
               <p className="text-xs text-muted-foreground">Receive daily email summary</p>
             </div>
-            <span className="text-sm text-muted-foreground">Off</span>
+            <Switch checked={emailDigest} onCheckedChange={setEmailDigest} />
           </div>
         </div>
       </div>
