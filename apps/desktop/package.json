@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@base-ui/react": "^1.7.0",
+    "@icons-pack/react-simple-icons": "^13.13.0",
     "@orca-blitz/ui": "workspace:*",
     "clsx": "^2.1.1",
     "lucide-react": "^0.525.0",

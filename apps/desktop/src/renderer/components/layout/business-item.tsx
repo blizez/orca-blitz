@@ -20,6 +20,8 @@ interface BusinessItemProps {
 
 const businessFeatures = [
   { id: 'redes', label: 'Social Media' },
+  { id: 'content', label: 'Content' },
+  { id: 'campaigns', label: 'Campaigns' },
 ]
 
 export function BusinessItem({ business, isActive, expanded, onToggle, onSelect, onDelete }: BusinessItemProps) {
