@@ -138,6 +138,33 @@ const api = {
     enable: (id) => electron.ipcRenderer.invoke("plugins:enable", id),
     disable: (id) => electron.ipcRenderer.invoke("plugins:disable", id),
     list: () => electron.ipcRenderer.invoke("plugins:list")
+  },
+  browser: {
+    create: (id, url, partition, platformId) => electron.ipcRenderer.invoke("browser:create", id, url, partition, platformId),
+    show: (id, bounds) => electron.ipcRenderer.send("browser:show", id, bounds),
+    hide: (id) => electron.ipcRenderer.send("browser:hide", id),
+    position: (id, bounds) => electron.ipcRenderer.send("browser:position", id, bounds),
+    destroy: (id) => electron.ipcRenderer.send("browser:destroy", id),
+    css: (id, css) => electron.ipcRenderer.send("browser:css", id, css),
+    onDidLoad: (callback) => {
+      const handler = (_event, id) => callback(id);
+      electron.ipcRenderer.on("browser:did-load", handler);
+      return () => {
+        electron.ipcRenderer.removeListener("browser:did-load", handler);
+      };
+    },
+    onDidFail: (callback) => {
+      const handler = (_event, id, code, desc) => callback(id, code, desc);
+      electron.ipcRenderer.on("browser:did-fail", handler);
+      return () => {
+        electron.ipcRenderer.removeListener("browser:did-fail", handler);
+      };
+    },
+    goBack: (id) => electron.ipcRenderer.send("browser:goBack", id),
+    goForward: (id) => electron.ipcRenderer.send("browser:goForward", id),
+    reload: (id) => electron.ipcRenderer.send("browser:reload", id),
+    canGoBack: (id) => electron.ipcRenderer.invoke("browser:canGoBack", id),
+    canGoForward: (id) => electron.ipcRenderer.invoke("browser:canGoForward", id)
   }
 };
 if (process.contextIsolated) {

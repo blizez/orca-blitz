@@ -42,5 +42,15 @@ interface Window {
       disable: (id: string) => Promise<void>
       list: () => Promise<unknown[]>
     }
+    browser: {
+      create: (id: string, url: string, partition: string, platformId: string) => Promise<void>
+      show: (id: string, bounds: { x: number; y: number; width: number; height: number }) => void
+      hide: (id: string) => void
+      position: (id: string, bounds: { x: number; y: number; width: number; height: number }) => void
+      destroy: (id: string) => void
+      css: (id: string, css: string) => void
+      onDidLoad: (callback: (id: string) => void) => () => void
+      onDidFail: (callback: (id: string, code: number, desc: string) => void) => () => void
+    }
   }
 }

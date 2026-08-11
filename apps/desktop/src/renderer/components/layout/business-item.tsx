@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
-import { Building2, MoreHorizontal, Settings, Image, Trash2 } from 'lucide-react'
 import { cn } from '../../lib/utils'
+import { Store, MoreHorizontal, Settings, Image, Trash2, ChevronDown, ChevronRight } from 'lucide-react'
 
 interface Business {
   id: string
@@ -12,11 +12,17 @@ interface Business {
 interface BusinessItemProps {
   business: Business
   isActive: boolean
+  expanded: boolean
+  onToggle: (id: string) => void
   onSelect: (id: string) => void
   onDelete: (id: string) => void
 }
 
-export function BusinessItem({ business, isActive, onSelect, onDelete }: BusinessItemProps) {
+const businessFeatures = [
+  { id: 'redes', label: 'Social Media' },
+]
+
+export function BusinessItem({ business, isActive, expanded, onToggle, onSelect, onDelete }: BusinessItemProps) {
   const [showMenu, setShowMenu] = useState(false)
   const menuRef = useRef<HTMLDivElement>(null)
 
@@ -33,61 +39,92 @@ export function BusinessItem({ business, isActive, onSelect, onDelete }: Busines
   }, [showMenu])
 
   return (
-    <li
-      className="group relative"
-      ref={menuRef}
-      onMouseEnter={() => {}}
-    >
-      <div className="flex items-center">
-        <button
-          onClick={() => onSelect(business.id)}
+    <li className="group/item">
+      <div className="relative" ref={menuRef}>
+        <div
           className={cn(
-            'flex flex-1 items-center gap-2 rounded-md px-2 py-1.5 text-sm transition-colors',
+            'flex items-center gap-1 rounded-md px-2 py-1.5 text-sm transition-colors cursor-pointer',
             isActive
-              ? 'bg-sidebar-accent text-sidebar-accent-foreground'
-              : 'text-sidebar-foreground hover:bg-sidebar-accent/50'
+              ? 'bg-sidebar-accent text-sidebar-accent-foreground font-medium'
+              : 'text-sidebar-foreground/80 hover:bg-sidebar-accent/50'
           )}
+          onClick={() => {
+            onToggle(business.id)
+            onSelect(business.id)
+          }}
         >
-          <Building2 className="size-4 shrink-0" />
-          <span className="truncate">{business.name}</span>
-        </button>
+          <Store className="size-4 shrink-0" />
+          <span className="flex-1 truncate">{business.name}</span>
 
-        <button
-          onClick={() => setShowMenu(!showMenu)}
-          className="flex size-5 shrink-0 items-center justify-center rounded-md text-sidebar-foreground/0 group-hover:text-sidebar-foreground/60 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground transition-all"
-        >
-          <MoreHorizontal className="size-3.5" />
-        </button>
-      </div>
-
-      {showMenu && (
-        <div className="absolute right-0 top-full z-50 mt-0.5 w-[160px] rounded-lg border border-border bg-popover p-1 text-popover-foreground shadow-md">
           <button
-            onClick={() => setShowMenu(false)}
-            className="flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-sm hover:bg-accent hover:text-accent-foreground transition-colors"
-          >
-            <Settings className="size-3.5" />
-            Business Settings
-          </button>
-          <button
-            onClick={() => setShowMenu(false)}
-            className="flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-sm hover:bg-accent hover:text-accent-foreground transition-colors"
-          >
-            <Image className="size-3.5" />
-            Change Icon
-          </button>
-          <div className="my-1 h-px bg-border" />
-          <button
-            onClick={() => {
-              onDelete(business.id)
-              setShowMenu(false)
+            onClick={(e) => {
+              e.stopPropagation()
+              onToggle(business.id)
             }}
-            className="flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-sm text-destructive hover:bg-destructive/10 transition-colors"
+            className="flex size-5 shrink-0 items-center justify-center rounded-md opacity-0 group-hover/item:opacity-100 text-sidebar-foreground/40 hover:text-sidebar-foreground/60 hover:bg-sidebar-border transition-all"
           >
-            <Trash2 className="size-3.5" />
-            Delete Business
+            {expanded ? (
+              <ChevronDown className="size-3" />
+            ) : (
+              <ChevronRight className="size-3" />
+            )}
+          </button>
+
+          <button
+            onClick={(e) => {
+              e.stopPropagation()
+              setShowMenu(!showMenu)
+            }}
+            className="flex size-5 shrink-0 items-center justify-center rounded-md opacity-0 group-hover/item:opacity-100 text-sidebar-foreground/40 hover:text-sidebar-foreground/60 hover:bg-sidebar-border transition-all"
+          >
+            <MoreHorizontal className="size-3.5" />
           </button>
         </div>
+
+        {showMenu && (
+          <div className="absolute right-0 top-full z-50 mt-1 w-[180px] rounded-lg border border-border bg-popover p-1 text-popover-foreground shadow-md">
+            <button
+              onClick={() => setShowMenu(false)}
+              className="flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-sm hover:bg-accent hover:text-accent-foreground transition-colors"
+            >
+              <Settings className="size-3.5" />
+              Business Settings
+            </button>
+            <button
+              onClick={() => setShowMenu(false)}
+              className="flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-sm hover:bg-accent hover:text-accent-foreground transition-colors"
+            >
+              <Image className="size-3.5" />
+              Change Icon
+            </button>
+            <div className="my-1 h-px bg-border" />
+            <button
+              onClick={() => {
+                onDelete(business.id)
+                setShowMenu(false)
+              }}
+              className="flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-sm text-destructive hover:bg-destructive/10 transition-colors"
+            >
+              <Trash2 className="size-3.5" />
+              Delete Business
+            </button>
+          </div>
+        )}
+      </div>
+
+      {expanded && (
+        <ul className="ml-6 mt-0.5 space-y-0.5">
+          {businessFeatures.map((feature) => (
+            <li key={feature.id}>
+              <button
+                onClick={() => onSelect(`${business.id}:${feature.id}`)}
+                className="flex w-full items-center rounded-md px-2 py-1 text-xs text-sidebar-foreground/60 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground transition-colors"
+              >
+                {feature.label}
+              </button>
+            </li>
+          ))}
+        </ul>
       )}
     </li>
   )

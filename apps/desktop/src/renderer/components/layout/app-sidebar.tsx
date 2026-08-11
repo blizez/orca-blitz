@@ -1,14 +1,18 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import {
   Building2,
   Settings,
   Plus,
+  PanelLeftClose,
+  PanelLeftOpen,
 } from 'lucide-react'
 import { cn } from '../../lib/utils'
 import { HelpMenu } from './help-menu'
 import { Tooltip, TooltipTrigger, TooltipContent } from '@orca-blitz/ui/components/ui/tooltip'
 import { AddBusinessModal } from './add-business-modal'
+import { DeleteBusinessModal } from './delete-business-modal'
 import { BusinessItem } from './business-item'
+import { OrcaLogo } from '@orca-blitz/ui/components/ui/logo'
 
 interface Business {
   id: string
@@ -27,30 +31,73 @@ interface AppSidebarProps {
   activePage: string
   onNavigate: (page: string) => void
   collapsed: boolean
+  onToggleCollapse: () => void
 }
 
-export function AppSidebar({ activePage, onNavigate, collapsed }: AppSidebarProps) {
-  const [businesses, setBusinesses] = useState<Business[]>([])
+export function AppSidebar({ activePage, onNavigate, collapsed, onToggleCollapse }: AppSidebarProps) {
+  const [businesses, setBusinesses] = useState<Business[]>(() => {
+    const saved = localStorage.getItem('orca-businesses')
+    return saved ? JSON.parse(saved) : []
+  })
   const [showModal, setShowModal] = useState(false)
+  const [deleteTarget, setDeleteTarget] = useState<Business | null>(null)
+  const [expandedBiz, setExpandedBiz] = useState<string | null>(null)
+
+  useEffect(() => {
+    localStorage.setItem('orca-businesses', JSON.stringify(businesses))
+  }, [businesses])
 
   const handleAddBusiness = (data: Business) => {
     setBusinesses([...businesses, { ...data, id: Date.now().toString() }])
   }
 
   const handleDeleteBusiness = (id: string) => {
-    setBusinesses(businesses.filter((b) => b.id !== id))
-    if (activePage === `business-${id}`) {
+    const biz = businesses.find((b) => b.id === id)
+    if (biz) setDeleteTarget(biz)
+  }
+
+  const handleToggleBusiness = (id: string) => {
+    setExpandedBiz(expandedBiz === id ? null : id)
+  }
+
+  const confirmDelete = () => {
+    if (!deleteTarget) return
+    setBusinesses(businesses.filter((b) => b.id !== deleteTarget.id))
+    if (activePage === `business-${deleteTarget.id}`) {
       onNavigate('home')
     }
+    setDeleteTarget(null)
   }
 
   return (
     <aside
       className={cn(
-        'flex h-full flex-col border-r border-sidebar-border bg-sidebar text-sidebar-foreground',
+        'relative z-50 flex h-full flex-col border-r border-sidebar-border bg-sidebar text-sidebar-foreground',
         collapsed ? 'w-[52px]' : 'w-[220px]'
       )}
     >
+      <div
+        className="flex h-8 shrink-0 items-center gap-1 border-b border-sidebar-border px-2"
+        style={{ WebkitAppRegion: 'drag' } as React.CSSProperties}
+      >
+        <div
+          className="flex items-center gap-1"
+          style={{ WebkitAppRegion: 'no-drag' } as React.CSSProperties}
+        >
+          <OrcaLogo className="size-4 text-foreground" />
+          <button
+            onClick={onToggleCollapse}
+            className="flex size-6 items-center justify-center rounded-md text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
+          >
+            {collapsed ? (
+              <PanelLeftOpen className="size-3.5" />
+            ) : (
+              <PanelLeftClose className="size-3.5" />
+            )}
+          </button>
+        </div>
+      </div>
+
       <nav className={cn('flex-1 overflow-y-auto py-2', collapsed ? 'px-0' : 'px-1.5')}>
         <div className="mb-4">
           <div className={cn(
@@ -58,8 +105,7 @@ export function AppSidebar({ activePage, onNavigate, collapsed }: AppSidebarProp
             collapsed ? 'flex-col gap-1' : 'mb-1 px-2'
           )}>
             {!collapsed && (
-              <span className="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wider text-sidebar-foreground/60">
-                <Building2 className="size-3.5" />
+              <span className="text-[11px] font-semibold uppercase tracking-wider text-sidebar-foreground/60">
                 Businesses
               </span>
             )}
@@ -99,8 +145,10 @@ export function AppSidebar({ activePage, onNavigate, collapsed }: AppSidebarProp
                 <BusinessItem
                   key={biz.id}
                   business={biz}
-                  isActive={activePage === `business-${biz.id}`}
-                  onSelect={(id) => onNavigate(`business-${id}`)}
+                  isActive={activePage.startsWith(biz.id)}
+                  expanded={expandedBiz === biz.id}
+                  onToggle={handleToggleBusiness}
+                  onSelect={(id) => onNavigate(id)}
                   onDelete={handleDeleteBusiness}
                 />
               ))}
@@ -149,6 +197,12 @@ export function AppSidebar({ activePage, onNavigate, collapsed }: AppSidebarProp
       </div>
 
       <AddBusinessModal open={showModal} onClose={() => setShowModal(false)} onAdd={handleAddBusiness} />
+      <DeleteBusinessModal
+        open={deleteTarget !== null}
+        businessName={deleteTarget?.name ?? ''}
+        onClose={() => setDeleteTarget(null)}
+        onConfirm={confirmDelete}
+      />
     </aside>
   )
 }

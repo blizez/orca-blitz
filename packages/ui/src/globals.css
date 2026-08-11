@@ -3,6 +3,8 @@
 @import "shadcn/tailwind.css";
 @import "@fontsource-variable/geist";
 
+@source ".";
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
@@ -121,10 +123,30 @@
   * {
     @apply border-border outline-ring/50;
     }
-  body {
-    @apply bg-background text-foreground;
+  html, body {
+    @apply bg-background text-foreground overflow-hidden;
     }
   html {
     @apply font-sans;
     }
+}
+
+/* Thin custom scrollbar — unlayered for max specificity */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: oklch(0 0 0 / 20%) transparent;
+}
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background-color: oklch(0 0 0 / 15%);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background-color: oklch(0 0 0 / 30%);
 }

@@ -2,6 +2,8 @@ import { cn } from '../../../lib/utils'
 import { useState, useRef, useEffect } from 'react'
 import { useTheme } from '../../../lib/theme-context'
 import { Plus, X, Check } from 'lucide-react'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@orca-blitz/ui/components/ui/select'
+import { LanguageSelect } from './language-select'
 
 const themes = [
   { id: 'system' as const, label: 'System' },
@@ -26,6 +28,7 @@ export function AppearanceSettings() {
   const { theme, setTheme } = useTheme()
   const [showPalettes, setShowPalettes] = useState(false)
   const [selectedPalette, setSelectedPalette] = useState('default')
+  const [language, setLanguage] = useState('system')
   const menuRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -117,6 +120,23 @@ export function AppearanceSettings() {
             <p className="text-xs text-muted-foreground">Choose the highlight color for buttons and links</p>
           </div>
           <span className="text-sm text-muted-foreground">Default</span>
+        </div>
+
+        <div className="flex items-center justify-between rounded-lg border border-border p-4">
+          <div>
+            <p className="text-sm font-medium">Language</p>
+            <p className="text-xs text-muted-foreground">Select your preferred language</p>
+          </div>
+          <Select value={language} onValueChange={setLanguage}>
+            <SelectTrigger size="sm">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="system">System</SelectItem>
+              <SelectItem value="English">English</SelectItem>
+              <SelectItem value="Español">Español</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
 
         <div className="flex items-center justify-between rounded-lg border border-border p-4">

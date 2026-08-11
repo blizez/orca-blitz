@@ -42,14 +42,13 @@ export function HelpMenu({ collapsed }: HelpMenuProps) {
   const menuRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
+    if (!open) return
     function handleClickOutside(e: MouseEvent) {
       if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
         setOpen(false)
       }
     }
-    if (open) {
-      document.addEventListener('mousedown', handleClickOutside)
-    }
+    document.addEventListener('mousedown', handleClickOutside)
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [open])
 
@@ -63,7 +62,12 @@ export function HelpMenu({ collapsed }: HelpMenuProps) {
       </button>
 
       {open && (
-        <div className="absolute bottom-full mb-1 left-0 z-50 min-w-[200px] rounded-lg border border-border bg-popover p-1 text-popover-foreground shadow-md">
+        <div
+          className={cn(
+            'absolute bottom-full mb-1 z-[60] min-w-[200px] rounded-lg border border-border bg-popover p-1 text-popover-foreground shadow-md',
+            collapsed ? 'left-0' : 'right-0'
+          )}
+        >
           {menuGroups.map((group, gi) => (
             <div key={gi}>
               {gi > 0 && <div className="my-1 h-px bg-border" />}

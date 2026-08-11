@@ -109,8 +109,8 @@ export function SettingsSidebar({ activeTab, onTabChange, onBack }: SettingsSide
                     className={cn(
                       'flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-sm transition-colors',
                       activeTab === item.id
-                        ? 'bg-sidebar-accent text-sidebar-accent-foreground'
-                        : 'text-sidebar-foreground hover:bg-sidebar-accent/50'
+                        ? 'bg-sidebar-accent text-sidebar-accent-foreground font-semibold'
+                        : 'text-sidebar-foreground/60 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground'
                     )}
                   >
                     <item.icon className="size-4 shrink-0" />

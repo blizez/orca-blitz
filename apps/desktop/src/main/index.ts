@@ -1,6 +1,7 @@
 import { app, shell, BrowserWindow, Menu, ipcMain } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
+import { registerBrowserHandlers } from './ipc/browser-handlers'
 
 let mainWindow: BrowserWindow | null = null
 
@@ -17,7 +18,8 @@ function createWindow(): void {
       preload: join(__dirname, '../preload/index.js'),
       contextIsolation: true,
       nodeIntegration: false,
-      sandbox: false
+      sandbox: false,
+      webSecurity: false
     }
   })
 
@@ -36,6 +38,15 @@ function createWindow(): void {
   mainWindow.webContents.setWindowOpenHandler((details) => {
     shell.openExternal(details.url)
     return { action: 'deny' }
+  })
+
+  mainWindow.webContents.session.setPermissionRequestHandler((_, permission, callback) => {
+    const allowedPermissions = ['media', 'geolocation', 'notifications', 'clipboard-read', 'clipboard-sanitized-write']
+    if (allowedPermissions.includes(permission)) {
+      callback(true)
+    } else {
+      callback(false)
+    }
   })
 
   if (is.dev && process.env['ELECTRON_RENDERER_URL']) {
@@ -66,6 +77,8 @@ app.whenReady().then(() => {
   ipcMain.handle('window:isMaximized', () => mainWindow?.isMaximized() ?? false)
 
   createWindow()
+
+  if (mainWindow) registerBrowserHandlers(mainWindow)
 
   app.on('activate', function () {
     if (BrowserWindow.getAllWindows().length === 0) createWindow()
