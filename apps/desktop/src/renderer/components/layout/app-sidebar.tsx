@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import {
   Building2,
   Settings,
@@ -20,8 +20,14 @@ interface Business {
   type: string
   industry: string
   description: string
+  website: string
   products: string
   audience: string
+  competitors: string
+  usp: string
+  painPoints: string
+  monthlyRevenue: string
+  yearEstablished: string
   channels: string[]
   goals: string[]
   teamSize: string
@@ -32,23 +38,18 @@ interface AppSidebarProps {
   onNavigate: (page: string) => void
   collapsed: boolean
   onToggleCollapse: () => void
+  businesses: Business[]
+  onBusinessesChange: (businesses: Business[]) => void
+  onBusinessSettings: (business: Business) => void
 }
 
-export function AppSidebar({ activePage, onNavigate, collapsed, onToggleCollapse }: AppSidebarProps) {
-  const [businesses, setBusinesses] = useState<Business[]>(() => {
-    const saved = localStorage.getItem('orca-businesses')
-    return saved ? JSON.parse(saved) : []
-  })
+export function AppSidebar({ activePage, onNavigate, collapsed, onToggleCollapse, businesses, onBusinessesChange, onBusinessSettings }: AppSidebarProps) {
   const [showModal, setShowModal] = useState(false)
   const [deleteTarget, setDeleteTarget] = useState<Business | null>(null)
-  const [expandedBiz, setExpandedBiz] = useState<string | null>(null)
-
-  useEffect(() => {
-    localStorage.setItem('orca-businesses', JSON.stringify(businesses))
-  }, [businesses])
+  const [expandedBiz, setExpandedBiz] = useState<string[]>([])
 
   const handleAddBusiness = (data: Business) => {
-    setBusinesses([...businesses, { ...data, id: Date.now().toString() }])
+    onBusinessesChange([...businesses, { ...data, id: Date.now().toString() }])
   }
 
   const handleDeleteBusiness = (id: string) => {
@@ -57,12 +58,14 @@ export function AppSidebar({ activePage, onNavigate, collapsed, onToggleCollapse
   }
 
   const handleToggleBusiness = (id: string) => {
-    setExpandedBiz(expandedBiz === id ? null : id)
+    setExpandedBiz((prev) =>
+      prev.includes(id) ? prev.filter((i) => i !== id) : [...prev, id]
+    )
   }
 
   const confirmDelete = () => {
     if (!deleteTarget) return
-    setBusinesses(businesses.filter((b) => b.id !== deleteTarget.id))
+    onBusinessesChange(businesses.filter((b) => b.id !== deleteTarget.id))
     if (activePage === `business-${deleteTarget.id}`) {
       onNavigate('home')
     }
@@ -115,6 +118,7 @@ export function AppSidebar({ activePage, onNavigate, collapsed, onToggleCollapse
                   render={
                     <button
                       onClick={() => setShowModal(true)}
+                      data-add-business
                       className="flex size-7 items-center justify-center rounded-md text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground transition-colors"
                     >
                       <Plus className="size-4" />
@@ -126,6 +130,7 @@ export function AppSidebar({ activePage, onNavigate, collapsed, onToggleCollapse
             ) : (
               <button
                 onClick={() => setShowModal(true)}
+                data-add-business
                 className="flex size-5 items-center justify-center rounded-md text-sidebar-foreground/60 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground transition-colors"
               >
                 <Plus className="size-3.5" />
@@ -146,10 +151,12 @@ export function AppSidebar({ activePage, onNavigate, collapsed, onToggleCollapse
                   key={biz.id}
                   business={biz}
                   isActive={activePage.startsWith(biz.id)}
-                  expanded={expandedBiz === biz.id}
+                  expanded={expandedBiz.includes(biz.id)}
+                  activePage={activePage}
                   onToggle={handleToggleBusiness}
                   onSelect={(id) => onNavigate(id)}
                   onDelete={handleDeleteBusiness}
+                  onBusinessSettings={onBusinessSettings}
                 />
               ))}
             </ul>

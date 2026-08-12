@@ -1,7 +1,5 @@
 import { useState } from 'react'
 import {
-  User,
-  Building2,
   CreditCard,
   Puzzle,
   BrainCircuit,
@@ -12,18 +10,24 @@ import {
   Search,
   Keyboard,
   BarChart3,
+  Store,
 } from 'lucide-react'
 import { cn } from '../../lib/utils'
 
+interface Business {
+  id: string
+  name: string
+  type: string
+  industry: string
+  description: string
+  products: string
+  audience: string
+  channels: string[]
+  goals: string[]
+  teamSize: string
+}
+
 const settingsGroups = [
-  {
-    label: 'Account',
-    items: [
-      { id: 'general', label: 'General', icon: Palette },
-      { id: 'profile', label: 'Profile', icon: User },
-      { id: 'organization', label: 'Organization', icon: Building2 },
-    ],
-  },
   {
     label: 'Interface',
     items: [
@@ -36,7 +40,7 @@ const settingsGroups = [
   {
     label: 'Billing',
     items: [
-      { id: 'billing', label: 'Plans & Billing', icon: CreditCard },
+      { id: 'billing', label: 'Payment Methods', icon: CreditCard },
     ],
   },
   {
@@ -58,12 +62,29 @@ interface SettingsSidebarProps {
   activeTab: string
   onTabChange: (tab: string) => void
   onBack: () => void
+  businessId?: string | null
+  businesses?: Business[]
+  onBusinessSelect?: (business: Business) => void
 }
 
-export function SettingsSidebar({ activeTab, onTabChange, onBack }: SettingsSidebarProps) {
+export function SettingsSidebar({ activeTab, onTabChange, onBack, businessId, businesses = [], onBusinessSelect }: SettingsSidebarProps) {
   const [search, setSearch] = useState('')
 
-  const filtered = settingsGroups
+  const businessGroup = businesses.length > 0
+    ? [{
+        label: 'Businesses',
+        items: businesses.map((biz) => ({
+          id: businessId === biz.id ? 'business' : `biz-${biz.id}`,
+          label: biz.name,
+          icon: Store,
+          business: biz,
+        })),
+      }]
+    : []
+
+  const allGroups = [...settingsGroups, ...businessGroup]
+
+  const filtered = allGroups
     .map((group) => ({
       ...group,
       items: group.items.filter((item) =>
@@ -79,7 +100,7 @@ export function SettingsSidebar({ activeTab, onTabChange, onBack }: SettingsSide
         className="flex items-center gap-2 border-b border-sidebar-border px-3 py-2 hover:bg-sidebar-accent/50 transition-colors"
       >
         <ArrowLeft className="size-4 text-muted-foreground" />
-        <span className="text-sm font-medium">Settings</span>
+        <span className="text-sm font-medium">Back to app</span>
       </button>
 
       <div className="px-3 py-2">
@@ -105,7 +126,13 @@ export function SettingsSidebar({ activeTab, onTabChange, onBack }: SettingsSide
               {group.items.map((item) => (
                 <li key={item.id}>
                   <button
-                    onClick={() => onTabChange(item.id)}
+                    onClick={() => {
+                      if ('business' in item && item.business && onBusinessSelect) {
+                        onBusinessSelect(item.business)
+                      } else {
+                        onTabChange(item.id)
+                      }
+                    }}
                     className={cn(
                       'flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-sm transition-colors',
                       activeTab === item.id

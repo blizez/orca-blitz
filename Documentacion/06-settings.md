@@ -2,28 +2,11 @@
 
 Para ir a los ajustes, haz click en **Settings** en la parte inferior de la barra lateral.
 
+Cuando entras a los ajustes, ves el logo de orca en la barra superior y un boton **Back to app** para volver a la pantalla principal.
+
 ## Buscar ajustes
 
 En la parte superior hay un cuadro de busqueda. Escribe lo que buscas y se filtraran los ajustes.
-
----
-
-## Account (Cuenta)
-
-### General
-- **Language** — Idioma de la app
-- **Theme** — Como se ve la app (claro/oscuro)
-- **Auto-start** — Abrir la app al encender la computadora
-
-### Profile (Perfil)
-- **Name** — Tu nombre
-- **Email** — Tu correo electronico
-- **Password** — Tu contrasena
-
-### Organization (Organizacion)
-- **Organization Name** — Nombre de tu empresa
-- **Workspace** — Tu espacio de trabajo
-- **Members** — Cuantas personas usan la app
 
 ---
 
@@ -48,14 +31,21 @@ Haz click en el boton `+` para elegir colores diferentes para la app.
 
 ### Notifications (Notificaciones)
 - **Desktop Notifications** — Avisos en tu computadora. Activalo o desactivalo con el interruptor.
-- **Sound** — Sonido cuando llega un aviso. Tambien tiene su interruptor.
+- **Sound** — Sonidos de interaccion. Tiene su interruptor para activar o desactivar.
+- **Volume** — Controla el volumen de los sonidos con una barra deslizante. Aparece cuando el sonido esta activado.
+
+Los sonidos se reproducen cuando:
+- Cambias un interruptor
+- Creas un negocio (sonido de exito)
+- Eliminas un negocio (sonido de error)
+- Cierras una ventana emergente (sonido suave)
+
 - **Email Digest** — Resumen por correo electronico. Desactivado por defecto.
 
 ### Shortcuts (Atajos)
 Muestra los atajos de teclado:
-- `Ctrl+N` — Nuevo
-- `Ctrl+S` — Guardar
-- `Ctrl+/` — Buscar
+- `Ctrl+N` — Crear nuevo negocio
+- `Ctrl+I` — Importar negocio
 - `Ctrl+B` — Abrir/cerrar barra lateral
 - `Ctrl+,` — Abrir ajustes
 - `Ctrl+Q` — Cerrar app
@@ -67,10 +57,19 @@ Muestra cuantas veces has usado la app este mes.
 
 ## Billing (Facturacion)
 
-### Plans & Billing (Planes)
-- **Current Plan** — Tu plan actual
-- **Payment Method** — Como pagas
-- **Usage** — Cuanto has usado
+### Payment Methods (Metodos de pago)
+
+Aqui gestionas como cobras. Puedes:
+
+- Ver los metodos por defecto (PayPal y Binance Pay)
+- Agregar metodos personalizados (Yape, Stripe, tu banco, etc.)
+- Subir codigos QR para cada metodo
+- Editar nombre y numero de cuenta
+- Eliminar metodos personalizados
+
+Cada metodo se muestra como un acordeon que se expande con click.
+
+Para mas detalles, ve a la seccion "Metodos de pago" en [Negocios](05-negocios.md).
 
 ---
 

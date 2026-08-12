@@ -46,13 +46,18 @@ Scaffolding:   ~92% (directorios vacios definidos en AGENTS.md)
 ### Lo que funciona
 
 - Electron desktop app con titlebar custom
-- Sidebar con CRUD de negocios (localStorage)
-- Settings con 11 tabs: AI Providers, Integrations, Notifications funcionales
+- Sidebar con CRUD de negocios (localStorage) + multiple expanded businesses
+- Business settings con edicion inline (nombre, descripcion, tipo, industria, etc.)
+- Settings con 11 tabs: AI Providers, Integrations, Notifications, Payment Methods funcionales
 - Theme switching (Light/Dark/System)
-- Design system con 62 componentes UI + 4 SVG brand icons
+- Sound system (cuelume) con toggle enabled/volume, persistido a localStorage
+- Design system con 62 componentes UI + 5 SVG brand icons (incluyendo Google)
 - AI Providers settings con 5 proveedores (OpenAI, Anthropic, Google, DeepSeek, Ollama)
 - Integrations con iconos de marca (WhatsApp, Instagram, Gmail, Slack)
 - Notifications con Switch interactivos
+- Payment Methods con accordion, QR upload, default methods (PayPal, Binance)
+- Add Business modal con 5 pasos (incluyendo Market: competitors, USP, revenue)
+- Home page empty state con Orca logo y action buttons
 
 ### Lo que es scaffolding vacio
 

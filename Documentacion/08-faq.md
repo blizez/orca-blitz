@@ -21,11 +21,46 @@ Se guardan en tu computadora. Si cierras la app, siguen ahi.
 **Puedo tener muchos negocios?**
 Si, no hay limite.
 
+**Como creo un negocio?**
+Haz click en **Add Business** en la pantalla de inicio o presiona `Ctrl+N`. Sigue los 5 pasos del formulario: informacion basica, productos, mercado, canales y metas.
+
+**Puedo editar la informacion de mi negocio?**
+Si. Haz click en los tres puntos `...` junto al negocio y selecciona **Business Settings**. Puedes editar nombre, descripcion, productos, competidores, ingresos y mas.
+
 **Puedo eliminar un negocio?**
 Si. Haz click en los tres puntos junto al negocio y selecciona "Delete Business".
 
 **Si elimino un negocio, se pierden los datos?**
 Si, esta accion no se puede deshacer.
+
+---
+
+## Pagos
+
+**Donde configuro mis metodos de pago?**
+Ve a **Settings → Payment Methods**. Ahi puedes agregar, editar o eliminar metodos de pago.
+
+**Que metodos de pago vienen incluidos?**
+PayPal y Binance Pay. No se pueden eliminar.
+
+**Puedo agregar mi propio metodo de pago?**
+Si. Haz click en **Add Method**, escribe el nombre (ejemplo: Yape, Stripe) y tu numero de cuenta. Tambien puedes subir un codigo QR.
+
+---
+
+## Sonidos
+
+**La app hace sonidos?**
+Si. Puedes activar o desactivar los sonidos en **Settings → Notifications**.
+
+**Que sonidos hay?**
+- Sonido al cambiar un interruptor
+- Sonido de exito al crear un negocio
+- Sonido de error al eliminar un negocio
+- Sonido suave al cerrar una ventana
+
+**Puedo cambiar el volumen?**
+Si. Ve a **Settings → Notifications** y usa la barra de volumen que aparece debajo del interruptor de sonido.
 
 ---
 

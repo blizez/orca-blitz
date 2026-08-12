@@ -38,7 +38,7 @@ export function RightSidebar({ collapsed, onToggleCollapse }: RightSidebarProps)
   return (
     <aside
       className={cn(
-        'relative z-50 flex h-full flex-col bg-sidebar text-sidebar-foreground',
+        'relative z-40 flex h-full flex-col bg-sidebar text-sidebar-foreground',
         collapsed ? 'w-[52px]' : 'w-[220px]'
       )}
     >
@@ -51,7 +51,7 @@ export function RightSidebar({ collapsed, onToggleCollapse }: RightSidebarProps)
           style={{ WebkitAppRegion: 'no-drag' } as React.CSSProperties}
         >
           <button
-            onClick={onToggleCollapse}
+            onClick={() => onToggleCollapse()}
             className="flex size-7 items-center justify-center rounded-md text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
           >
             {collapsed ? (
@@ -67,7 +67,7 @@ export function RightSidebar({ collapsed, onToggleCollapse }: RightSidebarProps)
             <Minus className="size-3.5" />
           </button>
           <button
-            onClick={handleMaximize}
+            onClick={() => handleMaximize()}
             className="flex size-7 items-center justify-center rounded-md text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
           >
             {isMaximized ? (

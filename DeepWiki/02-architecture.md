@@ -187,6 +187,100 @@ const [activePage, setActivePage] = useState('home')
 
 ---
 
+## Sound System
+
+Nuevo sistema de sonidos via `cuelume` (dependencia `^0.2.2`). Provider en `main.tsx` envuelve toda la app.
+
+```typescript
+// apps/desktop/src/renderer/lib/sound-context.tsx
+interface SoundContextValue {
+  enabled: boolean
+  volume: number
+  toggleEnabled: () => void
+  setVolume: (v: number) => void
+  play: (name?: SoundName, opts?: { volume?: number }) => void
+}
+
+const STORAGE_KEY = 'orca-sound-enabled'  // localStorage
+const VOLUME_KEY = 'orca-sound-volume'    // localStorage
+```
+
+**Inicializacion:**
+1. `bind()` se llama una vez en mount (`useEffect`)
+2. Estado leido de localStorage (default: `enabled=true`, `volume=0.7`)
+3. Cambios de estado sincronizados con cuelume via `setEnabled()` / `cuelumeSetVolume()`
+4. Persistencia automatica a localStorage en cada cambio
+
+**Uso:**
+```typescript
+import { useSound } from '../../lib/sound-context'
+
+const { play } = useSound()
+play('success')   // Ejecuta sonido
+play()             // Default sound
+```
+
+**Provided en:**
+```typescript
+// apps/desktop/src/renderer/main.tsx
+<ThemeProvider>
+  <SoundProvider>
+    <TooltipProvider>
+      <App />
+    </TooltipProvider>
+  </SoundProvider>
+</ThemeProvider>
+```
+
+---
+
+## Business Settings State
+
+El state de negocios se centraliza en `App.tsx` y se pasa via props (no Context):
+
+```typescript
+// apps/desktop/src/renderer/App.tsx
+const [businesses, setBusinesses] = useState<Business[]>(() => {
+  const saved = localStorage.getItem('orca-businesses')
+  return saved ? JSON.parse(saved) : []
+})
+
+// Callbacks tipados
+const handleUpdateBusiness = useCallback((id: string, data: Partial<Business>) => {
+  setBusinesses((prev) => prev.map((b) => b.id === id ? { ...b, ...data } : b))
+}, [])
+
+const handleDeleteBusiness = useCallback((id: string) => {
+  setBusinesses((prev) => prev.filter((b) => b.id !== id))
+  setBusinessSettingsId(null)
+  setActivePage('home')
+}, [])
+```
+
+El `BusinessSettings` recibe `business` + `onUpdate` + `onDelete` como props. Cada campo se actualiza inline y persiste a localStorage via el `useEffect` en App.
+
+---
+
+## Routing
+
+Sin react-router. Routing manual:
+
+```typescript
+// apps/desktop/src/renderer/App.tsx
+const [activePage, setActivePage] = useState('home')
+const [businessSettingsId, setBusinessSettingsId] = useState<string | null>(null)
+
+// Pages:
+// 'home'                    → <HomePage />
+// 'settings'                → <SettingsPage businessId={...} />
+// 'business-{id}'           → <BusinessPage />
+// '{bizId}:{feature}'       → <BusinessPage page={activePage} />
+```
+
+Cuando `businessSettingsId` esta definido, `SettingsPage` renderiza `BusinessSettings` en lugar de la pagina de settings generica.
+
+---
+
 ## Tema
 
 ```typescript

@@ -13,6 +13,7 @@
     "@icons-pack/react-simple-icons": "^13.13.0",
     "@orca-blitz/ui": "workspace:*",
     "clsx": "^2.1.1",
+    "cuelume": "^0.2.2",
     "lucide-react": "^0.525.0",
     "react-icons": "^5.7.0",
     "tailwind-merge": "^3.6.0"

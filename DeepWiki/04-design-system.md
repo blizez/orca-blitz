@@ -177,3 +177,79 @@ function Component({ className, ...props }) {
 - `data-slot` para CSS targeting
 - `cn()` para class merging
 - Tokens semanticos (nunca hex hardcodeado)
+
+---
+
+## Payment Methods — Accordion Pattern
+
+`billing.tsx` usa `Collapsible` (Base UI) en lugar de `Accordion` para expandir/metodos de pago:
+
+```typescript
+// apps/desktop/src/renderer/components/settings/pages/billing.tsx
+<Collapsible open={expandedId === method.id} onOpenChange={(o) => setExpandedId(o ? method.id : null)}>
+  <div className="rounded-lg border border-border bg-muted/30">
+    <div className="flex items-center justify-between p-4">
+      {/* Header: icono + nombre + value */}
+      <CollapsibleTrigger render={<Button variant="ghost" size="icon-xs" />}>
+        <ChevronRight className={cn("size-4 transition-transform", expandedId === method.id && "rotate-90")} />
+      </CollapsibleTrigger>
+    </div>
+    <CollapsibleContent>
+      {/* Contenido expandible: nombre, cuenta, QR upload */}
+    </CollapsibleContent>
+  </div>
+</Collapsible>
+```
+
+**Patron:**
+- Solo un metodo expandido a la vez (`expandedId: string | null`)
+- Metodos default (PayPal, Binance) no se pueden eliminar
+- QR upload: `<input type="file" accept="image/*">` oculto + `<label>` estilizado
+- Delete con confirmation dialog (requiere escribir el nombre exacto)
+
+---
+
+## Business Settings — Inline Edit Pattern
+
+`business-settings.tsx` implementa edicion inline para nombre y descripcion:
+
+```typescript
+// Campo con edit/save/cancel
+{editingName ? (
+  <div className="flex items-center gap-1.5">
+    <Input value={nameDraft} onChange={(e) => setNameDraft(e.target.value)} autoFocus
+      onKeyDown={(e) => {
+        if (e.key === 'Enter') saveName()
+        if (e.key === 'Escape') { setEditingName(false); setNameDraft(data.name) }
+      }}
+    />
+    <Button variant="ghost" size="icon-xs" onClick={saveName}><Check /></Button>
+    <Button variant="ghost" size="icon-xs" onClick={cancel}><X /></Button>
+  </div>
+) : (
+  <h3>{data.name}</h3>
+  <Button variant="ghost" size="icon-xs" onClick={() => setEditingName(true)}><Pencil /></Button>
+)}
+```
+
+**Componentes shadcn usados:**
+- `Field`, `FieldLabel`, `FieldContent` — layout de formulario
+- `Input`, `Textarea` — campos editables
+- `Select`, `SelectTrigger`, `SelectValue`, `SelectContent`, `SelectItem` — dropdowns
+- `Badge` — canales y goals (read-only)
+- `Button` — acciones
+
+**Delete flow:** Click Trash2 → `DeleteBusinessModal` (requiere escribir nombre para confirmar)
+
+---
+
+## Modals — backdrop-blur-sm
+
+Todos los modales modales ahora usan `backdrop-blur-sm` en el overlay:
+
+```typescript
+// apps/desktop/src/renderer/components/layout/add-business-modal.tsx
+<div className="fixed inset-0 bg-black/50 backdrop-blur-sm" onClick={onClose} />
+```
+
+Patron consistente: overlay semi-transparente + blur backdrop + dialog centrado.

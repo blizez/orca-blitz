@@ -214,3 +214,212 @@ const [emailDigest, setEmailDigest] = useState(false)
 // Cada opcion usa:
 <Switch checked={desktopNotifications} onCheckedChange={setDesktopNotifications} />
 ```
+
+---
+
+## Sound Context
+
+```typescript
+// apps/desktop/src/renderer/lib/sound-context.tsx
+export function SoundProvider({ children })   // Provider wrapper
+export function useSound()                     // Hook: { enabled, volume, toggleEnabled, setVolume, play }
+```
+
+- Dependencia: `cuelume ^0.2.2`
+- `play(name?: SoundName)` — ejecuta sonido si `enabled`
+- Persiste `enabled` y `volume` a localStorage
+- Default: `enabled=true`, `volume=0.7`
+
+---
+
+## Business Settings (346 lineas)
+
+Pagina de configuracion individual de un negocio con edicion inline.
+
+```typescript
+// apps/desktop/src/renderer/components/settings/pages/business-settings.tsx
+interface BusinessSettingsProps {
+  business: BusinessData
+  onUpdate: (id: string, data: Partial<BusinessData>) => void
+  onDelete: (id: string) => void
+}
+```
+
+**Secciones:**
+- Header: nombre editable (inline), Trash2 → DeleteBusinessModal
+- "About this business": Type (Select), Industry (Input), Team Size (Select), Description (editable Textarea)
+- Market: Products, Audience, Website, Competitors (Textarea), USP (Textarea), Pain Points (Textarea)
+- Financial: Monthly Revenue (Select), Year Established (Input)
+- Active Channels (Badge read-only), Goals (Badge read-only)
+
+**BusinessData interface (extendida):**
+```typescript
+interface BusinessData {
+  id: string; name: string; type: string; industry: string; description: string
+  website: string; products: string; audience: string
+  competitors: string; usp: string; painPoints: string
+  monthlyRevenue: string; yearEstablished: string
+  channels: string[]; goals: string[]; teamSize: string
+}
+```
+
+---
+
+## Billing Settings — Accordion (247 lineas)
+
+Reescritura completa. Antes: tarjetas estaticas. Ahora: accordion expandible con CRUD.
+
+```typescript
+// apps/desktop/src/renderer/components/settings/pages/billing.tsx
+function BillingSettings()
+// methods: PaymentMethod[] — estado local
+// expandedId: string | null — solo uno expandido a la vez
+// defaultMethods: PayPal, Binance Pay (no se pueden eliminar)
+```
+
+**Features:**
+- `Collapsible` de Base UI para expandir cada metodo
+- QR code upload via `<input type="file" accept="image/*">` oculto
+- Add method dialog (Name + Account/Number)
+- Delete confirmation dialog (requiere escribir nombre exacto)
+- Save por metodo (no global)
+
+---
+
+## Add Business Modal — 5 Steps (263 lineas)
+
+Wizard de 5 pasos (antes 4). Nuevo paso: **Market**.
+
+```typescript
+// apps/desktop/src/renderer/components/layout/add-business-modal.tsx
+const steps = [
+  { id: 1, title: 'Basics',              description: 'Tell us about your business' },
+  { id: 2, title: 'Products & Audience', description: 'What do you sell and to whom?' },
+  { id: 3, title: 'Market',              description: 'Competition and positioning' },  // NUEVO
+  { id: 4, title: 'Channels',            description: 'Where do you connect?' },
+  { id: 5, title: 'Goals',               description: 'What do you want to achieve?' },
+]
+```
+
+**Step 3 — Market (nuevo):**
+- Main Competitors (Textarea)
+- What makes you different? USP (Textarea)
+- Current Pain Points (Textarea)
+- Monthly Revenue (Select: "Under $10k" ... "Over $1M", "Pre-revenue")
+- Year Established (Input)
+
+**Usa `useSound()`** para feedback sonoro en submit (`play('success')`) y close (`play('droplet')`).
+
+---
+
+## BusinessItem — Sidebar (156 lineas)
+
+Componente de negocio en la sidebar con sub-features expandibles.
+
+```typescript
+// apps/desktop/src/renderer/components/layout/business-item.tsx
+interface BusinessItemProps {
+  business: Business
+  isActive: boolean
+  expanded: boolean
+  activePage: string
+  onToggle: (id: string) => void
+  onSelect: (id: string) => void
+  onDelete: (id: string) => void
+  onBusinessSettings?: (business: Business) => void
+}
+```
+
+**Features:**
+- `expanded` controlado desde `AppSidebar` via `expandedBiz: string[]`
+- CSS transitions: `max-h-0 opacity-0` → `max-h-40 opacity-100` con `duration-200`
+- Border highlight cuando expandido: `border border-sidebar-border` vs `border-transparent`
+- Sub-features: Social Media, Content, Campaigns (activos via `activePage === '{bizId}:{feature}'`)
+- Context menu: Business Settings, Change Icon, Delete Business
+
+---
+
+## AppSidebar — Multiple Expanded (215 lineas)
+
+```typescript
+// apps/desktop/src/renderer/components/layout/app-sidebar.tsx
+const [expandedBiz, setExpandedBiz] = useState<string[]>([])
+
+const handleToggleBusiness = (id: string) => {
+  setExpandedBiz((prev) =>
+    prev.includes(id) ? prev.filter((i) => i !== id) : [...prev, id]
+  )
+}
+```
+
+**Props actualizadas:**
+```typescript
+interface AppSidebarProps {
+  // ...existentes
+  businesses: Business[]           // NUEVO
+  onBusinessesChange: (businesses: Business[]) => void  // NUEVO
+  onBusinessSettings: (business: Business) => void       // NUEVO
+}
+```
+
+---
+
+## HomePage — Empty State (50 lineas)
+
+Reescritura. Antes: placeholder generico. Ahora: empty state con logo y CTAs.
+
+```typescript
+// apps/desktop/src/renderer/components/home/home-page.tsx
+<div className="flex h-full items-center justify-center p-6">
+  <OrcaLogo className="size-10 text-foreground" />
+  <h1>orca-blitz</h1>
+  <p>Select a business from the sidebar to get started.</p>
+  <Button onClick={() => document.querySelector('[data-add-business]')?.click()}>
+    <Plus /> Add Business
+  </Button>
+  <Button variant="outline"><Upload /> Import Business</Button>
+  {/* Keyboard shortcuts: Ctrl+N, Ctrl+I */}
+</div>
+```
+
+---
+
+## Settings Page — Business Integration (89 lineas)
+
+```typescript
+// apps/desktop/src/renderer/components/settings/settings-page.tsx
+interface SettingsPageProps {
+  // ...existentes
+  businessId?: string | null        // NUEVO
+  business?: BusinessData | null    // NUEVO
+  businesses?: BusinessData[]       // NUEVO
+  onUpdateBusiness?: (id: string, data: Partial<BusinessData>) => void
+  onDeleteBusiness?: (id: string) => void
+  onSelectBusiness?: (business: BusinessData) => void
+}
+```
+
+Cuando `businessId` esta definido y `activeTab === 'business'`, renderiza `BusinessSettings` en vez del page generico.
+
+---
+
+## Settings Sidebar — Businesses List (159 lineas)
+
+```typescript
+// apps/desktop/src/renderer/components/settings/settings-sidebar.tsx
+const businessGroup = businesses.length > 0
+  ? [{
+      label: 'Businesses',
+      items: businesses.map((biz) => ({
+        id: businessId === biz.id ? 'business' : `biz-${biz.id}`,
+        label: biz.name,
+        icon: Store,
+        business: biz,
+      })),
+    }]
+  : []
+
+const allGroups = [...settingsGroups, ...businessGroup]
+```
+
+Los negocios aparecen como grupo separado en la sidebar de settings. Click en un negocio → `onBusinessSelect(biz)` → cambia a `activeTab: 'business'`.

@@ -5,17 +5,39 @@ La barra lateral es donde encuentras todo lo importante.
 ## Partes de la barra lateral
 
 ```
+ORCA [≡]
+──────────────
 BUSINESSES [+]
 ──────────────
 Nombre de tu negocio
+  · Social Media
+  · Content
+  · Campaigns
 Otro negocio mas
+  · Social Media
+  · Content
+  · Campaigns
 ──────────────
 [Settings] [?]
 ```
 
 ### Negocios
 
-Aqui ves la lista de todos tus negocios. Haz click en uno para verlo.
+Aqui ves la lista de todos tus negocios. Haz click en uno para expandirlo y ver sus sub-secciones.
+
+### Sub-secciones de cada negocio
+
+Cuando expandes un negocio, ves tres secciones:
+
+- **Social Media** — Gestion de redes sociales
+- **Content** — Contenido del negocio
+- **Campaigns** — Campanas de marketing
+
+La seccion activa se resalta con un color diferente.
+
+### Colapsar negocios
+
+Los negocios se expanden y colapsan con un borde que los destaca. Puedes tener varios negocios expandidos al mismo tiempo. Haz click en la flecha o en el nombre del negocio para expandirlo o colapsarlo.
 
 ### Boton +
 

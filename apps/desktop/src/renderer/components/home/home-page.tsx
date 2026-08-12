@@ -1,47 +1,47 @@
-import { Users, Workflow, Zap, BarChart3 } from 'lucide-react'
-
-const stats = [
-  { label: 'Customers', value: '0', icon: Users, color: 'text-blue-500' },
-  { label: 'Workflows', value: '0', icon: Workflow, color: 'text-purple-500' },
-  { label: 'Automations', value: '0', icon: Zap, color: 'text-yellow-500' },
-  { label: 'Analytics', value: '0', icon: BarChart3, color: 'text-green-500' },
-]
+import { Store, Plus, Upload } from 'lucide-react'
+import { OrcaLogo } from '@orca-blitz/ui/components/ui/logo'
+import { Button } from '@orca-blitz/ui/components/ui/button'
 
 export function HomePage() {
   return (
-    <div className="p-6">
-      <div className="mx-auto max-w-4xl space-y-8">
-        <div>
-          <h1 className="text-2xl font-bold">Welcome to orca-blitz</h1>
-          <p className="text-muted-foreground">
-            Your enterprise automation platform. Get started by exploring the sidebar.
+    <div className="flex h-full items-center justify-center p-6">
+      <div className="flex flex-col items-center gap-6 text-center">
+        <div className="flex size-16 items-center justify-center rounded-2xl bg-muted">
+          <OrcaLogo className="size-10 text-foreground" />
+        </div>
+
+        <div className="space-y-2">
+          <h1 className="text-2xl font-bold">orca-blitz</h1>
+          <p className="text-sm text-muted-foreground max-w-md">
+            Select a business from the sidebar to get started.
           </p>
         </div>
 
-        <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
-          {stats.map((stat) => (
-            <div key={stat.label} className="rounded-xl border border-border bg-card p-4">
-              <div className="flex items-center justify-between">
-                <p className="text-sm text-muted-foreground">{stat.label}</p>
-                <stat.icon className={`size-4 ${stat.color}`} />
-              </div>
-              <p className="mt-2 text-2xl font-bold">{stat.value}</p>
-            </div>
-          ))}
+        <div className="flex gap-3">
+          <Button
+            onClick={() => document.querySelector<HTMLButtonElement>('[data-add-business]')?.click()}
+          >
+            <Plus className="size-4 mr-1.5" />
+            Add Business
+          </Button>
+          <Button variant="outline">
+            <Upload className="size-4 mr-1.5" />
+            Import Business
+          </Button>
         </div>
 
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-          <div className="rounded-xl border border-border bg-card p-6">
-            <h3 className="font-semibold">Quick Start</h3>
-            <p className="mt-1 text-sm text-muted-foreground">
-              Set up your first workflow and start automating your business processes.
-            </p>
+        <div className="mt-4 space-y-2 text-sm text-muted-foreground">
+          <div className="flex items-center justify-center gap-2">
+            <span className="rounded border border-border bg-muted px-1.5 py-0.5 text-xs">Ctrl</span>
+            <span>+</span>
+            <span className="rounded border border-border bg-muted px-1.5 py-0.5 text-xs">N</span>
+            <span className="ml-2">Create business</span>
           </div>
-          <div className="rounded-xl border border-border bg-card p-6">
-            <h3 className="font-semibold">Connect Integrations</h3>
-            <p className="mt-1 text-sm text-muted-foreground">
-              Link WhatsApp, email, and other channels to start receiving messages.
-            </p>
+          <div className="flex items-center justify-center gap-2">
+            <span className="rounded border border-border bg-muted px-1.5 py-0.5 text-xs">Ctrl</span>
+            <span>+</span>
+            <span className="rounded border border-border bg-muted px-1.5 py-0.5 text-xs">I</span>
+            <span className="ml-2">Import business</span>
           </div>
         </div>
       </div>
