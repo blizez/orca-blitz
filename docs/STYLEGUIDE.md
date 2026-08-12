@@ -381,6 +381,94 @@ Aplicar una de estas a containers de overflow; no escribir un cuarto estilo.
 
 ---
 
+## Interaction Sounds
+
+orca-blitz usa **cuelume** para sonidos de interacción — 14 sonidos sintetizados en tiempo real con Web Audio. Los sonidos dan feedback auditivo que hace la app se sienta profesional y responsiva.
+
+### Arquitectura
+
+El sistema vive en `apps/desktop/src/renderer/lib/sound-context.tsx`:
+
+```tsx
+import { useSound } from '../../lib/sound-context'
+
+function MiComponente() {
+  const { play } = useSound()
+  return <button onClick={() => play('success')}>Guardar</button>
+}
+```
+
+**Nunca** importar directamente de `cuelume` en componentes. Siempre usar `useSound()`.
+
+### Cómo funciona
+
+- `SoundProvider` envuelve la app en `main.tsx` y llama `bind()` de cuelume una vez al montar.
+- `useSound()` expone `{ play, enabled, volume, toggleEnabled, setVolume }`.
+- `play(name)` reproduce un sonido. Si `enabled` es `false`, es un no-op silencioso.
+- El usuario puede mutear sonidos desde **Settings → Notifications → Sound**.
+- El volumen se controla con un slider en el mismo panel.
+
+### Paleta de sonidos
+
+Usar sonidos **semánticamente**, no decorativamente:
+
+| Sonido | Carácter | Usar para |
+|--------|----------|-----------|
+| `chime` | Campana suave ascendente | Hover en botones de acción positiva, triggers |
+| `sparkle` | Twinkle rápido de 4 notas | Crear entidad, easter eggs, acentos juguetones |
+| `droplet` | Nota descendente | Dismiss, cerrar, cancelar, navegación hacia atrás |
+| `bloom` | swell cálido lento | Revelar, expandir, navegación hacia adelante |
+| `whisper` | swell sutil y silencioso | Hover en items de lista densa, elementos secundarios |
+| `tick` | Click instantáneo y crísp | Hover en navegación, menús, items de sidebar |
+| `press` | Golpe apagado y mutido | Pointer down (presionar botón) |
+| `release` | Tick más brillante y elástico | Pointer up (soltar botón) |
+| `toggle` | Click-clack mecánico | Switches, tabs, controles segmentados, expand/collapse |
+| `success` | Confirmación cálida de 3 notas | Acción completada (guardar, crear, copiar) |
+| `error` | Golpe suave descendente | Errores recuperables, acciones bloqueadas, eliminar |
+| `page` | Flick papeleo con tick de cristal | Paginación, galerías, cambiar de pestaña |
+| `loading` | Shimmer ascendente no resuelto | Trabajo iniciado por el usuario (clonar, instalar) |
+| `ready` | Tick de foco con bloom armónico | Contenido terminado de cargar |
+| `pulse` | Pulso electrónico | Navegación activa, items seleccionados |
+| `scan` | Barrido digital | Búsqueda, escaneo de menús |
+| `arrival` | Nota de llegada | Apertura de plataforma, cambio de contexto mayor |
+
+### Reglas de asignación
+
+Los sonidos deben ser **profesionales, no invasivos**. Menos es más.
+
+1. **Solo sonidos en outcomes y acciones deliberadas**, nunca en hover o micro-interacciones
+2. **Outcome positivo** → `success` (crear entidad, completar wizard)
+3. **Outcome negativo** → `error` (eliminar, acción destructiva)
+4. **Cerrar/dismiss modal** → `droplet`
+5. **Navegación entre vistas mayores** → `page` o `arrival`
+6. **Toggle de panel** → `toggle` (solo sidebar collapse/expand)
+7. **Nunca** sonidos en: hover de botones, items de menú, navegación de settings, botones de ventana, scroll
+
+### Cómo agregar sonido a un componente nuevo
+
+```tsx
+import { useSound } from '../../lib/sound-context' // ajustar ruta relativa
+
+export function MiComponente() {
+  const { play } = useSound()
+
+  return (
+    <button
+      onClick={() => play('success')}
+      onPointerEnter={() => play('tick')}
+    >
+      Acción
+    </button>
+  )
+}
+```
+
+### Cómo agregar un sonido nuevo a cuelume
+
+Si se necesita un sonido que no existe en la paleta, extender cuelume en `packages/` o esperar a que se agregue upstream. Nunca hardcodear un archivo de audio — cuelume sintetiza todo con Web Audio.
+
+---
+
 ## Cuando esta guía no responde
 
 Si tienes una pregunta de UI que este doc no responde:

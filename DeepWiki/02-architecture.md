@@ -135,6 +135,41 @@ useEffect(() => {
 
 ---
 
+## pathAliasPlugin (electron-vite)
+
+El `pathAliasPlugin` resuelve imports `@/` y `@orca-blitz/ui/` dentro del renderer. Tiene dos hooks:
+
+```typescript
+// apps/desktop/electron.vite.config.ts
+function pathAliasPlugin(): Plugin {
+  return {
+    name: 'path-alias',
+    resolveId(source, importer) {
+      // Resuelve @/subpath → renderer/src/subpath
+      // Resuelve @orca-blitz/ui/... → packages/ui/src/...
+      return resolve(base, subpath)
+    },
+    load(id) {
+      // Para archivos en packages/ui/src/:
+      // Lee el .tsx/.ts, busca imports `from "@/..."` y los reescribe
+      // a rutas absolutas resueltas dentro de ui/src/
+      let code = readFileSync(id, 'utf-8')
+      const regex = /from\s+["']@\/(.*?)["']/g
+      // ... reemplaza cada match con ruta absoluta
+      return { code, map: null }
+    }
+  }
+}
+```
+
+**Flujo:**
+1. `resolveId` intercepta `@/` y `@orca-blitz/ui/` durante resolución
+2. `load` reescribe imports internos de `packages/ui/` — cuando un archivo en `ui/src/` importa `@/lib/utils`, se reemplaza con la ruta absoluta real
+
+Esto permite que los componentes de `packages/ui/` usen `@/` sin depender del alias del renderer.
+
+---
+
 ## Routing
 
 Sin react-router. Routing manual:

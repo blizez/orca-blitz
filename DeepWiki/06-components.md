@@ -161,3 +161,56 @@ const canDelete = input === businessName
 
 <button disabled={!canDelete}>Delete</button>
 ```
+
+---
+
+## Settings Pages
+
+### Providers Settings (AI)
+
+Nuevo componente en `apps/desktop/src/renderer/components/settings/pages/providers.tsx`. Muestra tarjetas de proveedores AI con iconos de marca y dialog de configuracion.
+
+```typescript
+const providers = [
+  { id: 'openai',     name: 'OpenAI',      Icon: Openai,     IconDark: OpenaiDark,     placeholder: 'sk-...' },
+  { id: 'anthropic',  name: 'Anthropic',   Icon: AnthropicBlack, IconDark: AnthropicWhite, placeholder: 'sk-ant-...' },
+  { id: 'google',     name: 'Google AI',   Icon: Google,     IconDark: Google,         placeholder: 'AI...' },
+  { id: 'deepseek',   name: 'DeepSeek',    Icon: Deepseek,   IconDark: Deepseek,       placeholder: 'sk-...' },
+  { id: 'ollama',     name: 'Ollama',      Icon: OllamaLight, IconDark: OllamaDark,    placeholder: 'http://localhost:11434' },
+]
+```
+
+**Caracteristicas:**
+- Tarjetas con icono light/dark mode (dual theme support via `<span className="block dark:hidden">`)
+- Boton "Configure" abre `Dialog` con `Input` de password para API key
+- Registra en `settings-page.tsx` como `ai: ProvidersSettings` (reemplaza al anterior `AISettings`)
+
+### Integrations Settings (actualizado)
+
+Agrega iconos SVG de marca junto a cada integracion:
+
+```typescript
+import { WhatsApp, Instagram, Gmail, Slack } from '@orca-blitz/ui/components/ui/svgs'
+
+// Cada tarjeta ahora muestra el icono:
+<div className="flex items-center gap-3">
+  <Icon className="size-8" />
+  <div>
+    <p className="text-sm font-medium">{name}</p>
+    <p className="text-xs text-muted-foreground">Not connected</p>
+  </div>
+</div>
+```
+
+### Notifications Settings (actualizado)
+
+Reemplaza `<span>` estatico por `Switch` interactivo con estado local:
+
+```typescript
+const [desktopNotifications, setDesktopNotifications] = useState(true)
+const [sound, setSound] = useState(true)
+const [emailDigest, setEmailDigest] = useState(false)
+
+// Cada opcion usa:
+<Switch checked={desktopNotifications} onCheckedChange={setDesktopNotifications} />
+```

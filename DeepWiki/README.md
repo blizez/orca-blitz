@@ -1,4 +1,4 @@
-﻿Ultima actualizacion: 2026-08-10 15:12
+﻿Ultima actualizacion: 2026-08-11
 
 # DeepWiki â€” orca-blitz
 
@@ -47,9 +47,12 @@ Scaffolding:   ~92% (directorios vacios definidos en AGENTS.md)
 
 - Electron desktop app con titlebar custom
 - Sidebar con CRUD de negocios (localStorage)
-- Settings con 11 tabs (solo Appearance funcional)
+- Settings con 11 tabs: AI Providers, Integrations, Notifications funcionales
 - Theme switching (Light/Dark/System)
-- Design system con 62 componentes UI
+- Design system con 62 componentes UI + 4 SVG brand icons
+- AI Providers settings con 5 proveedores (OpenAI, Anthropic, Google, DeepSeek, Ollama)
+- Integrations con iconos de marca (WhatsApp, Instagram, Gmail, Slack)
+- Notifications con Switch interactivos
 
 ### Lo que es scaffolding vacio
 

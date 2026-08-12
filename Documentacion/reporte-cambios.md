@@ -1,24 +1,23 @@
 ﻿# Reporte de Cambios para Usuarios
-**Fecha:** 2026-08-10 17:00
-**Commits analizados:** 2
+**Fecha:** 2026-08-11
+**Commits analizados:** 3
 
 ## Commits Recientes
+- feat: Add AI providers settings with brand icons
 - 973d5c2 feat: bootstrap Electron desktop app with settings and home UI
 - e704b85 chore: add .gitignore and initial project setup
 
 
 ## Cambios para Usuarios
-- Cambios en interfaz
-- Cambios en pantalla principal
-- Cambios en la interfaz principal
-- Cambios en ajustes
+- Nueva pagina de Proveedores de IA en Ajustes — ahora puedes conectar OpenAI, Anthropic, Google AI, DeepSeek y Ollama
+- Iconos oficiales de marca en la pagina de Integraciones (WhatsApp, Instagram, Gmail, Slack)
+- Interruptores reales en Notificaciones (antes solo eran texto)
 
 
 ## Detalles
-- Nuevas funcionalidades: False
+- Nuevas funcionalidades: True
 - Cambios en interfaz: True
 - Cambios en ajustes: True
-- Cambios en sidebar: True
 - Nuevas paginas: True
 
 ## Accion Requerida

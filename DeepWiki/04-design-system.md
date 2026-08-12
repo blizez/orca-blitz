@@ -4,10 +4,60 @@
 
 ```
 packages/ui/src/
-├── components/ui/    ← 62 componentes
+├── components/ui/    ← 62 componentes + SVG icons
+│   └── svgs/         ← Brand icons (SVG React components)
 ├── globals.css       ← Tokens CSS
 ├── lib/utils.ts      ← cn()
 └── hooks/            ← useIsMobile
+```
+
+---
+
+## SVG Brand Icons
+
+Ubicados en `packages/ui/src/components/ui/svgs/`. Cada icono es un componente React funcional que acepta `SVGProps<SVGSVGElement>`:
+
+```typescript
+// packages/ui/src/components/ui/svgs/whatsapp.tsx
+import type { SVGProps } from "react";
+
+const WhatsApp = (props: SVGProps<SVGSVGElement>) => (
+  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" {...props}>
+    <path fill="#25D366" d="M17.472 14.382c..." />
+  </svg>
+);
+
+export { WhatsApp };
+```
+
+### Iconos disponibles
+
+| Icono | Archivo | Uso |
+|-------|---------|-----|
+| `WhatsApp` | `whatsapp.tsx` | Integracion mensajeria |
+| `Instagram` | `instagram.tsx` | Integracion redes sociales |
+| `Gmail` | `gmail.tsx` | Integracion correo |
+| `Slack` | `slack.tsx` | Integracion equipo |
+
+### Export centralizado
+
+```typescript
+// packages/ui/src/components/ui/svgs/index.ts
+export { Gmail } from './gmail'
+export { Instagram } from './instagram'
+export { Slack } from './slack'
+export { WhatsApp } from './whatsapp'
+// + iconos de proveedores AI existentes (OpenAI, Anthropic, Google, etc.)
+```
+
+### Uso en settings
+
+```typescript
+import { WhatsApp, Instagram, Gmail, Slack } from '@orca-blitz/ui/components/ui/svgs'
+
+const icons: Record<string, React.ComponentType<{ className?: string }>> = {
+  WhatsApp, Instagram, Gmail, Slack,
+}
 ```
 
 ---
