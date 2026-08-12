@@ -13,25 +13,7 @@ import { AddBusinessModal } from './add-business-modal'
 import { DeleteBusinessModal } from './delete-business-modal'
 import { BusinessItem } from './business-item'
 import { OrcaLogo } from '@orca-blitz/ui/components/ui/logo'
-
-interface Business {
-  id: string
-  name: string
-  type: string
-  industry: string
-  description: string
-  website: string
-  products: string
-  audience: string
-  competitors: string
-  usp: string
-  painPoints: string
-  monthlyRevenue: string
-  yearEstablished: string
-  channels: string[]
-  goals: string[]
-  teamSize: string
-}
+import type { Business } from '@orca-blitz/shared'
 
 interface AppSidebarProps {
   activePage: string
@@ -48,7 +30,7 @@ export function AppSidebar({ activePage, onNavigate, collapsed, onToggleCollapse
   const [deleteTarget, setDeleteTarget] = useState<Business | null>(null)
   const [expandedBiz, setExpandedBiz] = useState<string[]>([])
 
-  const handleAddBusiness = (data: Business) => {
+  const handleAddBusiness = (data: Omit<Business, 'id'>) => {
     onBusinessesChange([...businesses, { ...data, id: Date.now().toString() }])
   }
 

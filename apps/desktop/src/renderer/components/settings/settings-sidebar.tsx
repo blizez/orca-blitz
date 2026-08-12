@@ -13,19 +13,7 @@ import {
   Store,
 } from 'lucide-react'
 import { cn } from '../../lib/utils'
-
-interface Business {
-  id: string
-  name: string
-  type: string
-  industry: string
-  description: string
-  products: string
-  audience: string
-  channels: string[]
-  goals: string[]
-  teamSize: string
-}
+import type { Business } from '@orca-blitz/shared'
 
 const settingsGroups = [
   {
@@ -128,7 +116,7 @@ export function SettingsSidebar({ activeTab, onTabChange, onBack, businessId, bu
                   <button
                     onClick={() => {
                       if ('business' in item && item.business && onBusinessSelect) {
-                        onBusinessSelect(item.business)
+                        onBusinessSelect(item.business as Business)
                       } else {
                         onTabChange(item.id)
                       }

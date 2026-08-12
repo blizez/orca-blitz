@@ -42,6 +42,13 @@ interface Window {
       disable: (id: string) => Promise<void>
       list: () => Promise<unknown[]>
     }
+    businesses: {
+      list: () => Promise<unknown[]>
+      create: (data: unknown) => Promise<unknown>
+      update: (id: string, data: unknown) => Promise<unknown>
+      delete: (id: string) => Promise<void>
+      onChanged: (callback: (...args: unknown[]) => void) => () => void
+    }
     browser: {
       create: (id: string, url: string, partition: string, platformId: string) => Promise<void>
       show: (id: string, bounds: { x: number; y: number; width: number; height: number }) => void
@@ -51,6 +58,11 @@ interface Window {
       css: (id: string, css: string) => void
       onDidLoad: (callback: (id: string) => void) => () => void
       onDidFail: (callback: (id: string, code: number, desc: string) => void) => () => void
+      goBack: (id: string) => void
+      goForward: (id: string) => void
+      reload: (id: string) => void
+      canGoBack: (id: string) => Promise<boolean>
+      canGoForward: (id: string) => Promise<boolean>
     }
   }
 }

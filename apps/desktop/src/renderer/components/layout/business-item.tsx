@@ -1,25 +1,7 @@
 import { useState, useRef, useEffect } from 'react'
 import { cn } from '../../lib/utils'
 import { Store, MoreHorizontal, Settings, Image, Trash2, ChevronDown, ChevronRight } from 'lucide-react'
-
-interface Business {
-  id: string
-  name: string
-  type: string
-  industry: string
-  description: string
-  website: string
-  products: string
-  audience: string
-  competitors: string
-  usp: string
-  painPoints: string
-  monthlyRevenue: string
-  yearEstablished: string
-  channels: string[]
-  goals: string[]
-  teamSize: string
-}
+import type { Business } from '@orca-blitz/shared'
 
 interface BusinessItemProps {
   business: Business
@@ -66,7 +48,7 @@ export function BusinessItem({ business, isActive, expanded, activePage, onToggl
       >
         <div
           className="flex items-center gap-1 rounded-md px-2 py-1.5 text-sm transition-colors cursor-pointer text-sidebar-foreground/80 hover:bg-sidebar-accent/50"
-          onClick={() => onToggle(business.id)}
+          onClick={() => onSelect(business.id)}
         >
           <Store className="size-4 shrink-0" />
           <span className="flex-1 truncate">{business.name}</span>

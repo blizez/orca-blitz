@@ -5,29 +5,12 @@ import { useSound } from '../../lib/sound-context'
 import { Input } from '@orca-blitz/ui/components/ui/input'
 import { Textarea } from '@orca-blitz/ui/components/ui/textarea'
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@orca-blitz/ui/components/ui/select'
+import type { BusinessData } from '@orca-blitz/shared'
 
 interface AddBusinessModalProps {
   open: boolean
   onClose: () => void
   onAdd: (business: BusinessData) => void
-}
-
-export interface BusinessData {
-  name: string
-  type: string
-  industry: string
-  description: string
-  website: string
-  products: string
-  audience: string
-  competitors: string
-  usp: string
-  painPoints: string
-  monthlyRevenue: string
-  yearEstablished: string
-  channels: string[]
-  goals: string[]
-  teamSize: string
 }
 
 const steps = [

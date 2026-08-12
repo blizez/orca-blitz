@@ -9,34 +9,16 @@ import { IntegrationsSettings } from './pages/integrations'
 import { ProvidersSettings } from './pages/providers'
 import { SecuritySettings } from './pages/security'
 import { BusinessSettings } from './pages/business-settings'
-
-interface BusinessData {
-  id: string
-  name: string
-  type: string
-  industry: string
-  description: string
-  website: string
-  products: string
-  audience: string
-  competitors: string
-  usp: string
-  painPoints: string
-  monthlyRevenue: string
-  yearEstablished: string
-  channels: string[]
-  goals: string[]
-  teamSize: string
-}
+import type { Business } from '@orca-blitz/shared'
 
 interface SettingsPageProps {
   onBack: () => void
   businessId?: string | null
-  business?: BusinessData | null
-  businesses?: BusinessData[]
-  onUpdateBusiness?: (id: string, data: Partial<BusinessData>) => void
+  business?: Business | null
+  businesses?: Business[]
+  onUpdateBusiness?: (id: string, data: Partial<Business>) => void
   onDeleteBusiness?: (id: string) => void
-  onSelectBusiness?: (business: BusinessData) => void
+  onSelectBusiness?: (business: Business) => void
 }
 
 const pages: Record<string, React.ComponentType> = {
@@ -60,7 +42,7 @@ export function SettingsPage({ onBack, businessId, business, businesses, onUpdat
       ) : null
     : pages[activeTab] ?? AppearanceSettings
 
-  const handleBusinessSelect = (biz: BusinessData) => {
+  const handleBusinessSelect = (biz: Business) => {
     onSelectBusiness?.(biz)
     setActiveTab('business')
   }

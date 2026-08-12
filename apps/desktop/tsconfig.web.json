@@ -14,8 +14,10 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/renderer/*"],
-      "@orca-blitz/ui/*": ["../../packages/ui/src/*"]
+      "@orca-blitz/ui/*": ["../../packages/ui/src/*"],
+      "@orca-blitz/shared": ["../../packages/shared/index.ts"],
+      "@orca-blitz/shared/*": ["../../packages/shared/*"]
     }
   },
-  "include": ["src/renderer/**/*", "../../packages/ui/src/**/*.ts", "../../packages/ui/src/**/*.tsx"]
+  "include": ["src/renderer/**/*", "../../packages/ui/src/**/*.ts", "../../packages/ui/src/**/*.tsx", "../../packages/shared/**/*.ts"]
 }

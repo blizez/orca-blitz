@@ -7,29 +7,11 @@ import { Field, FieldLabel, FieldContent } from '@orca-blitz/ui/components/ui/fi
 import { Badge } from '@orca-blitz/ui/components/ui/badge'
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@orca-blitz/ui/components/ui/select'
 import { DeleteBusinessModal } from '../../layout/delete-business-modal'
-
-interface BusinessData {
-  id: string
-  name: string
-  type: string
-  industry: string
-  description: string
-  website: string
-  products: string
-  audience: string
-  competitors: string
-  usp: string
-  painPoints: string
-  monthlyRevenue: string
-  yearEstablished: string
-  channels: string[]
-  goals: string[]
-  teamSize: string
-}
+import type { Business } from '@orca-blitz/shared'
 
 interface BusinessSettingsProps {
-  business: BusinessData
-  onUpdate: (id: string, data: Partial<BusinessData>) => void
+  business: Business
+  onUpdate: (id: string, data: Partial<Business>) => void
   onDelete: (id: string) => void
 }
 
@@ -48,7 +30,7 @@ export function BusinessSettings({ business, onUpdate, onDelete }: BusinessSetti
   const [editingName, setEditingName] = useState(false)
   const [nameDraft, setNameDraft] = useState(business.name)
 
-  const update = (field: keyof BusinessData, value: string | string[]) => {
+  const update = (field: keyof Business, value: string | string[]) => {
     const next = { ...data, [field]: value }
     setData(next)
     onUpdate(business.id, { [field]: value })

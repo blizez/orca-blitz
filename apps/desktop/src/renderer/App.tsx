@@ -9,25 +9,7 @@ import { BrowserTabBar, type Tab } from './components/social-media/browser-tab-b
 import { BrowserNavBar } from './components/social-media/browser-nav-bar'
 import { createNewTab, type Platform } from './components/social-media/social-media-page'
 import { OrcaLogo } from '@orca-blitz/ui/components/ui/logo'
-
-interface Business {
-  id: string
-  name: string
-  type: string
-  industry: string
-  description: string
-  website: string
-  products: string
-  audience: string
-  competitors: string
-  usp: string
-  painPoints: string
-  monthlyRevenue: string
-  yearEstablished: string
-  channels: string[]
-  goals: string[]
-  teamSize: string
-}
+import type { Business } from '@orca-blitz/shared'
 
 export default function App() {
   const [activePage, setActivePage] = useState('home')
@@ -36,15 +18,20 @@ export default function App() {
   const [tabs, setTabs] = useState<Tab[]>([createNewTab()])
   const [activeTabId, setActiveTabId] = useState<string>(() => tabs[0].id)
   const [businessSettingsId, setBusinessSettingsId] = useState<string | null>(null)
-  const [businesses, setBusinesses] = useState<Business[]>(() => {
-    const saved = localStorage.getItem('orca-businesses')
-    return saved ? JSON.parse(saved) : []
-  })
+  const [businesses, setBusinesses] = useState<Business[]>([])
   const forwardStack = useRef<Record<string, { title: string; url: string; icon: string; partition: string }>>({})
 
   useEffect(() => {
-    localStorage.setItem('orca-businesses', JSON.stringify(businesses))
-  }, [businesses])
+    window.api.businesses.list().then((data) => {
+      setBusinesses(data as Business[])
+    })
+
+    const unsubscribe = window.api.businesses.onChanged((data) => {
+      setBusinesses(data as Business[])
+    })
+
+    return unsubscribe
+  }, [])
 
   const isSocialMedia = activePage.includes(':redes')
 
@@ -129,7 +116,8 @@ export default function App() {
     setActivePage('home')
   }, [])
 
-  const isBusinessPage = activePage.includes(':') || activePage.startsWith('business-')
+  const isBusinessPage = activePage.includes(':') || (!activePage.startsWith('business-') && businesses.some((b) => activePage === b.id))
+  const activeBusinessForPage = businesses.find((b) => activePage === b.id || activePage.startsWith(b.id + ':')) ?? null
   const activeBusiness = businessSettingsId ? businesses.find((b) => b.id === businessSettingsId) ?? null : null
 
   return (
@@ -193,6 +181,7 @@ export default function App() {
           ) : isBusinessPage ? (
             <BusinessPage
               page={activePage}
+              business={activeBusinessForPage}
               tabs={isSocialMedia ? tabs : undefined}
               activeTabId={isSocialMedia ? activeTabId : undefined}
               onPickPlatform={isSocialMedia ? pickPlatform : undefined}

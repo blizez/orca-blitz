@@ -238,6 +238,9 @@ importers:
       '@icons-pack/react-simple-icons':
         specifier: ^13.13.0
         version: 13.13.0(react@19.2.8)
+      '@orca-blitz/shared':
+        specifier: workspace:*
+        version: link:../../packages/shared
       '@orca-blitz/ui':
         specifier: workspace:*
         version: link:../../packages/ui
@@ -281,6 +284,12 @@ importers:
       tailwindcss:
         specifier: ^4.1.11
         version: 4.3.3
+
+  packages/shared:
+    devDependencies:
+      typescript:
+        specifier: ^5.7.0
+        version: 5.9.3
 
   packages/ui:
     dependencies:

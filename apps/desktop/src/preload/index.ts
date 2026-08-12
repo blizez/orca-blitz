@@ -54,6 +54,18 @@ const api = {
     get: () => ipcRenderer.invoke('settings:get'),
     update: (prefs: unknown) => ipcRenderer.invoke('settings:update', prefs)
   },
+  businesses: {
+    list: () => ipcRenderer.invoke('businesses:list'),
+    create: (data: unknown) => ipcRenderer.invoke('businesses:create', data),
+    update: (id: string, data: unknown) => ipcRenderer.invoke('businesses:update', id, data),
+    delete: (id: string) => ipcRenderer.invoke('businesses:delete', id),
+    onChanged: (callback: (...args: unknown[]) => void) => {
+      ipcRenderer.on('businesses:changed', (_event, ...args) => callback(...args))
+      return () => {
+        ipcRenderer.removeAllListeners('businesses:changed')
+      }
+    }
+  },
   plugins: {
     install: (manifest: unknown) => ipcRenderer.invoke('plugins:install', manifest),
     enable: (id: string) => ipcRenderer.invoke('plugins:enable', id),
