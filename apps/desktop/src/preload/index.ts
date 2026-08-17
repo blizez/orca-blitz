@@ -72,6 +72,47 @@ const api = {
     disable: (id: string) => ipcRenderer.invoke('plugins:disable', id),
     list: () => ipcRenderer.invoke('plugins:list')
   },
+  openai: {
+    startAuth: () => ipcRenderer.invoke('openai:start-auth'),
+    cancelAuth: () => ipcRenderer.invoke('openai:cancel-auth'),
+    onAuthUrl: (callback: (url: string) => void) => {
+      const handler = (_event: unknown, url: string) => callback(url)
+      ipcRenderer.on('openai:auth-url', handler)
+      return () => { ipcRenderer.removeListener('openai:auth-url', handler) }
+    },
+    onAuthToken: (callback: (data: { accessToken: string; refreshToken: string }) => void) => {
+      const handler = (_event: unknown, data: { accessToken: string; refreshToken: string }) => callback(data)
+      ipcRenderer.on('openai:auth-token', handler)
+      return () => { ipcRenderer.removeListener('openai:auth-token', handler) }
+    },
+    onAuthModels: (callback: (models: string[]) => void) => {
+      const handler = (_event: unknown, models: string[]) => callback(models)
+      ipcRenderer.on('openai:auth-models', handler)
+      return () => { ipcRenderer.removeListener('openai:auth-models', handler) }
+    },
+    onAuthCode: (callback: (data: { code: string; codeVerifier: string }) => void) => {
+      const handler = (_event: unknown, data: { code: string; codeVerifier: string }) => callback(data)
+      ipcRenderer.on('openai:auth-code', handler)
+      return () => { ipcRenderer.removeListener('openai:auth-code', handler) }
+    },
+    onAuthError: (callback: (error: string) => void) => {
+      const handler = (_event: unknown, error: string) => callback(error)
+      ipcRenderer.on('openai:auth-error', handler)
+      return () => { ipcRenderer.removeListener('openai:auth-error', handler) }
+    },
+  },
+  chatgpt: {
+    setToken: (token: string) => ipcRenderer.send('chatgpt:set-token', token),
+    send: (model: string, messages: Array<{ role: 'user' | 'assistant'; content: string }>) => ipcRenderer.invoke('chatgpt:send', model, messages),
+    stream: (model: string, messages: Array<{ role: 'user' | 'assistant'; content: string }>) => ipcRenderer.invoke('chatgpt:stream', model, messages),
+    user: () => ipcRenderer.invoke('chatgpt:user'),
+    hasToken: () => ipcRenderer.invoke('chatgpt:has-token'),
+    onStreamChunk: (callback: (chunk: string | null) => void) => {
+      const handler = (_event: unknown, chunk: string | null) => callback(chunk)
+      ipcRenderer.on('chatgpt:stream-chunk', handler)
+      return () => { ipcRenderer.removeListener('chatgpt:stream-chunk', handler) }
+    },
+  },
   browser: {
     create: (id: string, url: string, partition: string, platformId: string) =>
       ipcRenderer.invoke('browser:create', id, url, partition, platformId),

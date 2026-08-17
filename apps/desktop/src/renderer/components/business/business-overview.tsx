@@ -1,4 +1,5 @@
 import { Building2, TrendingUp, Calendar, DollarSign, Users, Globe, Target, AlertTriangle } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@orca-blitz/ui/components/ui/card'
 import { Badge } from '@orca-blitz/ui/components/ui/badge'
 import { Separator } from '@orca-blitz/ui/components/ui/separator'
@@ -38,6 +39,8 @@ function InfoRow({ label, value }: { label: string; value: string }) {
 }
 
 export function BusinessOverview({ business }: BusinessOverviewProps) {
+  const { t } = useTranslation('business')
+
   return (
     <div className="space-y-6 animate-in fade-in duration-150">
       <header className="space-y-1">
@@ -51,10 +54,10 @@ export function BusinessOverview({ business }: BusinessOverviewProps) {
       </header>
 
       <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
-        <StatCard icon={DollarSign} label="Monthly Revenue" value={business.monthlyRevenue} />
-        <StatCard icon={Calendar} label="Established" value={business.yearEstablished} />
-        <StatCard icon={Users} label="Team Size" value={business.teamSize} />
-        <StatCard icon={Globe} label="Industry" value={business.industry} />
+        <StatCard icon={DollarSign} label={t('overview.stats.monthlyRevenue')} value={business.monthlyRevenue} />
+        <StatCard icon={Calendar} label={t('overview.stats.established')} value={business.yearEstablished} />
+        <StatCard icon={Users} label={t('overview.stats.teamSize')} value={business.teamSize} />
+        <StatCard icon={Globe} label={t('overview.stats.industry')} value={business.industry} />
       </div>
 
       <div className="grid gap-4 md:grid-cols-2">
@@ -62,15 +65,15 @@ export function BusinessOverview({ business }: BusinessOverviewProps) {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Target className="size-4 text-muted-foreground" />
-              Products & Audience
+              {t('overview.sections.productsAudience')}
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            <InfoRow label="Products / Services" value={business.products} />
-            <InfoRow label="Target Audience" value={business.audience} />
+            <InfoRow label={t('overview.labels.products')} value={business.products} />
+            <InfoRow label={t('overview.labels.audience')} value={business.audience} />
             {business.goals.length > 0 && (
               <div className="space-y-2">
-                <p className="text-xs font-medium text-muted-foreground">Goals</p>
+                <p className="text-xs font-medium text-muted-foreground">{t('overview.labels.goals')}</p>
                 <div className="flex flex-wrap gap-1.5">
                   {business.goals.map((g) => (
                     <Badge key={g} variant="outline" className="text-muted-foreground">{g}</Badge>
@@ -85,13 +88,13 @@ export function BusinessOverview({ business }: BusinessOverviewProps) {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <TrendingUp className="size-4 text-muted-foreground" />
-              Market Position
+              {t('overview.sections.marketPosition')}
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            <InfoRow label="Unique Selling Point" value={business.usp} />
-            <InfoRow label="Competitors" value={business.competitors} />
-            <InfoRow label="Pain Points" value={business.painPoints} />
+            <InfoRow label={t('overview.labels.usp')} value={business.usp} />
+            <InfoRow label={t('overview.labels.competitors')} value={business.competitors} />
+            <InfoRow label={t('overview.labels.painPoints')} value={business.painPoints} />
           </CardContent>
         </Card>
       </div>
@@ -101,16 +104,16 @@ export function BusinessOverview({ business }: BusinessOverviewProps) {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Building2 className="size-4 text-muted-foreground" />
-              Channels & Presence
+              {t('overview.sections.channelsPresence')}
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             {business.website && (
-              <InfoRow label="Website" value={business.website} />
+              <InfoRow label={t('overview.labels.website')} value={business.website} />
             )}
             {business.channels.length > 0 && (
               <div className="space-y-2">
-                <p className="text-xs font-medium text-muted-foreground">Active Channels</p>
+                <p className="text-xs font-medium text-muted-foreground">{t('overview.labels.activeChannels')}</p>
                 <div className="flex flex-wrap gap-1.5">
                   {business.channels.map((ch) => (
                     <Badge key={ch} variant="secondary">{ch}</Badge>

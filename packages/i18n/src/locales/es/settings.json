@@ -1,0 +1,127 @@
+{
+  "sidebar": {
+    "backToApp": "Volver a la app",
+    "search": "Buscar configuración...",
+    "sections": {
+      "interface": "Interfaz",
+      "billing": "Facturación",
+      "connect": "Conectar",
+      "security": "Seguridad"
+    },
+    "items": {
+      "appearance": "Apariencia",
+      "notifications": "Notificaciones",
+      "shortcuts": "Atajos de Teclado",
+      "statistics": "Estadísticas y Uso",
+      "paymentMethods": "Métodos de Pago",
+      "integrations": "Integraciones",
+      "aiProviders": "Proveedores de IA",
+      "security": "Seguridad"
+    }
+  },
+  "appearance": {
+    "title": "Apariencia",
+    "description": "Personaliza cómo se ve orca-blitz en tu dispositivo.",
+    "theme": {
+      "label": "Tema",
+      "description": "Selecciona tu modo de color preferido",
+      "system": "Sistema",
+      "dark": "Oscuro",
+      "light": "Claro"
+    },
+    "palettes": "Paletas",
+    "accentColor": {
+      "label": "Color de Acento",
+      "description": "Elige el color de resaltado para botones y enlaces"
+    },
+    "language": {
+      "label": "Idioma",
+      "description": "Selecciona tu idioma preferido"
+    },
+    "fontSize": {
+      "label": "Tamaño de Fuente",
+      "description": "Ajusta el tamaño del texto en toda la app"
+    },
+    "sidebarPosition": {
+      "label": "Posición del Sidebar",
+      "description": "Elige en qué lado aparece la barra lateral"
+    },
+    "left": "Izquierda",
+    "default": "Predeterminado"
+  },
+  "notifications": {
+    "title": "Notificaciones",
+    "description": "Controla cómo y cuándo recibes notificaciones.",
+    "desktop": {
+      "label": "Notificaciones de Escritorio",
+      "description": "Mostrar notificaciones del sistema"
+    },
+    "sound": {
+      "label": "Sonido",
+      "description": "Habilitar o deshabilitar sonidos de interacción"
+    },
+    "volume": "Volumen",
+    "emailDigest": {
+      "label": "Resumen por Email",
+      "description": "Recibir resumen diario por email"
+    }
+  },
+  "shortcuts": {
+    "title": "Atajos de Teclado",
+    "description": "Ver y personalizar atajos de teclado.",
+    "newItem": "Nuevo elemento",
+    "save": "Guardar",
+    "toggleSearch": "Alternar búsqueda",
+    "toggleSidebar": "Alternar barra lateral",
+    "openSettings": "Abrir configuración",
+    "quitApp": "Cerrar app"
+  },
+  "statistics": {
+    "title": "Estadísticas y Uso",
+    "description": "Monitorea tu uso y consumo de recursos.",
+    "apiCalls": "Llamadas API Este Mes",
+    "workflows": "Workflows Ejecutados",
+    "storage": {
+      "label": "Almacenamiento Usado",
+      "description": "Almacenamiento local de datos"
+    },
+    "tokens": {
+      "label": "Tokens de IA Usados",
+      "description": "Este ciclo de facturación"
+    }
+  },
+  "billing": {
+    "title": "Métodos de Pago",
+    "description": "Gestiona los métodos de pago de tus negocios.",
+    "addMethod": "Agregar Método",
+    "notConfigured": "No configurado",
+    "name": "Nombre",
+    "accountNumber": "Cuenta / Número",
+    "qrCode": "Código QR",
+    "uploadQR": "Subir QR",
+    "addPaymentMethod": "Agregar Método de Pago",
+    "deleteConfirmation": "¿Estás seguro de que quieres eliminar este método de pago?"
+  },
+  "security": {
+    "title": "Seguridad",
+    "description": "Gestiona la seguridad de tu cuenta y sesiones.",
+    "twoFactor": {
+      "label": "Autenticación de Dos Factores",
+      "notEnabled": "No habilitada"
+    },
+    "sessions": {
+      "label": "Sesiones Activas",
+      "count": "1 sesión activa"
+    },
+    "apiKeys": {
+      "label": "Claves API",
+      "noKeys": "No hay claves API creadas"
+    }
+  },
+  "integrations": {
+    "title": "Integraciones",
+    "description": "Conecta servicios y plataformas externas.",
+    "notConnected": "No conectado",
+    "disconnected": "Desconectado"
+  }
+}

@@ -1,14 +1,14 @@
-import { cn } from '../../../lib/utils'
+import { cn } from '@/lib/utils'
 import { useState, useRef, useEffect } from 'react'
-import { useTheme } from '../../../lib/theme-context'
+import { useTheme } from '@/lib/theme-context'
+import { useTranslation } from 'react-i18next'
 import { Plus, X, Check } from 'lucide-react'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@orca-blitz/ui/components/ui/select'
-import { LanguageSelect } from './language-select'
 
 const themes = [
-  { id: 'system' as const, label: 'System' },
-  { id: 'dark' as const, label: 'Dark' },
-  { id: 'light' as const, label: 'Light' },
+  { id: 'system' as const, labelKey: 'appearance.theme.system' },
+  { id: 'dark' as const, labelKey: 'appearance.theme.dark' },
+  { id: 'light' as const, labelKey: 'appearance.theme.light' },
 ]
 
 const palettes = [
@@ -26,10 +26,32 @@ const palettes = [
 
 export function AppearanceSettings() {
   const { theme, setTheme } = useTheme()
+  const { t, i18n } = useTranslation('settings')
   const [showPalettes, setShowPalettes] = useState(false)
   const [selectedPalette, setSelectedPalette] = useState('default')
-  const [language, setLanguage] = useState('system')
   const menuRef = useRef<HTMLDivElement>(null)
+
+  const getInitialLang = (): string => {
+    const saved = localStorage.getItem('oc_language_pref')
+    if (!saved || saved === 'en' || saved === 'es') return 'system'
+    return saved
+  }
+
+  const [languagePref, setLanguagePref] = useState(getInitialLang)
+
+  const handleLanguageChange = (value: string | null) => {
+    const pref = value || 'system'
+    setLanguagePref(pref)
+    localStorage.setItem('oc_language_pref', pref)
+
+    if (pref === 'system') {
+      i18n.changeLanguage(navigator.language.split('-')[0])
+    } else if (pref === 'English') {
+      i18n.changeLanguage('en')
+    } else if (pref === 'Español') {
+      i18n.changeLanguage('es')
+    }
+  }
 
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
@@ -46,31 +68,31 @@ export function AppearanceSettings() {
   return (
     <div className="space-y-8">
       <div>
-        <h3 className="text-lg font-medium">Appearance</h3>
-        <p className="text-sm text-muted-foreground">Customize how orca-blitz looks on your device.</p>
+        <h3 className="text-lg font-medium">{t('appearance.title')}</h3>
+        <p className="text-sm text-muted-foreground">{t('appearance.description')}</p>
       </div>
 
       <div className="space-y-4">
         <div className="rounded-lg border border-border p-4">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium">Theme</p>
-              <p className="text-xs text-muted-foreground">Select your preferred color mode</p>
+              <p className="text-sm font-medium">{t('appearance.theme.label')}</p>
+              <p className="text-xs text-muted-foreground">{t('appearance.theme.description')}</p>
             </div>
             <div className="flex items-center gap-1">
               <div className="flex rounded-md border border-border bg-muted p-0.5">
-                {themes.map((t) => (
+                {themes.map((th) => (
                   <button
-                    key={t.id}
-                    onClick={() => setTheme(t.id)}
+                    key={th.id}
+                    onClick={() => setTheme(th.id)}
                     className={cn(
                       'rounded-[5px] px-3 py-1 text-xs font-medium transition-colors',
-                      theme === t.id
+                      theme === th.id
                         ? 'bg-background text-foreground shadow-sm'
                         : 'text-muted-foreground hover:text-foreground'
                     )}
                   >
-                    {t.label}
+                    {t(th.labelKey)}
                   </button>
                 ))}
               </div>
@@ -91,7 +113,7 @@ export function AppearanceSettings() {
                 {showPalettes && (
                   <div className="absolute right-0 top-full z-50 mt-1 w-[180px] rounded-lg border border-border bg-popover p-1 shadow-md">
                     <p className="px-2 py-1 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
-                      Palettes
+                      {t('appearance.palettes')}
                     </p>
                     {palettes.map((palette) => (
                       <button
@@ -116,23 +138,23 @@ export function AppearanceSettings() {
 
         <div className="flex items-center justify-between rounded-lg border border-border p-4">
           <div>
-            <p className="text-sm font-medium">Accent Color</p>
-            <p className="text-xs text-muted-foreground">Choose the highlight color for buttons and links</p>
+            <p className="text-sm font-medium">{t('appearance.accentColor.label')}</p>
+            <p className="text-xs text-muted-foreground">{t('appearance.accentColor.description')}</p>
           </div>
-          <span className="text-sm text-muted-foreground">Default</span>
+          <span className="text-sm text-muted-foreground">{t('appearance.default')}</span>
         </div>
 
         <div className="flex items-center justify-between rounded-lg border border-border p-4">
           <div>
-            <p className="text-sm font-medium">Language</p>
-            <p className="text-xs text-muted-foreground">Select your preferred language</p>
+            <p className="text-sm font-medium">{t('appearance.language.label')}</p>
+            <p className="text-xs text-muted-foreground">{t('appearance.language.description')}</p>
           </div>
-          <Select value={language} onValueChange={setLanguage}>
+          <Select value={languagePref} onValueChange={handleLanguageChange}>
             <SelectTrigger size="sm">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="system">System</SelectItem>
+              <SelectItem value="System">System</SelectItem>
               <SelectItem value="English">English</SelectItem>
               <SelectItem value="Español">Español</SelectItem>
             </SelectContent>
@@ -141,18 +163,18 @@ export function AppearanceSettings() {
 
         <div className="flex items-center justify-between rounded-lg border border-border p-4">
           <div>
-            <p className="text-sm font-medium">Font Size</p>
-            <p className="text-xs text-muted-foreground">Adjust the text size across the app</p>
+            <p className="text-sm font-medium">{t('appearance.fontSize.label')}</p>
+            <p className="text-xs text-muted-foreground">{t('appearance.fontSize.description')}</p>
           </div>
           <span className="text-sm text-muted-foreground">14px</span>
         </div>
 
         <div className="flex items-center justify-between rounded-lg border border-border p-4">
           <div>
-            <p className="text-sm font-medium">Sidebar Position</p>
-            <p className="text-xs text-muted-foreground">Choose which side the sidebar appears on</p>
+            <p className="text-sm font-medium">{t('appearance.sidebarPosition.label')}</p>
+            <p className="text-xs text-muted-foreground">{t('appearance.sidebarPosition.description')}</p>
           </div>
-          <span className="text-sm text-muted-foreground">Left</span>
+          <span className="text-sm text-muted-foreground">{t('appearance.left')}</span>
         </div>
       </div>
     </div>

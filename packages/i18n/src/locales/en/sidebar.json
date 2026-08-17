@@ -1,0 +1,28 @@
+{
+  "businesses": {
+    "title": "Businesses",
+    "add": "Add Business",
+    "empty": "No businesses yet"
+  },
+  "navigation": {
+    "settings": "Settings",
+    "home": "Home"
+  },
+  "features": {
+    "socialMedia": "Social Media",
+    "content": "Content",
+    "campaigns": "Campaigns"
+  },
+  "menu": {
+    "businessSettings": "Business Settings",
+    "changeIcon": "Change Icon",
+    "deleteBusiness": "Delete Business"
+  },
+  "rightSidebar": {
+    "messages": "Messages",
+    "notifications": "Notifications",
+    "contacts": "Contacts",
+    "search": "Search",
+    "comingSoon": "Right panel — Coming Soon"
+  }
+}

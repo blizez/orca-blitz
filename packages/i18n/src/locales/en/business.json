@@ -1,0 +1,71 @@
+{
+  "overview": {
+    "stats": {
+      "monthlyRevenue": "Monthly Revenue",
+      "established": "Established",
+      "teamSize": "Team Size",
+      "industry": "Industry"
+    },
+    "sections": {
+      "productsAudience": "Products & Audience",
+      "marketPosition": "Market Position",
+      "channelsPresence": "Channels & Presence"
+    },
+    "labels": {
+      "products": "Products / Services",
+      "audience": "Target Audience",
+      "goals": "Goals",
+      "usp": "Unique Selling Point",
+      "competitors": "Competitors",
+      "painPoints": "Pain Points",
+      "website": "Website",
+      "activeChannels": "Active Channels"
+    }
+  },
+  "settings": {
+    "description": "General settings for this business.",
+    "about": "About this business",
+    "type": "Type",
+    "industry": "Industry",
+    "teamSize": "Team Size",
+    "descriptionLabel": "Description",
+    "edit": "Edit",
+    "products": "Products / Services",
+    "audience": "Target Audience",
+    "website": "Website",
+    "competitors": "Main Competitors",
+    "usp": "What makes you different? (USP)",
+    "painPoints": "Current Pain Points",
+    "monthlyRevenue": "Monthly Revenue",
+    "yearEstablished": "Year Established",
+    "activeChannels": "Active Channels",
+    "goals": "Goals",
+    "noGoals": "No goals configured",
+    "noChannels": "No channels configured"
+  },
+  "content": {
+    "title": "Content",
+    "description": "Plan and manage posts across your social media channels.",
+    "newPost": "New Post",
+    "noContent": "No content yet",
+    "createFirst": "Create your first post",
+    "status": {
+      "draft": "Draft",
+      "scheduled": "Scheduled",
+      "published": "Published"
+    }
+  },
+  "campaigns": {
+    "title": "Campaigns",
+    "description": "Plan, launch, and track marketing campaigns.",
+    "newCampaign": "New Campaign",
+    "noCampaigns": "No campaigns yet",
+    "createFirst": "Create your first campaign",
+    "status": {
+      "draft": "Draft",
+      "active": "Active",
+      "paused": "Paused",
+      "completed": "Completed"
+    }
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "title": "Providers",
+  "description": "Configure the AI providers available to your workspace.",
+  "edit": "Edit",
+  "configure": "Configure",
+  "notConfigured": "Not configured",
+  "tabs": {
+    "apiKey": "API Key",
+    "chatgpt": "ChatGPT Plus/Pro",
+    "zen": "Zen",
+    "go": "Go"
+  },
+  "dialog": {
+    "configure": "Configure {{name}}",
+    "enterApiKey": "Enter your API key and select a model.",
+    "connectChatgpt": "Connect with your ChatGPT account."
+  },
+  "apiKey": {
+    "label": "API Key",
+    "detecting": "Detecting models...",
+    "enterKey": "Enter your API key to detect available models."
+  },
+  "models": {
+    "select": "Select Model",
+    "model": "Model",
+    "detecting": "Detecting available models...",
+    "noModels": "No models found."
+  },
+  "chatgpt": {
+    "requiresDesktop": "ChatGPT authentication requires the desktop app.",
+    "typeModel": "Type the model name you want to use below.",
+    "connectDescription": "Connect with your ChatGPT Plus or Pro account.",
+    "usesSubscription": "Uses your existing ChatGPT subscription limits.",
+    "connecting": "Connecting...",
+    "reconnect": "Reconnect",
+    "connect": "Connect with ChatGPT",
+    "modelName": "Model Name",
+    "placeholder": "e.g. gpt-4o, o1, o3-mini..."
+  },
+  "custom": {
+    "title": "Custom Providers",
+    "add": "Add Custom Provider",
+    "name": "Name",
+    "endpoint": "Endpoint URL",
+    "apiKey": "API Key",
+    "models": "Models (comma separated)",
+    "addProvider": "Add Provider"
+  },
+  "errors": {
+    "invalidKey": "Invalid API key. Please check and try again.",
+    "cannotReach": "Cannot reach provider. Check your connection or API key.",
+    "requiresDesktop": "ChatGPT authentication requires the desktop app."
+  }
+}

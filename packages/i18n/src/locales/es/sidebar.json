@@ -1,0 +1,28 @@
+{
+  "businesses": {
+    "title": "Negocios",
+    "add": "Agregar Negocio",
+    "empty": "Aún no hay negocios"
+  },
+  "navigation": {
+    "settings": "Configuración",
+    "home": "Inicio"
+  },
+  "features": {
+    "socialMedia": "Redes Sociales",
+    "content": "Contenido",
+    "campaigns": "Campañas"
+  },
+  "menu": {
+    "businessSettings": "Configuración del Negocio",
+    "changeIcon": "Cambiar Icono",
+    "deleteBusiness": "Eliminar Negocio"
+  },
+  "rightSidebar": {
+    "messages": "Mensajes",
+    "notifications": "Notificaciones",
+    "contacts": "Contactos",
+    "search": "Buscar",
+    "comingSoon": "Panel derecho — Próximamente"
+  }
+}

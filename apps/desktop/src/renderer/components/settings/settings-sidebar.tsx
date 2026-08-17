@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import {
   CreditCard,
   Puzzle,
@@ -12,39 +13,8 @@ import {
   BarChart3,
   Store,
 } from 'lucide-react'
-import { cn } from '../../lib/utils'
+import { cn } from '@/lib/utils'
 import type { Business } from '@orca-blitz/shared'
-
-const settingsGroups = [
-  {
-    label: 'Interface',
-    items: [
-      { id: 'appearance', label: 'Appearance', icon: Palette },
-      { id: 'notifications', label: 'Notifications', icon: Bell },
-      { id: 'shortcuts', label: 'Shortcuts', icon: Keyboard },
-      { id: 'statistics', label: 'Statistics & Usage', icon: BarChart3 },
-    ],
-  },
-  {
-    label: 'Billing',
-    items: [
-      { id: 'billing', label: 'Payment Methods', icon: CreditCard },
-    ],
-  },
-  {
-    label: 'Connect',
-    items: [
-      { id: 'integrations', label: 'Integrations', icon: Puzzle },
-      { id: 'ai', label: 'AI Providers', icon: BrainCircuit },
-    ],
-  },
-  {
-    label: 'Security',
-    items: [
-      { id: 'security', label: 'Security', icon: Shield },
-    ],
-  },
-]
 
 interface SettingsSidebarProps {
   activeTab: string
@@ -56,7 +26,39 @@ interface SettingsSidebarProps {
 }
 
 export function SettingsSidebar({ activeTab, onTabChange, onBack, businessId, businesses = [], onBusinessSelect }: SettingsSidebarProps) {
+  const { t } = useTranslation('settings')
   const [search, setSearch] = useState('')
+
+  const settingsGroups = [
+    {
+      label: t('sidebar.sections.interface'),
+      items: [
+        { id: 'appearance', label: t('sidebar.items.appearance'), icon: Palette },
+        { id: 'notifications', label: t('sidebar.items.notifications'), icon: Bell },
+        { id: 'shortcuts', label: t('sidebar.items.shortcuts'), icon: Keyboard },
+        { id: 'statistics', label: t('sidebar.items.statistics'), icon: BarChart3 },
+      ],
+    },
+    {
+      label: t('sidebar.sections.billing'),
+      items: [
+        { id: 'billing', label: t('sidebar.items.paymentMethods'), icon: CreditCard },
+      ],
+    },
+    {
+      label: t('sidebar.sections.connect'),
+      items: [
+        { id: 'integrations', label: t('sidebar.items.integrations'), icon: Puzzle },
+        { id: 'ai', label: t('sidebar.items.aiProviders'), icon: BrainCircuit },
+      ],
+    },
+    {
+      label: t('sidebar.sections.security'),
+      items: [
+        { id: 'security', label: t('sidebar.items.security'), icon: Shield },
+      ],
+    },
+  ]
 
   const businessGroup = businesses.length > 0
     ? [{
@@ -88,7 +90,7 @@ export function SettingsSidebar({ activeTab, onTabChange, onBack, businessId, bu
         className="flex items-center gap-2 border-b border-sidebar-border px-3 py-2 hover:bg-sidebar-accent/50 transition-colors"
       >
         <ArrowLeft className="size-4 text-muted-foreground" />
-        <span className="text-sm font-medium">Back to app</span>
+        <span className="text-sm font-medium">{t('sidebar.backToApp')}</span>
       </button>
 
       <div className="px-3 py-2">
@@ -96,7 +98,7 @@ export function SettingsSidebar({ activeTab, onTabChange, onBack, businessId, bu
           <Search className="absolute left-2 top-1/2 size-3.5 -translate-y-1/2 text-sidebar-foreground/60" />
           <input
             type="text"
-            placeholder="Search settings..."
+            placeholder={t('sidebar.search')}
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             className="h-8 w-full rounded-md border border-sidebar-border bg-background pl-7 pr-2 text-sm placeholder:text-sidebar-foreground/60 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"

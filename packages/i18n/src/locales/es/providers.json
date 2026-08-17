@@ -1,0 +1,54 @@
+{
+  "title": "Proveedores",
+  "description": "Configura los proveedores de IA disponibles en tu espacio de trabajo.",
+  "edit": "Editar",
+  "configure": "Configurar",
+  "notConfigured": "No configurado",
+  "tabs": {
+    "apiKey": "Clave API",
+    "chatgpt": "ChatGPT Plus/Pro",
+    "zen": "Zen",
+    "go": "Go"
+  },
+  "dialog": {
+    "configure": "Configurar {{name}}",
+    "enterApiKey": "Ingresa tu clave API y selecciona un modelo.",
+    "connectChatgpt": "Conecta con tu cuenta de ChatGPT."
+  },
+  "apiKey": {
+    "label": "Clave API",
+    "detecting": "Detectando modelos...",
+    "enterKey": "Ingresa tu clave API para detectar modelos disponibles."
+  },
+  "models": {
+    "select": "Seleccionar Modelo",
+    "model": "Modelo",
+    "detecting": "Detectando modelos disponibles...",
+    "noModels": "No se encontraron modelos."
+  },
+  "chatgpt": {
+    "requiresDesktop": "La autenticación de ChatGPT requiere la app de escritorio.",
+    "typeModel": "Escribe el nombre del modelo que quieres usar abajo.",
+    "connectDescription": "Conecta con tu cuenta de ChatGPT Plus o Pro.",
+    "usesSubscription": "Usa los límites de tu suscripción de ChatGPT.",
+    "connecting": "Conectando...",
+    "reconnect": "Reconectar",
+    "connect": "Conectar con ChatGPT",
+    "modelName": "Nombre del Modelo",
+    "placeholder": "ej. gpt-4o, o1, o3-mini..."
+  },
+  "custom": {
+    "title": "Proveedores Personalizados",
+    "add": "Agregar Proveedor Personalizado",
+    "name": "Nombre",
+    "endpoint": "URL del Endpoint",
+    "apiKey": "Clave API",
+    "models": "Modelos (separados por coma)",
+    "addProvider": "Agregar Proveedor"
+  },
+  "errors": {
+    "invalidKey": "Clave API inválida. Verifica e intenta de nuevo.",
+    "cannotReach": "No se puede alcanzar el proveedor. Verifica tu conexión o clave API.",
+    "requiresDesktop": "La autenticación de ChatGPT requiere la app de escritorio."
+  }
+}

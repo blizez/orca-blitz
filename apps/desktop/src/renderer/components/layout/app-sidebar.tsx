@@ -6,7 +6,8 @@ import {
   PanelLeftClose,
   PanelLeftOpen,
 } from 'lucide-react'
-import { cn } from '../../lib/utils'
+import { useTranslation } from 'react-i18next'
+import { cn } from '@/lib/utils'
 import { HelpMenu } from './help-menu'
 import { Tooltip, TooltipTrigger, TooltipContent } from '@orca-blitz/ui/components/ui/tooltip'
 import { AddBusinessModal } from './add-business-modal'
@@ -26,6 +27,7 @@ interface AppSidebarProps {
 }
 
 export function AppSidebar({ activePage, onNavigate, collapsed, onToggleCollapse, businesses, onBusinessesChange, onBusinessSettings }: AppSidebarProps) {
+  const { t } = useTranslation('sidebar')
   const [showModal, setShowModal] = useState(false)
   const [deleteTarget, setDeleteTarget] = useState<Business | null>(null)
   const [expandedBiz, setExpandedBiz] = useState<string[]>([])
@@ -91,7 +93,7 @@ export function AppSidebar({ activePage, onNavigate, collapsed, onToggleCollapse
           )}>
             {!collapsed && (
               <span className="text-[11px] font-semibold uppercase tracking-wider text-sidebar-foreground/60">
-                Businesses
+                {t('businesses.title')}
               </span>
             )}
             {collapsed ? (
@@ -107,7 +109,7 @@ export function AppSidebar({ activePage, onNavigate, collapsed, onToggleCollapse
                     </button>
                   }
                 />
-                <TooltipContent side="right" sideOffset={8}>Add Business</TooltipContent>
+                <TooltipContent side="right" sideOffset={8}>{t('businesses.add')}</TooltipContent>
               </Tooltip>
             ) : (
               <button
@@ -122,7 +124,7 @@ export function AppSidebar({ activePage, onNavigate, collapsed, onToggleCollapse
 
           {businesses.length === 0 && !collapsed && (
             <p className="px-2 py-2 text-xs text-sidebar-foreground/40">
-              No businesses yet
+              {t('businesses.empty')}
             </p>
           )}
 
@@ -165,7 +167,7 @@ export function AppSidebar({ activePage, onNavigate, collapsed, onToggleCollapse
                   </button>
                 }
               />
-              <TooltipContent side="right" sideOffset={8}>Settings</TooltipContent>
+              <TooltipContent side="right" sideOffset={8}>{t('navigation.settings')}</TooltipContent>
             </Tooltip>
           ) : (
             <button
@@ -178,7 +180,7 @@ export function AppSidebar({ activePage, onNavigate, collapsed, onToggleCollapse
               )}
             >
               <Settings className="size-4 shrink-0" />
-              <span>Settings</span>
+              <span>{t('navigation.settings')}</span>
             </button>
           )}
           <HelpMenu collapsed={collapsed} />

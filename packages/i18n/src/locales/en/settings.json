@@ -1,0 +1,127 @@
+{
+  "sidebar": {
+    "backToApp": "Back to app",
+    "search": "Search settings...",
+    "sections": {
+      "interface": "Interface",
+      "billing": "Billing",
+      "connect": "Connect",
+      "security": "Security"
+    },
+    "items": {
+      "appearance": "Appearance",
+      "notifications": "Notifications",
+      "shortcuts": "Shortcuts",
+      "statistics": "Statistics & Usage",
+      "paymentMethods": "Payment Methods",
+      "integrations": "Integrations",
+      "aiProviders": "AI Providers",
+      "security": "Security"
+    }
+  },
+  "appearance": {
+    "title": "Appearance",
+    "description": "Customize how orca-blitz looks on your device.",
+    "theme": {
+      "label": "Theme",
+      "description": "Select your preferred color mode",
+      "system": "System",
+      "dark": "Dark",
+      "light": "Light"
+    },
+    "palettes": "Palettes",
+    "accentColor": {
+      "label": "Accent Color",
+      "description": "Choose the highlight color for buttons and links"
+    },
+    "language": {
+      "label": "Language",
+      "description": "Select your preferred language"
+    },
+    "fontSize": {
+      "label": "Font Size",
+      "description": "Adjust the text size across the app"
+    },
+    "sidebarPosition": {
+      "label": "Sidebar Position",
+      "description": "Choose which side the sidebar appears on"
+    },
+    "left": "Left",
+    "default": "Default"
+  },
+  "notifications": {
+    "title": "Notifications",
+    "description": "Control how and when you receive notifications.",
+    "desktop": {
+      "label": "Desktop Notifications",
+      "description": "Show system notifications"
+    },
+    "sound": {
+      "label": "Sound",
+      "description": "Enable or disable interaction sounds"
+    },
+    "volume": "Volume",
+    "emailDigest": {
+      "label": "Email Digest",
+      "description": "Receive daily email summary"
+    }
+  },
+  "shortcuts": {
+    "title": "Keyboard Shortcuts",
+    "description": "View and customize keyboard shortcuts.",
+    "newItem": "New item",
+    "save": "Save",
+    "toggleSearch": "Toggle search",
+    "toggleSidebar": "Toggle sidebar",
+    "openSettings": "Open settings",
+    "quitApp": "Quit app"
+  },
+  "statistics": {
+    "title": "Statistics & Usage",
+    "description": "Monitor your usage and resource consumption.",
+    "apiCalls": "API Calls This Month",
+    "workflows": "Workflows Executed",
+    "storage": {
+      "label": "Storage Used",
+      "description": "Local data storage"
+    },
+    "tokens": {
+      "label": "AI Tokens Used",
+      "description": "This billing cycle"
+    }
+  },
+  "billing": {
+    "title": "Payment Methods",
+    "description": "Manage payment methods for your businesses.",
+    "addMethod": "Add Method",
+    "notConfigured": "Not configured",
+    "name": "Name",
+    "accountNumber": "Account / Number",
+    "qrCode": "QR Code",
+    "uploadQR": "Upload QR",
+    "addPaymentMethod": "Add Payment Method",
+    "deleteConfirmation": "Are you sure you want to delete this payment method?"
+  },
+  "security": {
+    "title": "Security",
+    "description": "Manage your account security and sessions.",
+    "twoFactor": {
+      "label": "Two-Factor Authentication",
+      "notEnabled": "Not enabled"
+    },
+    "sessions": {
+      "label": "Active Sessions",
+      "count": "1 active session"
+    },
+    "apiKeys": {
+      "label": "API Keys",
+      "noKeys": "No API keys created"
+    }
+  },
+  "integrations": {
+    "title": "Integrations",
+    "description": "Connect external services and platforms.",
+    "notConnected": "Not connected",
+    "disconnected": "Disconnected"
+  }
+}

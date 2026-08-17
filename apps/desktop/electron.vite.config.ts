@@ -85,6 +85,7 @@ export default defineConfig({
     plugins: [react(), tailwindcss(), pathAliasPlugin()],
     resolve: {
       alias: {
+        '@': rendererSrc,
         '@orca-blitz/ui': uiSrc
       }
     }

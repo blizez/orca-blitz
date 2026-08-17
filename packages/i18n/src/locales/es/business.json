@@ -1,0 +1,71 @@
+{
+  "overview": {
+    "stats": {
+      "monthlyRevenue": "Ingresos Mensuales",
+      "established": "Fundado",
+      "teamSize": "Tamaño del Equipo",
+      "industry": "Industria"
+    },
+    "sections": {
+      "productsAudience": "Productos y Audiencia",
+      "marketPosition": "Posición de Mercado",
+      "channelsPresence": "Canales y Presencia"
+    },
+    "labels": {
+      "products": "Productos / Servicios",
+      "audience": "Audiencia Objetivo",
+      "goals": "Objetivos",
+      "usp": "Punto de Venta Único",
+      "competitors": "Competidores",
+      "painPoints": "Puntos de Dolor",
+      "website": "Sitio Web",
+      "activeChannels": "Canales Activos"
+    }
+  },
+  "settings": {
+    "description": "Configuración general de este negocio.",
+    "about": "Sobre este negocio",
+    "type": "Tipo",
+    "industry": "Industria",
+    "teamSize": "Tamaño del Equipo",
+    "descriptionLabel": "Descripción",
+    "edit": "Editar",
+    "products": "Productos / Servicios",
+    "audience": "Audiencia Objetivo",
+    "website": "Sitio Web",
+    "competitors": "Principales Competidores",
+    "usp": "¿Qué te hace diferente? (Punto de Venta Único)",
+    "painPoints": "Puntos de Dolor Actuales",
+    "monthlyRevenue": "Ingresos Mensuales",
+    "yearEstablished": "Año de Fundación",
+    "activeChannels": "Canales Activos",
+    "goals": "Objetivos",
+    "noGoals": "No hay objetivos configurados",
+    "noChannels": "No hay canales configurados"
+  },
+  "content": {
+    "title": "Contenido",
+    "description": "Planifica y gestiona publicaciones en tus redes sociales.",
+    "newPost": "Nueva Publicación",
+    "noContent": "Aún no hay contenido",
+    "createFirst": "Crea tu primera publicación",
+    "status": {
+      "draft": "Borrador",
+      "scheduled": "Programado",
+      "published": "Publicado"
+    }
+  },
+  "campaigns": {
+    "title": "Campañas",
+    "description": "Planifica, lanza y rastrea campañas de marketing.",
+    "newCampaign": "Nueva Campaña",
+    "noCampaigns": "Aún no hay campañas",
+    "createFirst": "Crea tu primera campaña",
+    "status": {
+      "draft": "Borrador",
+      "active": "Activa",
+      "paused": "Pausada",
+      "completed": "Completada"
+    }
+  }
+}

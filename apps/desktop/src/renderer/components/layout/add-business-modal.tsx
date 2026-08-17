@@ -1,7 +1,8 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { X, ChevronRight, ChevronLeft, Check } from 'lucide-react'
-import { cn } from '../../lib/utils'
-import { useSound } from '../../lib/sound-context'
+import { cn } from '@/lib/utils'
+import { useSound } from '@/lib/sound-context'
 import { Input } from '@orca-blitz/ui/components/ui/input'
 import { Textarea } from '@orca-blitz/ui/components/ui/textarea'
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@orca-blitz/ui/components/ui/select'
@@ -14,11 +15,11 @@ interface AddBusinessModalProps {
 }
 
 const steps = [
-  { id: 1, title: 'Basics', description: 'Tell us about your business' },
-  { id: 2, title: 'Products & Audience', description: 'What do you sell and to whom?' },
-  { id: 3, title: 'Market', description: 'Competition and positioning' },
-  { id: 4, title: 'Channels', description: 'Where do you connect?' },
-  { id: 5, title: 'Goals', description: 'What do you want to achieve?' },
+  { id: 1, titleKey: 'addBusiness.steps.basics.title', descKey: 'addBusiness.steps.basics.description' },
+  { id: 2, titleKey: 'addBusiness.steps.products.title', descKey: 'addBusiness.steps.products.description' },
+  { id: 3, titleKey: 'addBusiness.steps.market.title', descKey: 'addBusiness.steps.market.description' },
+  { id: 4, titleKey: 'addBusiness.steps.channels.title', descKey: 'addBusiness.steps.channels.description' },
+  { id: 5, titleKey: 'addBusiness.steps.goals.title', descKey: 'addBusiness.steps.goals.description' },
 ]
 
 const businessTypes = [
@@ -44,6 +45,7 @@ const revenueRanges = [
 ]
 
 export function AddBusinessModal({ open, onClose, onAdd }: AddBusinessModalProps) {
+  const { t } = useTranslation('modals')
   const { play } = useSound()
   const [step, setStep] = useState(1)
   const [data, setData] = useState<BusinessData>({
@@ -82,14 +84,16 @@ export function AddBusinessModal({ open, onClose, onAdd }: AddBusinessModalProps
     onClose()
   }
 
+  const currentStep = steps[step - 1]
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       <div className="fixed inset-0 bg-black/50 backdrop-blur-sm" onClick={onClose} />
       <div className="relative z-50 w-full max-w-lg rounded-xl border border-border bg-background p-6 shadow-lg">
         <div className="flex items-center justify-between mb-4">
           <div>
-            <h2 className="text-lg font-semibold">Add Business</h2>
-            <p className="text-sm text-muted-foreground">Step {step} of {steps.length}</p>
+            <h2 className="text-lg font-semibold">{t('addBusiness.title')}</h2>
+            <p className="text-sm text-muted-foreground">{t('addBusiness.step', { current: step, total: steps.length })}</p>
           </div>
           <button onClick={() => { onClose(); play('droplet'); }} className="rounded-md p-1 hover:bg-muted transition-colors">
             <X className="size-4" />
@@ -103,37 +107,37 @@ export function AddBusinessModal({ open, onClose, onAdd }: AddBusinessModalProps
         </div>
 
         <div className="mb-6">
-          <h3 className="text-sm font-medium mb-1">{steps[step - 1].title}</h3>
-          <p className="text-xs text-muted-foreground">{steps[step - 1].description}</p>
+          <h3 className="text-sm font-medium mb-1">{t(currentStep.titleKey)}</h3>
+          <p className="text-xs text-muted-foreground">{t(currentStep.descKey)}</p>
         </div>
 
         <div className="min-h-[200px]">
           {step === 1 && (
             <div className="space-y-4">
               <div className="space-y-1.5">
-                <label className="text-xs font-medium text-muted-foreground">Business Name *</label>
-                <Input value={data.name} onChange={(e) => update('name', e.target.value)} placeholder="My Store" />
+                <label className="text-xs font-medium text-muted-foreground">{t('addBusiness.fields.businessName')}</label>
+                <Input value={data.name} onChange={(e) => update('name', e.target.value)} placeholder={t('addBusiness.placeholders.name')} />
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-1.5">
-                  <label className="text-xs font-medium text-muted-foreground">Type *</label>
+                  <label className="text-xs font-medium text-muted-foreground">{t('addBusiness.fields.type')}</label>
                   <Select value={data.type || undefined} onValueChange={(v) => update('type', v as string)}>
-                    <SelectTrigger size="sm" className="w-full"><SelectValue placeholder="Select..." /></SelectTrigger>
+                    <SelectTrigger size="sm" className="w-full"><SelectValue placeholder={t('addBusiness.options.select')} /></SelectTrigger>
                     <SelectContent>{businessTypes.map((t) => <SelectItem key={t} value={t}>{t}</SelectItem>)}</SelectContent>
                   </Select>
                 </div>
                 <div className="space-y-1.5">
-                  <label className="text-xs font-medium text-muted-foreground">Industry</label>
-                  <Input value={data.industry} onChange={(e) => update('industry', e.target.value)} placeholder="Fashion, Food..." />
+                  <label className="text-xs font-medium text-muted-foreground">{t('addBusiness.fields.industry')}</label>
+                  <Input value={data.industry} onChange={(e) => update('industry', e.target.value)} placeholder={t('addBusiness.placeholders.industry')} />
                 </div>
               </div>
               <div className="space-y-1.5">
-                <label className="text-xs font-medium text-muted-foreground">Website</label>
-                <Input value={data.website} onChange={(e) => update('website', e.target.value)} placeholder="https://..." />
+                <label className="text-xs font-medium text-muted-foreground">{t('addBusiness.fields.website')}</label>
+                <Input value={data.website} onChange={(e) => update('website', e.target.value)} placeholder={t('addBusiness.placeholders.website')} />
               </div>
               <div className="space-y-1.5">
-                <label className="text-xs font-medium text-muted-foreground">Brief Description</label>
-                <Textarea value={data.description} onChange={(e) => update('description', e.target.value)} placeholder="What does your business do?" rows={2} className="text-sm resize-none" />
+                <label className="text-xs font-medium text-muted-foreground">{t('addBusiness.fields.description')}</label>
+                <Textarea value={data.description} onChange={(e) => update('description', e.target.value)} placeholder={t('addBusiness.placeholders.description')} rows={2} className="text-sm resize-none" />
               </div>
             </div>
           )}
@@ -141,12 +145,12 @@ export function AddBusinessModal({ open, onClose, onAdd }: AddBusinessModalProps
           {step === 2 && (
             <div className="space-y-4">
               <div className="space-y-1.5">
-                <label className="text-xs font-medium text-muted-foreground">Products / Services *</label>
-                <Textarea value={data.products} onChange={(e) => update('products', e.target.value)} placeholder="What do you sell? Be specific..." rows={3} className="text-sm resize-none" />
+                <label className="text-xs font-medium text-muted-foreground">{t('addBusiness.fields.products')}</label>
+                <Textarea value={data.products} onChange={(e) => update('products', e.target.value)} placeholder={t('addBusiness.placeholders.products')} rows={3} className="text-sm resize-none" />
               </div>
               <div className="space-y-1.5">
-                <label className="text-xs font-medium text-muted-foreground">Target Audience</label>
-                <Textarea value={data.audience} onChange={(e) => update('audience', e.target.value)} placeholder="Who are your ideal customers?" rows={2} className="text-sm resize-none" />
+                <label className="text-xs font-medium text-muted-foreground">{t('addBusiness.fields.audience')}</label>
+                <Textarea value={data.audience} onChange={(e) => update('audience', e.target.value)} placeholder={t('addBusiness.placeholders.audience')} rows={2} className="text-sm resize-none" />
               </div>
               <div className="space-y-1.5">
                 <label className="text-xs font-medium text-muted-foreground">Team Size</label>
@@ -176,7 +180,7 @@ export function AddBusinessModal({ open, onClose, onAdd }: AddBusinessModalProps
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-1.5">
                   <label className="text-xs font-medium text-muted-foreground">Monthly Revenue</label>
-                  <Select value={data.monthlyRevenue || undefined} onValueChange={(v) => update('monthlyRevenue', v)}>
+                  <Select value={data.monthlyRevenue || undefined} onValueChange={(v) => update('monthlyRevenue', v ?? '')}>
                     <SelectTrigger size="sm" className="w-full"><SelectValue placeholder="Select..." /></SelectTrigger>
                     <SelectContent>{revenueRanges.map((r) => <SelectItem key={r} value={r}>{r}</SelectItem>)}</SelectContent>
                   </Select>
@@ -225,18 +229,18 @@ export function AddBusinessModal({ open, onClose, onAdd }: AddBusinessModalProps
         <div className="flex justify-between mt-6">
           <button onClick={() => step > 1 ? setStep(step - 1) : onClose()} className="flex items-center gap-1 h-8 rounded-md px-3 text-sm hover:bg-muted transition-colors">
             <ChevronLeft className="size-4" />
-            {step > 1 ? 'Back' : 'Cancel'}
+            {step > 1 ? t('addBusiness.actions.back') : t('addBusiness.actions.cancel')}
           </button>
 
           {step < steps.length ? (
             <button onClick={() => setStep(step + 1)} disabled={!canNext()} className="flex items-center gap-1 h-8 rounded-md bg-primary px-3 text-sm text-primary-foreground hover:bg-primary/80 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
-              Next
+              {t('addBusiness.actions.next')}
               <ChevronRight className="size-4" />
             </button>
           ) : (
             <button onClick={handleSubmit} disabled={!canNext()} className="flex items-center gap-1 h-8 rounded-md bg-primary px-3 text-sm text-primary-foreground hover:bg-primary/80 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
               <Check className="size-4" />
-              Create Business
+              {t('addBusiness.actions.create')}
             </button>
           )}
         </div>

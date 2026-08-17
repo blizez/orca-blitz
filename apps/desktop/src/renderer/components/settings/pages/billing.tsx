@@ -1,6 +1,7 @@
 import { useState, useRef } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Plus, Trash2, CreditCard, ChevronRight, Upload, X } from 'lucide-react'
-import { cn } from '../../../lib/utils'
+import { cn } from '@/lib/utils'
 import { Button } from '@orca-blitz/ui/components/ui/button'
 import { Input } from '@orca-blitz/ui/components/ui/input'
 import { Field, FieldLabel, FieldContent } from '@orca-blitz/ui/components/ui/field'
@@ -20,6 +21,7 @@ const defaultMethods: PaymentMethod[] = [
 ]
 
 export function BillingSettings() {
+  const { t } = useTranslation('settings')
   const [methods, setMethods] = useState<PaymentMethod[]>(defaultMethods)
   const [open, setOpen] = useState(false)
   const [newName, setNewName] = useState('')
@@ -61,12 +63,12 @@ export function BillingSettings() {
     <div className="space-y-6">
       <div className="flex items-start justify-between">
         <div>
-          <h3 className="text-lg font-medium">Payment Methods</h3>
-          <p className="text-sm text-muted-foreground">Manage payment methods for your businesses.</p>
+          <h3 className="text-lg font-medium">{t('billing.title')}</h3>
+          <p className="text-sm text-muted-foreground">{t('billing.description')}</p>
         </div>
         <Button size="sm" onClick={() => { setNewName(''); setNewValue(''); setOpen(true) }}>
           <Plus className="size-3.5 mr-1" />
-          Add Method
+          {t('billing.addMethod')}
         </Button>
       </div>
 
@@ -81,7 +83,7 @@ export function BillingSettings() {
                   </div>
                   <div className="text-left">
                     <p className="text-sm font-medium">{method.name}</p>
-                    <p className="text-xs text-muted-foreground">{method.value || 'Not configured'}</p>
+                    <p className="text-xs text-muted-foreground">{method.value || t('billing.notConfigured')}</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-1">

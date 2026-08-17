@@ -49,6 +49,23 @@ interface Window {
       delete: (id: string) => Promise<void>
       onChanged: (callback: (...args: unknown[]) => void) => () => void
     }
+    openai: {
+      startAuth: () => Promise<void>
+      cancelAuth: () => Promise<void>
+      onAuthUrl: (callback: (url: string) => void) => () => void
+      onAuthToken: (callback: (data: { accessToken: string; refreshToken: string }) => void) => () => void
+      onAuthModels: (callback: (models: string[]) => void) => () => void
+      onAuthCode: (callback: (data: { code: string; codeVerifier: string }) => void) => () => void
+      onAuthError: (callback: (error: string) => void) => () => void
+    }
+    chatgpt: {
+      setToken: (token: string) => void
+      send: (model: string, messages: Array<{ role: 'user' | 'assistant'; content: string }>) => Promise<string>
+      stream: (model: string, messages: Array<{ role: 'user' | 'assistant'; content: string }>) => Promise<void>
+      user: () => Promise<{ plan?: string; email?: string } | null>
+      hasToken: () => Promise<boolean>
+      onStreamChunk: (callback: (chunk: string | null) => void) => () => void
+    }
     browser: {
       create: (id: string, url: string, partition: string, platformId: string) => Promise<void>
       show: (id: string, bounds: { x: number; y: number; width: number; height: number }) => void

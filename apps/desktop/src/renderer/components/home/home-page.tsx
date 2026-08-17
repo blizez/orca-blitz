@@ -1,8 +1,11 @@
 import { Store, Plus, Upload } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { OrcaLogo } from '@orca-blitz/ui/components/ui/logo'
 import { Button } from '@orca-blitz/ui/components/ui/button'
 
 export function HomePage() {
+  const { t } = useTranslation('modals')
+
   return (
     <div className="flex h-full items-center justify-center p-6">
       <div className="flex flex-col items-center gap-6 text-center">
@@ -11,9 +14,9 @@ export function HomePage() {
         </div>
 
         <div className="space-y-2">
-          <h1 className="text-2xl font-bold">orca-blitz</h1>
+          <h1 className="text-2xl font-bold">{t('home.title')}</h1>
           <p className="text-sm text-muted-foreground max-w-md">
-            Select a business from the sidebar to get started.
+            {t('home.subtitle')}
           </p>
         </div>
 
@@ -22,11 +25,11 @@ export function HomePage() {
             onClick={() => document.querySelector<HTMLButtonElement>('[data-add-business]')?.click()}
           >
             <Plus className="size-4 mr-1.5" />
-            Add Business
+            {t('home.addBusiness')}
           </Button>
           <Button variant="outline">
             <Upload className="size-4 mr-1.5" />
-            Import Business
+            {t('home.importBusiness')}
           </Button>
         </div>
 
@@ -35,13 +38,13 @@ export function HomePage() {
             <span className="rounded border border-border bg-muted px-1.5 py-0.5 text-xs">Ctrl</span>
             <span>+</span>
             <span className="rounded border border-border bg-muted px-1.5 py-0.5 text-xs">N</span>
-            <span className="ml-2">Create business</span>
+            <span className="ml-2">{t('home.createBusiness')}</span>
           </div>
           <div className="flex items-center justify-center gap-2">
             <span className="rounded border border-border bg-muted px-1.5 py-0.5 text-xs">Ctrl</span>
             <span>+</span>
             <span className="rounded border border-border bg-muted px-1.5 py-0.5 text-xs">I</span>
-            <span className="ml-2">Import business</span>
+            <span className="ml-2">{t('home.importBusinessLabel')}</span>
           </div>
         </div>
       </div>

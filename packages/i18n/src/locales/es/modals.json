@@ -1,0 +1,78 @@
+{
+  "addBusiness": {
+    "title": "Agregar Negocio",
+    "step": "Paso {{current}} de {{total}}",
+    "steps": {
+      "basics": {
+        "title": "Básicos",
+        "description": "Cuéntanos sobre tu negocio"
+      },
+      "products": {
+        "title": "Productos y Audiencia",
+        "description": "¿Qué vendes y a quién?"
+      },
+      "market": {
+        "title": "Mercado",
+        "description": "Competencia y posicionamiento"
+      },
+      "channels": {
+        "title": "Canales",
+        "description": "¿Dónde te conectas?"
+      },
+      "goals": {
+        "title": "Objetivos",
+        "description": "¿Qué quieres lograr?"
+      }
+    },
+    "fields": {
+      "businessName": "Nombre del Negocio *",
+      "type": "Tipo *",
+      "industry": "Industria",
+      "website": "Sitio Web",
+      "description": "Descripción Breve",
+      "products": "Productos / Servicios *",
+      "audience": "Audiencia Objetivo",
+      "competitors": "Principales Competidores",
+      "usp": "¿Qué te hace diferente? (Punto de Venta Único)",
+      "painPoints": "Puntos de Dolor",
+      "monthlyRevenue": "Ingresos Mensuales",
+      "yearEstablished": "Año de Fundación",
+      "channels": "Canales *",
+      "goals": "Objetivos *"
+    },
+    "placeholders": {
+      "name": "Mi Tienda",
+      "industry": "Moda, Comida...",
+      "website": "https://...",
+      "description": "¿Qué hace tu negocio?",
+      "products": "¿Qué vendes? Sé específico...",
+      "audience": "¿Quiénes son tus clientes ideales?",
+      "competitors": "¿Quiénes son tus principales competidores?",
+      "usp": "¿Por qué los clientes te eligen a ti?",
+      "painPoints": "¿Cuáles son tus mayores desafíos?"
+    },
+    "options": {
+      "select": "Seleccionar..."
+    },
+    "actions": {
+      "back": "Volver",
+      "cancel": "Cancelar",
+      "next": "Siguiente",
+      "create": "Crear Negocio"
+    }
+  },
+  "deleteBusiness": {
+    "title": "Eliminar Negocio",
+    "confirm": "¿Estás seguro de que quieres eliminar",
+    "typeConfirm": "Escribe {{name}} para confirmar",
+    "warning": "Esta acción no se puede deshacer."
+  },
+  "home": {
+    "title": "orca-blitz",
+    "subtitle": "Selecciona un negocio de la barra lateral para comenzar.",
+    "addBusiness": "Agregar Negocio",
+    "importBusiness": "Importar Negocio",
+    "createBusiness": "Crear negocio",
+    "importBusinessLabel": "Importar negocio"
+  }
+}

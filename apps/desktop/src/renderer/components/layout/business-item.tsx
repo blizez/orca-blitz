@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react'
-import { cn } from '../../lib/utils'
-import { Store, MoreHorizontal, Settings, Image, Trash2, ChevronDown, ChevronRight } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
+import { cn } from '@/lib/utils'
+import { Store, MoreHorizontal, Settings, Image, Trash2, ChevronRight } from 'lucide-react'
 import type { Business } from '@orca-blitz/shared'
 
 interface BusinessItemProps {
@@ -14,16 +15,17 @@ interface BusinessItemProps {
   onBusinessSettings?: (business: Business) => void
 }
 
-const businessFeatures = [
-  { id: 'redes', label: 'Social Media' },
-  { id: 'content', label: 'Content' },
-  { id: 'campaigns', label: 'Campaigns' },
-]
-
 export function BusinessItem({ business, isActive, expanded, activePage, onToggle, onSelect, onDelete, onBusinessSettings }: BusinessItemProps) {
+  const { t } = useTranslation('sidebar')
   const hasActiveChild = isActive && expanded
   const [showMenu, setShowMenu] = useState(false)
   const menuRef = useRef<HTMLDivElement>(null)
+
+  const businessFeatures = [
+    { id: 'redes', label: t('features.socialMedia') },
+    { id: 'content', label: t('features.content') },
+    { id: 'campaigns', label: t('features.campaigns') },
+  ]
 
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
@@ -42,30 +44,21 @@ export function BusinessItem({ business, isActive, expanded, activePage, onToggl
       <div
         ref={menuRef}
         className={cn(
-          'rounded-md p-1 transition-colors',
+          'relative rounded-md p-1 transition-colors',
           expanded ? 'border border-sidebar-border' : 'border border-transparent'
         )}
       >
         <div
           className="flex items-center gap-1 rounded-md px-2 py-1.5 text-sm transition-colors cursor-pointer text-sidebar-foreground/80 hover:bg-sidebar-accent/50"
-          onClick={() => onSelect(business.id)}
+          onClick={() => onToggle(business.id)}
         >
           <Store className="size-4 shrink-0" />
           <span className="flex-1 truncate">{business.name}</span>
 
-          <button
-            onClick={(e) => {
-              e.stopPropagation()
-              onToggle(business.id)
-            }}
-            className="flex size-5 shrink-0 items-center justify-center rounded-md opacity-0 group-hover/item:opacity-100 text-sidebar-foreground/40 hover:text-sidebar-foreground/60 hover:bg-sidebar-border transition-all"
-          >
-            {expanded ? (
-              <ChevronDown className="size-3" />
-            ) : (
-              <ChevronRight className="size-3" />
-            )}
-          </button>
+          <ChevronRight className={cn(
+            'size-3 shrink-0 text-sidebar-foreground/40 transition-all duration-200 opacity-0 group-hover/item:opacity-100',
+            expanded && 'rotate-90'
+          )} />
 
           <button
             onClick={(e) => {
@@ -85,14 +78,14 @@ export function BusinessItem({ business, isActive, expanded, activePage, onToggl
               className="flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-sm hover:bg-accent hover:text-accent-foreground transition-colors"
             >
               <Settings className="size-3.5" />
-              Business Settings
+              {t('menu.businessSettings')}
             </button>
             <button
               onClick={() => setShowMenu(false)}
               className="flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-sm hover:bg-accent hover:text-accent-foreground transition-colors"
             >
               <Image className="size-3.5" />
-              Change Icon
+              {t('menu.changeIcon')}
             </button>
             <div className="my-1 h-px bg-border" />
             <button
@@ -103,7 +96,7 @@ export function BusinessItem({ business, isActive, expanded, activePage, onToggl
               className="flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-sm text-destructive hover:bg-destructive/10 transition-colors"
             >
               <Trash2 className="size-3.5" />
-              Delete Business
+              {t('menu.deleteBusiness')}
             </button>
           </div>
         )}

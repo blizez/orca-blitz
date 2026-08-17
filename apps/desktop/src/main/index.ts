@@ -2,6 +2,9 @@ import { app, shell, BrowserWindow, Menu, ipcMain } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import { registerBrowserHandlers } from './ipc/browser-handlers'
+import { registerCoreHandlers } from './ipc/core-handlers'
+import { registerOpenAIAuthHandlers } from './ipc/openai-auth'
+import { registerChatGPTHandlers } from './ipc/chatgpt-handlers'
 
 let mainWindow: BrowserWindow | null = null
 
@@ -65,6 +68,8 @@ app.whenReady().then(() => {
 
   Menu.setApplicationMenu(null)
 
+  registerCoreHandlers()
+
   ipcMain.on('window:minimize', () => mainWindow?.minimize())
   ipcMain.on('window:maximize', () => {
     if (mainWindow?.isMaximized()) {
@@ -78,7 +83,11 @@ app.whenReady().then(() => {
 
   createWindow()
 
-  if (mainWindow) registerBrowserHandlers(mainWindow)
+  if (mainWindow) {
+    registerBrowserHandlers(mainWindow)
+    registerOpenAIAuthHandlers(mainWindow)
+    registerChatGPTHandlers(mainWindow)
+  }
 
   app.on('activate', function () {
     if (BrowserWindow.getAllWindows().length === 0) createWindow()

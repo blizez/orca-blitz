@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import {
   MessageCircle,
   Bell,
@@ -10,7 +11,7 @@ import {
   X,
   Maximize2,
 } from 'lucide-react'
-import { cn } from '../../lib/utils'
+import { cn } from '@/lib/utils'
 import { Tooltip, TooltipTrigger, TooltipContent } from '@orca-blitz/ui/components/ui/tooltip'
 
 interface RightSidebarProps {
@@ -18,16 +19,17 @@ interface RightSidebarProps {
   onToggleCollapse: () => void
 }
 
-const navItems = [
-  { id: 'messages', icon: MessageCircle, label: 'Messages' },
-  { id: 'notifications', icon: Bell, label: 'Notifications' },
-  { id: 'contacts', icon: Users, label: 'Contacts' },
-  { id: 'search', icon: Search, label: 'Search' },
-]
-
 export function RightSidebar({ collapsed, onToggleCollapse }: RightSidebarProps) {
+  const { t } = useTranslation('sidebar')
   const [activeItem, setActiveItem] = useState<string | null>(null)
   const [isMaximized, setIsMaximized] = useState(false)
+
+  const navItems = [
+    { id: 'messages', icon: MessageCircle, label: t('rightSidebar.messages') },
+    { id: 'notifications', icon: Bell, label: t('rightSidebar.notifications') },
+    { id: 'contacts', icon: Users, label: t('rightSidebar.contacts') },
+    { id: 'search', icon: Search, label: t('rightSidebar.search') },
+  ]
 
   const handleMaximize = async () => {
     await window.api.window.maximize()

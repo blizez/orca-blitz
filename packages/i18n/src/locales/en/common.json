@@ -1,0 +1,36 @@
+{
+  "app": {
+    "name": "orca-blitz"
+  },
+  "actions": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "add": "Add",
+    "close": "Close",
+    "back": "Back",
+    "next": "Next",
+    "confirm": "Confirm",
+    "search": "Search",
+    "loading": "Loading...",
+    "noResults": "No results found"
+  },
+  "status": {
+    "configured": "Configured",
+    "notConfigured": "Not configured",
+    "connected": "Connected",
+    "disconnected": "Disconnected"
+  },
+  "help": {
+    "keyboardShortcuts": "Keyboard Shortcuts",
+    "sendFeedback": "Send Feedback",
+    "milestones": "Milestones",
+    "onboarding": "Onboarding",
+    "documentation": "Documentation",
+    "changelog": "Changelog",
+    "github": "GitHub",
+    "checkForUpdates": "Check for Updates",
+    "restart": "Restart"
+  }
+}

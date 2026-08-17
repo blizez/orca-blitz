@@ -1,0 +1,78 @@
+{
+  "addBusiness": {
+    "title": "Add Business",
+    "step": "Step {{current}} of {{total}}",
+    "steps": {
+      "basics": {
+        "title": "Basics",
+        "description": "Tell us about your business"
+      },
+      "products": {
+        "title": "Products & Audience",
+        "description": "What do you sell and to whom?"
+      },
+      "market": {
+        "title": "Market",
+        "description": "Competition and positioning"
+      },
+      "channels": {
+        "title": "Channels",
+        "description": "Where do you connect?"
+      },
+      "goals": {
+        "title": "Goals",
+        "description": "What do you want to achieve?"
+      }
+    },
+    "fields": {
+      "businessName": "Business Name *",
+      "type": "Type *",
+      "industry": "Industry",
+      "website": "Website",
+      "description": "Brief Description",
+      "products": "Products / Services *",
+      "audience": "Target Audience",
+      "competitors": "Main Competitors",
+      "usp": "What makes you different? (USP)",
+      "painPoints": "Pain Points",
+      "monthlyRevenue": "Monthly Revenue",
+      "yearEstablished": "Year Established",
+      "channels": "Channels *",
+      "goals": "Goals *"
+    },
+    "placeholders": {
+      "name": "My Store",
+      "industry": "Fashion, Food...",
+      "website": "https://...",
+      "description": "What does your business do?",
+      "products": "What do you sell? Be specific...",
+      "audience": "Who are your ideal customers?",
+      "competitors": "Who are your main competitors?",
+      "usp": "Why do customers choose you?",
+      "painPoints": "What are your biggest challenges?"
+    },
+    "options": {
+      "select": "Select..."
+    },
+    "actions": {
+      "back": "Back",
+      "cancel": "Cancel",
+      "next": "Next",
+      "create": "Create Business"
+    }
+  },
+  "deleteBusiness": {
+    "title": "Delete Business",
+    "confirm": "Are you sure you want to delete",
+    "typeConfirm": "Type {{name}} to confirm",
+    "warning": "This action cannot be undone."
+  },
+  "home": {
+    "title": "orca-blitz",
+    "subtitle": "Select a business from the sidebar to get started.",
+    "addBusiness": "Add Business",
+    "importBusiness": "Import Business",
+    "createBusiness": "Create business",
+    "importBusinessLabel": "Import business"
+  }
+}

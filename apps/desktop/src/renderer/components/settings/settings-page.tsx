@@ -58,7 +58,7 @@ export function SettingsPage({ onBack, businessId, business, businesses, onUpdat
         onBusinessSelect={handleBusinessSelect}
       />
       <main className="flex-1 overflow-y-auto">
-        <div className="mx-auto max-w-2xl p-6">
+        <div className={`mx-auto p-6 ${isBusinessMode && activeTab === 'business' ? 'max-w-4xl' : 'max-w-2xl'}`}>
           {isBusinessMode && activeTab === 'business'
             ? (business && onUpdateBusiness && onDeleteBusiness ? (
                 <BusinessSettings business={business} onUpdate={onUpdateBusiness} onDelete={onDeleteBusiness} />
