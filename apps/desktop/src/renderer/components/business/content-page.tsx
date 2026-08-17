@@ -1,5 +1,6 @@
 import { useState, useEffect, useMemo } from 'react'
 import { Plus, Trash2, CalendarClock, PenLine } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { cn } from '../../lib/utils'
 import { Button } from '@orca-blitz/ui/components/ui/button'
 import { Textarea } from '@orca-blitz/ui/components/ui/textarea'
@@ -23,22 +24,30 @@ interface ContentPageProps {
 
 const channelOptions = ['WhatsApp', 'Instagram', 'Facebook', 'TikTok', 'Telegram', 'X / Twitter', 'LinkedIn', 'Email']
 
-const statusConfig: Record<ContentItem['status'], { label: string; dot: string }> = {
-  draft: { label: 'Draft', dot: 'bg-muted-foreground/40' },
-  scheduled: { label: 'Scheduled', dot: 'bg-yellow-500' },
-  published: { label: 'Published', dot: 'bg-green-500' },
+const statusDots: Record<ContentItem['status'], string> = {
+  draft: 'bg-muted-foreground/40',
+  scheduled: 'bg-yellow-500',
+  published: 'bg-green-500',
 }
-
-const statusOptions = Object.entries(statusConfig).map(([value, config]) => ({
-  value: value as ContentItem['status'],
-  label: config.label,
-}))
 
 const storageKey = (businessId: string) => `orca-business-content-${businessId}`
 
 const emptyForm = { title: '', channel: channelOptions[0], status: 'draft' as ContentItem['status'], date: '', body: '' }
 
 export function ContentPage({ businessId }: ContentPageProps) {
+  const { t } = useTranslation('business')
+
+  const statusConfig: Record<ContentItem['status'], { label: string; dot: string }> = useMemo(() => ({
+    draft: { label: t('content.status.draft'), dot: statusDots.draft },
+    scheduled: { label: t('content.status.scheduled'), dot: statusDots.scheduled },
+    published: { label: t('content.status.published'), dot: statusDots.published },
+  }), [t])
+
+  const statusOptions = useMemo(() => Object.entries(statusConfig).map(([value, config]) => ({
+    value: value as ContentItem['status'],
+    label: config.label,
+  })), [statusConfig])
+
   const [items, setItems] = useState<ContentItem[]>(() => {
     try {
       const saved = localStorage.getItem(storageKey(businessId))
@@ -78,14 +87,14 @@ export function ContentPage({ businessId }: ContentPageProps) {
       <div className="mx-auto max-w-4xl space-y-6 p-6">
         <div className="flex items-start justify-between gap-4">
           <div>
-            <h1 className="text-xl font-semibold">Content</h1>
+            <h1 className="text-xl font-semibold">{t('content.title')}</h1>
             <p className="mt-1 text-sm text-muted-foreground">
-              Plan and manage posts for your business channels.
+              {t('content.description')}
             </p>
           </div>
           <Button onClick={() => setShowForm(true)}>
             <Plus />
-            New Post
+            {t('content.newPost')}
           </Button>
         </div>
 
@@ -95,15 +104,15 @@ export function ContentPage({ businessId }: ContentPageProps) {
               <EmptyMedia variant="icon">
                 <PenLine />
               </EmptyMedia>
-              <EmptyTitle>No content yet</EmptyTitle>
+              <EmptyTitle>{t('content.noContent')}</EmptyTitle>
               <EmptyDescription>
-                Create your first post to start building your content pipeline.
+                {t('content.emptyDescription')}
               </EmptyDescription>
             </EmptyHeader>
             <EmptyContent>
               <Button onClick={() => setShowForm(true)}>
                 <Plus />
-                Create your first post
+                {t('content.createFirst')}
               </Button>
             </EmptyContent>
           </Empty>
@@ -130,7 +139,7 @@ export function ContentPage({ businessId }: ContentPageProps) {
                       <span
                         className={cn(
                           'flex items-center gap-1.5 rounded-full bg-muted px-2 py-0.5 text-[11px] font-medium',
-                          status.label === 'Published' ? 'text-green-500' : status.label === 'Scheduled' ? 'text-yellow-500' : 'text-muted-foreground'
+                          item.status === 'published' ? 'text-green-500' : item.status === 'scheduled' ? 'text-yellow-500' : 'text-muted-foreground'
                         )}
                       >
                         <span className={cn('size-1.5 rounded-full', status.dot)} />
@@ -156,25 +165,25 @@ export function ContentPage({ businessId }: ContentPageProps) {
       <Dialog open={showForm} onOpenChange={setShowForm}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
-            <DialogTitle>New Post</DialogTitle>
+            <DialogTitle>{t('content.newPost')}</DialogTitle>
             <DialogDescription>
-              Draft a post for one of your business channels.
+              {t('content.formDescription')}
             </DialogDescription>
           </DialogHeader>
 
           <div className="space-y-3">
             <div className="space-y-1">
-              <label className="text-sm font-medium">Title</label>
+              <label className="text-sm font-medium">{t('content.titleLabel')}</label>
               <Input
                 value={form.title}
                 onChange={(e) => setForm({ ...form, title: e.target.value })}
-                placeholder="Post title"
+                placeholder={t('content.titlePlaceholder') ?? ''}
               />
             </div>
 
             <div className="grid grid-cols-2 gap-3">
               <div className="space-y-1">
-                <label className="text-sm font-medium">Channel</label>
+                <label className="text-sm font-medium">{t('content.channelLabel')}</label>
                 <Select value={form.channel} onValueChange={(value) => setForm({ ...form, channel: value })}>
                   <SelectTrigger className="w-full">
                     <SelectValue />
@@ -190,7 +199,7 @@ export function ContentPage({ businessId }: ContentPageProps) {
               </div>
 
               <div className="space-y-1">
-                <label className="text-sm font-medium">Status</label>
+                <label className="text-sm font-medium">{t('content.statusLabel')}</label>
                 <Select value={form.status} onValueChange={(value) => setForm({ ...form, status: value as ContentItem['status'] })}>
                   <SelectTrigger className="w-full">
                     <SelectValue />
@@ -207,7 +216,7 @@ export function ContentPage({ businessId }: ContentPageProps) {
             </div>
 
             <div className="space-y-1">
-              <label className="text-sm font-medium">Publish date</label>
+              <label className="text-sm font-medium">{t('content.publishDate')}</label>
               <Input
                 type="date"
                 value={form.date}
@@ -216,11 +225,11 @@ export function ContentPage({ businessId }: ContentPageProps) {
             </div>
 
             <div className="space-y-1">
-              <label className="text-sm font-medium">Content</label>
+              <label className="text-sm font-medium">{t('content.bodyLabel')}</label>
               <Textarea
                 value={form.body}
                 onChange={(e) => setForm({ ...form, body: e.target.value })}
-                placeholder="Write the post content..."
+                placeholder={t('content.bodyPlaceholder') ?? ''}
                 className="bg-background"
               />
             </div>
@@ -228,10 +237,10 @@ export function ContentPage({ businessId }: ContentPageProps) {
 
           <DialogFooter>
             <Button variant="outline" onClick={() => setShowForm(false)}>
-              Cancel
+              {t('content.cancel')}
             </Button>
             <Button onClick={handleSubmit} disabled={!form.title.trim()}>
-              Save Post
+              {t('content.savePost')}
             </Button>
           </DialogFooter>
         </DialogContent>
