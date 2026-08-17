@@ -1,8 +1,36 @@
 import { useState, useRef, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { cn } from '@/lib/utils'
-import { Store, MoreHorizontal, Settings, Image, Trash2, ChevronRight } from 'lucide-react'
+import {
+  Store,
+  ShoppingCart,
+  UtensilsCrossed,
+  Wrench,
+  Heart,
+  GraduationCap,
+  Home,
+  Cloud,
+  Building2,
+  MoreHorizontal,
+  Settings,
+  Image,
+  Trash2,
+  ChevronRight,
+} from 'lucide-react'
 import type { Business } from '@orca-blitz/shared'
+import type { LucideIcon } from 'lucide-react'
+
+const BUSINESS_TYPE_ICONS: Record<string, LucideIcon> = {
+  ecommerce: ShoppingCart,
+  restaurant: UtensilsCrossed,
+  services: Wrench,
+  retail: Store,
+  healthcare: Heart,
+  education: GraduationCap,
+  'real-estate': Home,
+  saas: Cloud,
+  other: Building2,
+}
 
 interface BusinessItemProps {
   business: Business
@@ -20,6 +48,8 @@ export function BusinessItem({ business, isActive, expanded, activePage, onToggl
   const hasActiveChild = isActive && expanded
   const [showMenu, setShowMenu] = useState(false)
   const menuRef = useRef<HTMLDivElement>(null)
+
+  const Icon = BUSINESS_TYPE_ICONS[business.type] ?? Building2
 
   const businessFeatures = [
     { id: 'redes', label: t('features.socialMedia') },
@@ -52,7 +82,7 @@ export function BusinessItem({ business, isActive, expanded, activePage, onToggl
           className="flex items-center gap-1 rounded-md px-2 py-1.5 text-sm transition-colors cursor-pointer text-sidebar-foreground/80 hover:bg-sidebar-accent/50"
           onClick={() => onToggle(business.id)}
         >
-          <Store className="size-4 shrink-0" />
+          <Icon className="size-4 shrink-0" />
           <span className="flex-1 truncate">{business.name}</span>
 
           <ChevronRight className={cn(
