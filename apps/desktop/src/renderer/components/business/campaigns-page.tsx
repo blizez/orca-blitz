@@ -1,5 +1,6 @@
 import { useState, useEffect, useMemo } from 'react'
 import { Plus, Trash2, Megaphone } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { cn } from '../../lib/utils'
 import { Button } from '@orca-blitz/ui/components/ui/button'
 import { Textarea } from '@orca-blitz/ui/components/ui/textarea'
@@ -24,23 +25,32 @@ interface CampaignsPageProps {
 
 const channelOptions = ['WhatsApp', 'Instagram', 'Facebook', 'TikTok', 'Telegram', 'X / Twitter', 'LinkedIn', 'Email']
 
-const statusConfig: Record<Campaign['status'], { label: string; dot: string }> = {
-  draft: { label: 'Draft', dot: 'bg-muted-foreground/40' },
-  active: { label: 'Active', dot: 'bg-green-500' },
-  paused: { label: 'Paused', dot: 'bg-yellow-500' },
-  completed: { label: 'Completed', dot: 'bg-blue-500' },
+const statusDots: Record<Campaign['status'], string> = {
+  draft: 'bg-muted-foreground/40',
+  active: 'bg-green-500',
+  paused: 'bg-yellow-500',
+  completed: 'bg-blue-500',
 }
-
-const statusOptions = Object.entries(statusConfig).map(([value, config]) => ({
-  value: value as Campaign['status'],
-  label: config.label,
-}))
 
 const storageKey = (businessId: string) => `orca-business-campaigns-${businessId}`
 
 const emptyForm = { name: '', channel: channelOptions[0], status: 'draft' as Campaign['status'], startDate: '', endDate: '', description: '' }
 
 export function CampaignsPage({ businessId }: CampaignsPageProps) {
+  const { t } = useTranslation('business')
+
+  const statusConfig: Record<Campaign['status'], { label: string; dot: string }> = useMemo(() => ({
+    draft: { label: t('campaigns.status.draft'), dot: statusDots.draft },
+    active: { label: t('campaigns.status.active'), dot: statusDots.active },
+    paused: { label: t('campaigns.status.paused'), dot: statusDots.paused },
+    completed: { label: t('campaigns.status.completed'), dot: statusDots.completed },
+  }), [t])
+
+  const statusOptions = useMemo(() => Object.entries(statusConfig).map(([value, config]) => ({
+    value: value as Campaign['status'],
+    label: config.label,
+  })), [statusConfig])
+
   const [items, setItems] = useState<Campaign[]>(() => {
     try {
       const saved = localStorage.getItem(storageKey(businessId))
@@ -85,14 +95,14 @@ export function CampaignsPage({ businessId }: CampaignsPageProps) {
       <div className="mx-auto max-w-4xl space-y-6 p-6">
         <div className="flex items-start justify-between gap-4">
           <div>
-            <h1 className="text-xl font-semibold">Campaigns</h1>
+            <h1 className="text-xl font-semibold">{t('campaigns.title')}</h1>
             <p className="mt-1 text-sm text-muted-foreground">
-              Plan, launch, and track marketing campaigns per channel.
+              {t('campaigns.description')}
             </p>
           </div>
           <Button onClick={() => setShowForm(true)}>
             <Plus />
-            New Campaign
+            {t('campaigns.newCampaign')}
           </Button>
         </div>
 
@@ -102,15 +112,15 @@ export function CampaignsPage({ businessId }: CampaignsPageProps) {
               <EmptyMedia variant="icon">
                 <Megaphone />
               </EmptyMedia>
-              <EmptyTitle>No campaigns yet</EmptyTitle>
+              <EmptyTitle>{t('campaigns.noCampaigns')}</EmptyTitle>
               <EmptyDescription>
-                Launch your first campaign to start driving engagement for this business.
+                {t('campaigns.emptyDescription')}
               </EmptyDescription>
             </EmptyHeader>
             <EmptyContent>
               <Button onClick={() => setShowForm(true)}>
                 <Plus />
-                Create your first campaign
+                {t('campaigns.createFirst')}
               </Button>
             </EmptyContent>
           </Empty>
@@ -158,25 +168,25 @@ export function CampaignsPage({ businessId }: CampaignsPageProps) {
       <Dialog open={showForm} onOpenChange={setShowForm}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
-            <DialogTitle>New Campaign</DialogTitle>
+            <DialogTitle>{t('campaigns.newCampaign')}</DialogTitle>
             <DialogDescription>
-              Define a campaign for one of your business channels.
+              {t('campaigns.formDescription')}
             </DialogDescription>
           </DialogHeader>
 
           <div className="space-y-3">
             <div className="space-y-1">
-              <label className="text-sm font-medium">Name</label>
+              <label className="text-sm font-medium">{t('campaigns.nameLabel')}</label>
               <Input
                 value={form.name}
                 onChange={(e) => setForm({ ...form, name: e.target.value })}
-                placeholder="Campaign name"
+                placeholder={t('campaigns.namePlaceholder') ?? ''}
               />
             </div>
 
             <div className="grid grid-cols-2 gap-3">
               <div className="space-y-1">
-                <label className="text-sm font-medium">Channel</label>
+                <label className="text-sm font-medium">{t('campaigns.channelLabel')}</label>
                 <Select value={form.channel} onValueChange={(value) => setForm({ ...form, channel: value })}>
                   <SelectTrigger className="w-full">
                     <SelectValue />
@@ -192,7 +202,7 @@ export function CampaignsPage({ businessId }: CampaignsPageProps) {
               </div>
 
               <div className="space-y-1">
-                <label className="text-sm font-medium">Status</label>
+                <label className="text-sm font-medium">{t('campaigns.statusLabel')}</label>
                 <Select value={form.status} onValueChange={(value) => setForm({ ...form, status: value as Campaign['status'] })}>
                   <SelectTrigger className="w-full">
                     <SelectValue />
@@ -210,7 +220,7 @@ export function CampaignsPage({ businessId }: CampaignsPageProps) {
 
             <div className="grid grid-cols-2 gap-3">
               <div className="space-y-1">
-                <label className="text-sm font-medium">Start date</label>
+                <label className="text-sm font-medium">{t('campaigns.startDate')}</label>
                 <Input
                   type="date"
                   value={form.startDate}
@@ -219,7 +229,7 @@ export function CampaignsPage({ businessId }: CampaignsPageProps) {
               </div>
 
               <div className="space-y-1">
-                <label className="text-sm font-medium">End date</label>
+                <label className="text-sm font-medium">{t('campaigns.endDate')}</label>
                 <Input
                   type="date"
                   value={form.endDate}
@@ -229,11 +239,11 @@ export function CampaignsPage({ businessId }: CampaignsPageProps) {
             </div>
 
             <div className="space-y-1">
-              <label className="text-sm font-medium">Description</label>
+              <label className="text-sm font-medium">{t('campaigns.descriptionLabel')}</label>
               <Textarea
                 value={form.description}
                 onChange={(e) => setForm({ ...form, description: e.target.value })}
-                placeholder="What is this campaign about?"
+                placeholder={t('campaigns.descriptionPlaceholder') ?? ''}
                 className="bg-background"
               />
             </div>
@@ -241,10 +251,10 @@ export function CampaignsPage({ businessId }: CampaignsPageProps) {
 
           <DialogFooter>
             <Button variant="outline" onClick={() => setShowForm(false)}>
-              Cancel
+              {t('campaigns.cancel')}
             </Button>
             <Button onClick={handleSubmit} disabled={!form.name.trim()}>
-              Save Campaign
+              {t('campaigns.saveCampaign')}
             </Button>
           </DialogFooter>
         </DialogContent>
