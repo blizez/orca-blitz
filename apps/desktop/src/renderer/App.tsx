@@ -120,6 +120,45 @@ export default function App() {
   const activeBusinessForPage = businesses.find((b) => activePage === b.id || activePage.startsWith(b.id + ':')) ?? null
   const activeBusiness = businessSettingsId ? businesses.find((b) => b.id === businessSettingsId) ?? null : null
 
+  useEffect(() => {
+    const isMac = navigator.userAgent.includes('Mac')
+    const mod = isMac ? 'metaKey' : 'ctrlKey'
+
+    function handleKeyDown(e: KeyboardEvent) {
+      if (!e[mod]) return
+
+      switch (e.key) {
+        case 'n':
+          e.preventDefault()
+          document.querySelector<HTMLButtonElement>('[data-add-business]')?.click()
+          break
+        case 'b':
+          e.preventDefault()
+          setSidebarOpen((prev) => !prev)
+          break
+        case ',':
+          e.preventDefault()
+          setActivePage('settings')
+          break
+        case 'q':
+          e.preventDefault()
+          window.api.window.close()
+          break
+        case '/':
+          e.preventDefault()
+          // TODO: implementar búsqueda global
+          break
+        case 's':
+          e.preventDefault()
+          // TODO: implementar guardado context-aware
+          break
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [])
+
   return (
     <div className="flex h-screen bg-background">
       {activePage !== 'settings' && (
