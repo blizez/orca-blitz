@@ -1,8 +1,11 @@
 import { useState, useEffect, useMemo } from 'react'
-import { Plus, Trash2, CalendarClock, PenLine, X } from 'lucide-react'
+import { Plus, Trash2, CalendarClock, PenLine } from 'lucide-react'
 import { cn } from '../../lib/utils'
 import { Button } from '@orca-blitz/ui/components/ui/button'
 import { Textarea } from '@orca-blitz/ui/components/ui/textarea'
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@orca-blitz/ui/components/ui/dialog'
+import { Input } from '@orca-blitz/ui/components/ui/input'
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@orca-blitz/ui/components/ui/select'
 import { Empty, EmptyHeader, EmptyMedia, EmptyTitle, EmptyDescription, EmptyContent } from '@orca-blitz/ui/components/ui/empty'
 
 interface ContentItem {
@@ -150,102 +153,89 @@ export function ContentPage({ businessId }: ContentPageProps) {
         )}
       </div>
 
-      {showForm && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center">
-          <div className="fixed inset-0 bg-black/50" onClick={() => setShowForm(false)} />
-          <div className="relative z-50 w-full max-w-md rounded-xl border border-border bg-background p-6 shadow-lg">
-            <div className="mb-4 flex items-center justify-between">
-              <div>
-                <h2 className="text-lg font-semibold">New Post</h2>
-                <p className="text-sm text-muted-foreground mt-1">
-                  Draft a post for one of your business channels.
-                </p>
-              </div>
-              <button
-                onClick={() => setShowForm(false)}
-                aria-label="Close"
-                className="flex size-6 items-center justify-center rounded-md text-muted-foreground hover:bg-accent hover:text-foreground transition-colors"
-              >
-                <X className="size-4" />
-              </button>
+      <Dialog open={showForm} onOpenChange={setShowForm}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>New Post</DialogTitle>
+            <DialogDescription>
+              Draft a post for one of your business channels.
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="space-y-3">
+            <div className="space-y-1">
+              <label className="text-sm font-medium">Title</label>
+              <Input
+                value={form.title}
+                onChange={(e) => setForm({ ...form, title: e.target.value })}
+                placeholder="Post title"
+              />
             </div>
 
-            <div className="space-y-3">
+            <div className="grid grid-cols-2 gap-3">
               <div className="space-y-1">
-                <label className="text-sm font-medium">Title</label>
-                <input
-                  type="text"
-                  value={form.title}
-                  onChange={(e) => setForm({ ...form, title: e.target.value })}
-                  placeholder="Post title"
-                  className="h-9 w-full rounded-md border border-input bg-background px-3 text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
-                />
-              </div>
-
-              <div className="grid grid-cols-2 gap-3">
-                <div className="space-y-1">
-                  <label className="text-sm font-medium">Channel</label>
-                  <select
-                    value={form.channel}
-                    onChange={(e) => setForm({ ...form, channel: e.target.value })}
-                    className="h-9 w-full rounded-md border border-border bg-background px-3 text-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
-                  >
+                <label className="text-sm font-medium">Channel</label>
+                <Select value={form.channel} onValueChange={(value) => setForm({ ...form, channel: value })}>
+                  <SelectTrigger className="w-full">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
                     {channelOptions.map((channel) => (
-                      <option key={channel} value={channel}>
+                      <SelectItem key={channel} value={channel}>
                         {channel}
-                      </option>
+                      </SelectItem>
                     ))}
-                  </select>
-                </div>
+                  </SelectContent>
+                </Select>
+              </div>
 
-                <div className="space-y-1">
-                  <label className="text-sm font-medium">Status</label>
-                  <select
-                    value={form.status}
-                    onChange={(e) => setForm({ ...form, status: e.target.value as ContentItem['status'] })}
-                    className="h-9 w-full rounded-md border border-border bg-background px-3 text-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
-                  >
+              <div className="space-y-1">
+                <label className="text-sm font-medium">Status</label>
+                <Select value={form.status} onValueChange={(value) => setForm({ ...form, status: value as ContentItem['status'] })}>
+                  <SelectTrigger className="w-full">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
                     {statusOptions.map((option) => (
-                      <option key={option.value} value={option.value}>
+                      <SelectItem key={option.value} value={option.value}>
                         {option.label}
-                      </option>
+                      </SelectItem>
                     ))}
-                  </select>
-                </div>
-              </div>
-
-              <div className="space-y-1">
-                <label className="text-sm font-medium">Publish date</label>
-                <input
-                  type="date"
-                  value={form.date}
-                  onChange={(e) => setForm({ ...form, date: e.target.value })}
-                  className="h-9 w-full rounded-md border border-input bg-background px-3 text-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
-                />
-              </div>
-
-              <div className="space-y-1">
-                <label className="text-sm font-medium">Content</label>
-                <Textarea
-                  value={form.body}
-                  onChange={(e) => setForm({ ...form, body: e.target.value })}
-                  placeholder="Write the post content..."
-                  className="bg-background"
-                />
+                  </SelectContent>
+                </Select>
               </div>
             </div>
 
-            <div className="mt-5 flex justify-end gap-2">
-              <Button variant="outline" onClick={() => setShowForm(false)}>
-                Cancel
-              </Button>
-              <Button onClick={handleSubmit} disabled={!form.title.trim()}>
-                Save Post
-              </Button>
+            <div className="space-y-1">
+              <label className="text-sm font-medium">Publish date</label>
+              <Input
+                type="date"
+                value={form.date}
+                onChange={(e) => setForm({ ...form, date: e.target.value })}
+              />
+            </div>
+
+            <div className="space-y-1">
+              <label className="text-sm font-medium">Content</label>
+              <Textarea
+                value={form.body}
+                onChange={(e) => setForm({ ...form, body: e.target.value })}
+                placeholder="Write the post content..."
+                className="bg-background"
+              />
             </div>
           </div>
-        </div>
-      )}
+
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setShowForm(false)}>
+              Cancel
+            </Button>
+            <Button onClick={handleSubmit} disabled={!form.title.trim()}>
+              Save Post
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }

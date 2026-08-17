@@ -1,8 +1,11 @@
 import { useState, useEffect, useMemo } from 'react'
-import { Plus, Trash2, Megaphone, X } from 'lucide-react'
+import { Plus, Trash2, Megaphone } from 'lucide-react'
 import { cn } from '../../lib/utils'
 import { Button } from '@orca-blitz/ui/components/ui/button'
 import { Textarea } from '@orca-blitz/ui/components/ui/textarea'
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@orca-blitz/ui/components/ui/dialog'
+import { Input } from '@orca-blitz/ui/components/ui/input'
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@orca-blitz/ui/components/ui/select'
 import { Empty, EmptyHeader, EmptyMedia, EmptyTitle, EmptyDescription, EmptyContent } from '@orca-blitz/ui/components/ui/empty'
 
 interface Campaign {
@@ -152,114 +155,100 @@ export function CampaignsPage({ businessId }: CampaignsPageProps) {
         )}
       </div>
 
-      {showForm && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center">
-          <div className="fixed inset-0 bg-black/50" onClick={() => setShowForm(false)} />
-          <div className="relative z-50 w-full max-w-md rounded-xl border border-border bg-background p-6 shadow-lg">
-            <div className="mb-4 flex items-center justify-between">
-              <div>
-                <h2 className="text-lg font-semibold">New Campaign</h2>
-                <p className="text-sm text-muted-foreground mt-1">
-                  Define a campaign for one of your business channels.
-                </p>
-              </div>
-              <button
-                onClick={() => setShowForm(false)}
-                aria-label="Close"
-                className="flex size-6 items-center justify-center rounded-md text-muted-foreground hover:bg-accent hover:text-foreground transition-colors"
-              >
-                <X className="size-4" />
-              </button>
+      <Dialog open={showForm} onOpenChange={setShowForm}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>New Campaign</DialogTitle>
+            <DialogDescription>
+              Define a campaign for one of your business channels.
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="space-y-3">
+            <div className="space-y-1">
+              <label className="text-sm font-medium">Name</label>
+              <Input
+                value={form.name}
+                onChange={(e) => setForm({ ...form, name: e.target.value })}
+                placeholder="Campaign name"
+              />
             </div>
 
-            <div className="space-y-3">
+            <div className="grid grid-cols-2 gap-3">
               <div className="space-y-1">
-                <label className="text-sm font-medium">Name</label>
-                <input
-                  type="text"
-                  value={form.name}
-                  onChange={(e) => setForm({ ...form, name: e.target.value })}
-                  placeholder="Campaign name"
-                  className="h-9 w-full rounded-md border border-input bg-background px-3 text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
-                />
-              </div>
-
-              <div className="grid grid-cols-2 gap-3">
-                <div className="space-y-1">
-                  <label className="text-sm font-medium">Channel</label>
-                  <select
-                    value={form.channel}
-                    onChange={(e) => setForm({ ...form, channel: e.target.value })}
-                    className="h-9 w-full rounded-md border border-border bg-background px-3 text-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
-                  >
+                <label className="text-sm font-medium">Channel</label>
+                <Select value={form.channel} onValueChange={(value) => setForm({ ...form, channel: value })}>
+                  <SelectTrigger className="w-full">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
                     {channelOptions.map((channel) => (
-                      <option key={channel} value={channel}>
+                      <SelectItem key={channel} value={channel}>
                         {channel}
-                      </option>
+                      </SelectItem>
                     ))}
-                  </select>
-                </div>
-
-                <div className="space-y-1">
-                  <label className="text-sm font-medium">Status</label>
-                  <select
-                    value={form.status}
-                    onChange={(e) => setForm({ ...form, status: e.target.value as Campaign['status'] })}
-                    className="h-9 w-full rounded-md border border-border bg-background px-3 text-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
-                  >
-                    {statusOptions.map((option) => (
-                      <option key={option.value} value={option.value}>
-                        {option.label}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-2 gap-3">
-                <div className="space-y-1">
-                  <label className="text-sm font-medium">Start date</label>
-                  <input
-                    type="date"
-                    value={form.startDate}
-                    onChange={(e) => setForm({ ...form, startDate: e.target.value })}
-                    className="h-9 w-full rounded-md border border-input bg-background px-3 text-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
-                  />
-                </div>
-
-                <div className="space-y-1">
-                  <label className="text-sm font-medium">End date</label>
-                  <input
-                    type="date"
-                    value={form.endDate}
-                    onChange={(e) => setForm({ ...form, endDate: e.target.value })}
-                    className="h-9 w-full rounded-md border border-input bg-background px-3 text-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
-                  />
-                </div>
+                  </SelectContent>
+                </Select>
               </div>
 
               <div className="space-y-1">
-                <label className="text-sm font-medium">Description</label>
-                <Textarea
-                  value={form.description}
-                  onChange={(e) => setForm({ ...form, description: e.target.value })}
-                  placeholder="What is this campaign about?"
-                  className="bg-background"
+                <label className="text-sm font-medium">Status</label>
+                <Select value={form.status} onValueChange={(value) => setForm({ ...form, status: value as Campaign['status'] })}>
+                  <SelectTrigger className="w-full">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {statusOptions.map((option) => (
+                      <SelectItem key={option.value} value={option.value}>
+                        {option.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-3">
+              <div className="space-y-1">
+                <label className="text-sm font-medium">Start date</label>
+                <Input
+                  type="date"
+                  value={form.startDate}
+                  onChange={(e) => setForm({ ...form, startDate: e.target.value })}
+                />
+              </div>
+
+              <div className="space-y-1">
+                <label className="text-sm font-medium">End date</label>
+                <Input
+                  type="date"
+                  value={form.endDate}
+                  onChange={(e) => setForm({ ...form, endDate: e.target.value })}
                 />
               </div>
             </div>
 
-            <div className="mt-5 flex justify-end gap-2">
-              <Button variant="outline" onClick={() => setShowForm(false)}>
-                Cancel
-              </Button>
-              <Button onClick={handleSubmit} disabled={!form.name.trim()}>
-                Save Campaign
-              </Button>
+            <div className="space-y-1">
+              <label className="text-sm font-medium">Description</label>
+              <Textarea
+                value={form.description}
+                onChange={(e) => setForm({ ...form, description: e.target.value })}
+                placeholder="What is this campaign about?"
+                className="bg-background"
+              />
             </div>
           </div>
-        </div>
-      )}
+
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setShowForm(false)}>
+              Cancel
+            </Button>
+            <Button onClick={handleSubmit} disabled={!form.name.trim()}>
+              Save Campaign
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }
