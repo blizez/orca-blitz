@@ -2,7 +2,9 @@
   "businesses": {
     "title": "Negocios",
     "add": "Agregar Negocio",
-    "empty": "Aún no hay negocios"
+    "empty": "Aún no hay negocios",
+    "search": "Buscar negocios…",
+    "noResults": "No se encontraron negocios"
   },
   "navigation": {
     "settings": "Configuración",

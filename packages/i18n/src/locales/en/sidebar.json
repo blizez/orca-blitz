@@ -2,7 +2,9 @@
   "businesses": {
     "title": "Businesses",
     "add": "Add Business",
-    "empty": "No businesses yet"
+    "empty": "No businesses yet",
+    "search": "Search businesses…",
+    "noResults": "No businesses found"
   },
   "navigation": {
     "settings": "Settings",
