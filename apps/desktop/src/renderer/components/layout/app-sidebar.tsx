@@ -1,8 +1,9 @@
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import {
   Building2,
   Settings,
   Plus,
+  Search,
   PanelLeftClose,
   PanelLeftOpen,
 } from 'lucide-react'
@@ -10,6 +11,7 @@ import { useTranslation } from 'react-i18next'
 import { cn } from '@/lib/utils'
 import { HelpMenu } from './help-menu'
 import { Tooltip, TooltipTrigger, TooltipContent } from '@orca-blitz/ui/components/ui/tooltip'
+import { Input } from '@orca-blitz/ui/components/ui/input'
 import { AddBusinessModal } from './add-business-modal'
 import { DeleteBusinessModal } from './delete-business-modal'
 import { BusinessItem } from './business-item'
@@ -31,6 +33,23 @@ export function AppSidebar({ activePage, onNavigate, collapsed, onToggleCollapse
   const [showModal, setShowModal] = useState(false)
   const [deleteTarget, setDeleteTarget] = useState<Business | null>(null)
   const [expandedBiz, setExpandedBiz] = useState<string[]>([])
+  const [searchQuery, setSearchQuery] = useState('')
+  const searchRef = useRef<HTMLInputElement>(null)
+
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault()
+        searchRef.current?.focus()
+      }
+    }
+    window.addEventListener('keydown', handler)
+    return () => window.removeEventListener('keydown', handler)
+  }, [])
+
+  const filteredBusinesses = businesses.filter((biz) =>
+    biz.name.toLowerCase().includes(searchQuery.toLowerCase())
+  )
 
   const handleAddBusiness = (data: Omit<Business, 'id'>) => {
     onBusinessesChange([...businesses, { ...data, id: Date.now().toString() }])
@@ -96,6 +115,24 @@ export function AppSidebar({ activePage, onNavigate, collapsed, onToggleCollapse
                 {t('businesses.title')}
               </span>
             )}
+            {collapsed && businesses.length > 0 && (
+              <Tooltip>
+                <TooltipTrigger
+                  render={
+                    <button
+                      onClick={() => {
+                        onToggleCollapse()
+                        setTimeout(() => searchRef.current?.focus(), 100)
+                      }}
+                      className="flex size-7 items-center justify-center rounded-md text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground transition-colors"
+                    >
+                      <Search className="size-4" />
+                    </button>
+                  }
+                />
+                <TooltipContent side="right" sideOffset={8}>{t('businesses.search')}</TooltipContent>
+              </Tooltip>
+            )}
             {collapsed ? (
               <Tooltip>
                 <TooltipTrigger
@@ -122,15 +159,38 @@ export function AppSidebar({ activePage, onNavigate, collapsed, onToggleCollapse
             )}
           </div>
 
+          {!collapsed && businesses.length > 0 && (
+            <div className="px-2 pb-1.5">
+              <div className="relative">
+                <Search className="absolute left-2 top-1/2 size-3.5 -translate-y-1/2 text-sidebar-foreground/40 pointer-events-none" />
+                <Input
+                  ref={searchRef}
+                  type="text"
+                  placeholder={t('businesses.search')}
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onKeyDown={(e) => e.key === 'Escape' && setSearchQuery('')}
+                  className="h-7 pl-7 text-xs bg-background border-sidebar-border"
+                />
+              </div>
+            </div>
+          )}
+
           {businesses.length === 0 && !collapsed && (
             <p className="px-2 py-2 text-xs text-sidebar-foreground/40">
               {t('businesses.empty')}
             </p>
           )}
 
-          {businesses.length > 0 && !collapsed && (
+          {businesses.length > 0 && !collapsed && filteredBusinesses.length === 0 && (
+            <p className="px-2 py-2 text-xs text-sidebar-foreground/40">
+              {t('businesses.noResults')}
+            </p>
+          )}
+
+          {filteredBusinesses.length > 0 && !collapsed && (
             <ul className="space-y-0.5">
-              {businesses.map((biz) => (
+              {filteredBusinesses.map((biz) => (
                 <BusinessItem
                   key={biz.id}
                   business={biz}
