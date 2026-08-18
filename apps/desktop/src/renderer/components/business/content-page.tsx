@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from 'react'
-import { Plus, Trash2, CalendarClock, PenLine } from 'lucide-react'
+import { Plus, Trash2, CalendarClock, PenLine, Search } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { cn } from '../../lib/utils'
 import { Button } from '@orca-blitz/ui/components/ui/button'
@@ -7,6 +7,7 @@ import { Textarea } from '@orca-blitz/ui/components/ui/textarea'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@orca-blitz/ui/components/ui/dialog'
 import { Input } from '@orca-blitz/ui/components/ui/input'
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@orca-blitz/ui/components/ui/select'
+import { Badge } from '@orca-blitz/ui/components/ui/badge'
 import { Empty, EmptyHeader, EmptyMedia, EmptyTitle, EmptyDescription, EmptyContent } from '@orca-blitz/ui/components/ui/empty'
 
 interface ContentItem {
@@ -59,15 +60,28 @@ export function ContentPage({ businessId }: ContentPageProps) {
   const [showForm, setShowForm] = useState(false)
   const [form, setForm] = useState(emptyForm)
   const [editingItem, setEditingItem] = useState<ContentItem | null>(null)
+  const [searchQuery, setSearchQuery] = useState('')
+  const [statusFilter, setStatusFilter] = useState<ContentItem['status'] | 'all'>('all')
 
   useEffect(() => {
     localStorage.setItem(storageKey(businessId), JSON.stringify(items))
   }, [businessId, items])
 
-  const sorted = useMemo(
-    () => [...items].sort((a, b) => (a.date < b.date ? 1 : -1)),
-    [items]
-  )
+  const filtered = useMemo(() => {
+    const query = searchQuery.toLowerCase().trim()
+    return [...items]
+      .filter((item) => {
+        if (statusFilter !== 'all' && item.status !== statusFilter) return false
+        if (query) {
+          return (
+            item.title.toLowerCase().includes(query) ||
+            item.body.toLowerCase().includes(query)
+          )
+        }
+        return true
+      })
+      .sort((a, b) => (a.date < b.date ? 1 : -1))
+  }, [items, searchQuery, statusFilter])
 
   const handleSubmit = () => {
     if (!form.title.trim()) return
@@ -108,7 +122,46 @@ export function ContentPage({ businessId }: ContentPageProps) {
           </Button>
         </div>
 
-        {sorted.length === 0 ? (
+        {items.length > 1 && (
+          <div className="space-y-3">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+              <Input
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder={t('content.searchPlaceholder') ?? 'Search posts...'}
+                className="pl-9"
+              />
+            </div>
+            <div className="flex flex-wrap items-center gap-2">
+              <Badge
+                variant={statusFilter === 'all' ? 'default' : 'outline'}
+                className="cursor-pointer"
+                onClick={() => setStatusFilter('all')}
+              >
+                {t('content.filterAll') ?? 'All'}
+              </Badge>
+              {(Object.keys(statusConfig) as ContentItem['status'][]).map((status) => (
+                <Badge
+                  key={status}
+                  variant={statusFilter === status ? 'default' : 'outline'}
+                  className="cursor-pointer"
+                  onClick={() => setStatusFilter(status)}
+                >
+                  {statusConfig[status].label}
+                </Badge>
+              ))}
+              {statusFilter !== 'all' || searchQuery ? (
+                <span className="text-xs text-muted-foreground">
+                  {t('content.showingCount', { showing: filtered.length, total: items.length }) ??
+                    `Showing ${filtered.length} of ${items.length}`}
+                </span>
+              ) : null}
+            </div>
+          </div>
+        )}
+
+        {filtered.length === 0 ? (
           <Empty>
             <EmptyHeader>
               <EmptyMedia variant="icon">
@@ -128,7 +181,7 @@ export function ContentPage({ businessId }: ContentPageProps) {
           </Empty>
         ) : (
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-            {sorted.map((item) => {
+            {filtered.map((item) => {
               const status = statusConfig[item.status]
               return (
                 <div key={item.id} className="flex flex-col gap-2 rounded-xl border border-border bg-card p-4">
