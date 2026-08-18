@@ -60,6 +60,8 @@
     "bodyPlaceholder": "Write the post content...",
     "cancel": "Cancel",
     "savePost": "Save Post",
+    "editPost": "Edit Post",
+    "updatePost": "Update",
     "status": {
       "draft": "Draft",
       "scheduled": "Scheduled",
@@ -84,6 +86,8 @@
     "descriptionPlaceholder": "What is this campaign about?",
     "cancel": "Cancel",
     "saveCampaign": "Save Campaign",
+    "editCampaign": "Edit Campaign",
+    "updateCampaign": "Update",
     "status": {
       "draft": "Draft",
       "active": "Active",

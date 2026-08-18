@@ -58,6 +58,7 @@ export function ContentPage({ businessId }: ContentPageProps) {
   })
   const [showForm, setShowForm] = useState(false)
   const [form, setForm] = useState(emptyForm)
+  const [editingItem, setEditingItem] = useState<ContentItem | null>(null)
 
   useEffect(() => {
     localStorage.setItem(storageKey(businessId), JSON.stringify(items))
@@ -70,11 +71,20 @@ export function ContentPage({ businessId }: ContentPageProps) {
 
   const handleSubmit = () => {
     if (!form.title.trim()) return
-    setItems((prev) => [
-      { id: `content-${Date.now()}`, ...form, title: form.title.trim() },
-      ...prev,
-    ])
+    if (editingItem) {
+      setItems((prev) =>
+        prev.map((item) =>
+          item.id === editingItem.id ? { ...item, ...form, title: form.title.trim() } : item
+        )
+      )
+    } else {
+      setItems((prev) => [
+        { id: `content-${Date.now()}`, ...form, title: form.title.trim() },
+        ...prev,
+      ])
+    }
     setForm(emptyForm)
+    setEditingItem(null)
     setShowForm(false)
   }
 
@@ -146,6 +156,23 @@ export function ContentPage({ businessId }: ContentPageProps) {
                         {status.label}
                       </span>
                       <button
+                        onClick={() => {
+                          setEditingItem(item)
+                          setForm({
+                            title: item.title,
+                            channel: item.channel,
+                            status: item.status,
+                            date: item.date,
+                            body: item.body,
+                          })
+                          setShowForm(true)
+                        }}
+                        aria-label={`Edit ${item.title}`}
+                        className="flex size-6 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent"
+                      >
+                        <PenLine className="size-3.5" />
+                      </button>
+                      <button
                         onClick={() => handleDelete(item.id)}
                         aria-label={`Delete ${item.title}`}
                         className="flex size-6 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-destructive/10 hover:text-destructive"
@@ -165,7 +192,7 @@ export function ContentPage({ businessId }: ContentPageProps) {
       <Dialog open={showForm} onOpenChange={setShowForm}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
-            <DialogTitle>{t('content.newPost')}</DialogTitle>
+            <DialogTitle>{editingItem ? t('content.editPost') : t('content.newPost')}</DialogTitle>
             <DialogDescription>
               {t('content.formDescription')}
             </DialogDescription>
@@ -236,11 +263,11 @@ export function ContentPage({ businessId }: ContentPageProps) {
           </div>
 
           <DialogFooter>
-            <Button variant="outline" onClick={() => setShowForm(false)}>
+            <Button variant="outline" onClick={() => { setEditingItem(null); setForm(emptyForm); setShowForm(false) }}>
               {t('content.cancel')}
             </Button>
             <Button onClick={handleSubmit} disabled={!form.title.trim()}>
-              {t('content.savePost')}
+              {editingItem ? t('content.updatePost') : t('content.savePost')}
             </Button>
           </DialogFooter>
         </DialogContent>
