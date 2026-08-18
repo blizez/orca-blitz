@@ -1,7 +1,8 @@
 import { useState, useEffect, useMemo } from 'react'
-import { Plus, Trash2, CalendarClock, PenLine, Search } from 'lucide-react'
+import { Plus, Trash2, CalendarClock, PenLine, Search, Copy } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { cn } from '../../lib/utils'
+import { toast } from '@orca-blitz/ui/components/ui/toast'
 import { Button } from '@orca-blitz/ui/components/ui/button'
 import { Textarea } from '@orca-blitz/ui/components/ui/textarea'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@orca-blitz/ui/components/ui/dialog'
@@ -104,6 +105,17 @@ export function ContentPage({ businessId }: ContentPageProps) {
 
   const handleDelete = (id: string) => {
     setItems((prev) => prev.filter((item) => item.id !== id))
+  }
+
+  const handleDuplicate = (item: ContentItem) => {
+    const duplicated: ContentItem = {
+      ...item,
+      id: `content-${Date.now()}`,
+      title: `${item.title} (Copia)`,
+      status: 'draft',
+    }
+    setItems((prev) => [duplicated, ...prev])
+    toast.add({ title: 'Contenido duplicado', type: 'success' })
   }
 
   return (
@@ -224,6 +236,13 @@ export function ContentPage({ businessId }: ContentPageProps) {
                         className="flex size-6 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent"
                       >
                         <PenLine className="size-3.5" />
+                      </button>
+                      <button
+                        onClick={() => handleDuplicate(item)}
+                        aria-label={`Duplicate ${item.title}`}
+                        className="flex size-6 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent"
+                      >
+                        <Copy className="size-3.5" />
                       </button>
                       <button
                         onClick={() => handleDelete(item.id)}
