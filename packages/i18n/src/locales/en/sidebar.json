@@ -13,7 +13,8 @@
   "features": {
     "socialMedia": "Social Media",
     "content": "Content",
-    "campaigns": "Campaigns"
+    "campaigns": "Campaigns",
+    "notes": "Notes"
   },
   "menu": {
     "businessSettings": "Business Settings",

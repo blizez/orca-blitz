@@ -94,5 +94,22 @@
       "paused": "Pausada",
       "completed": "Completada"
     }
+  },
+  "notes": {
+    "title": "Notas",
+    "description": "Notas rápidas, ideas y recordatorios para este negocio.",
+    "newNote": "Nueva Nota",
+    "noNotes": "Aún no hay notas",
+    "emptyDescription": "Comienza a capturar ideas, recordatorios y feedback para este negocio.",
+    "createFirst": "Crea tu primera nota",
+    "formDescription": "Escribe una nota rápida para este negocio.",
+    "titleLabel": "Título",
+    "titlePlaceholder": "Título de la nota",
+    "contentLabel": "Contenido",
+    "contentPlaceholder": "Escribe tu nota aquí...",
+    "cancel": "Cancelar",
+    "saveNote": "Guardar Nota",
+    "editNote": "Editar Nota",
+    "updateNote": "Actualizar"
   }
 }

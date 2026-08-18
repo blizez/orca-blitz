@@ -94,5 +94,22 @@
       "paused": "Paused",
       "completed": "Completed"
     }
+  },
+  "notes": {
+    "title": "Notes",
+    "description": "Quick notes, ideas, and reminders for this business.",
+    "newNote": "New Note",
+    "noNotes": "No notes yet",
+    "emptyDescription": "Start capturing ideas, reminders, and feedback for this business.",
+    "createFirst": "Create your first note",
+    "formDescription": "Jot down a quick note for this business.",
+    "titleLabel": "Title",
+    "titlePlaceholder": "Note title",
+    "contentLabel": "Content",
+    "contentPlaceholder": "Write your note here...",
+    "cancel": "Cancel",
+    "saveNote": "Save Note",
+    "editNote": "Edit Note",
+    "updateNote": "Update"
   }
 }
