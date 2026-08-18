@@ -117,5 +117,36 @@
     "saveNote": "Guardar Nota",
     "editNote": "Editar Nota",
     "updateNote": "Actualizar"
+  },
+  "snippets": {
+    "title": "Snippets Rápidos",
+    "description": "Textos guardados para reutilizar al crear contenido.",
+    "newSnippet": "Nuevo Snippet",
+    "editSnippet": "Editar Snippet",
+    "noSnippets": "Aún no hay snippets",
+    "emptyDescription": "Guarda frases, CTAs, datos de pago y textos frecuentes para copiar rápidamente.",
+    "createFirst": "Crea tu primer snippet",
+    "formDescription": "Guarda un texto para reutilizarlo después.",
+    "titleLabel": "Título",
+    "titlePlaceholder": "Nombre del snippet",
+    "categoryLabel": "Categoría",
+    "bodyLabel": "Texto",
+    "bodyPlaceholder": "Escribe el texto del snippet...",
+    "cancel": "Cancelar",
+    "saveSnippet": "Guardar Snippet",
+    "updateSnippet": "Actualizar",
+    "copied": "Copiado al portapapeles",
+    "copyError": "Error al copiar",
+    "deleted": "Snippet eliminado",
+    "searchPlaceholder": "Buscar snippets...",
+    "categories": {
+      "all": "Todos",
+      "cta": "CTA",
+      "description": "Descripción",
+      "greeting": "Saludo",
+      "response": "Respuesta",
+      "payment": "Pagos",
+      "other": "Otro"
+    }
   }
 }
