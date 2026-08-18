@@ -9,6 +9,7 @@ import {
 } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { cn } from '@/lib/utils'
+import { toast } from '@orca-blitz/ui/components/ui/toast'
 import { HelpMenu } from './help-menu'
 import { Tooltip, TooltipTrigger, TooltipContent } from '@orca-blitz/ui/components/ui/tooltip'
 import { Input } from '@orca-blitz/ui/components/ui/input'
@@ -53,6 +54,7 @@ export function AppSidebar({ activePage, onNavigate, collapsed, onToggleCollapse
 
   const handleAddBusiness = (data: Omit<Business, 'id'>) => {
     onBusinessesChange([...businesses, { ...data, id: Date.now().toString() }])
+    toast.add({ title: 'Negocio creado', description: data.name, type: 'success' })
   }
 
   const handleDeleteBusiness = (id: string) => {
@@ -68,11 +70,13 @@ export function AppSidebar({ activePage, onNavigate, collapsed, onToggleCollapse
 
   const confirmDelete = () => {
     if (!deleteTarget) return
+    const name = deleteTarget.name
     onBusinessesChange(businesses.filter((b) => b.id !== deleteTarget.id))
     if (activePage === `business-${deleteTarget.id}`) {
       onNavigate('home')
     }
     setDeleteTarget(null)
+    toast.add({ title: 'Negocio eliminado', description: name, type: 'success' })
   }
 
   return (

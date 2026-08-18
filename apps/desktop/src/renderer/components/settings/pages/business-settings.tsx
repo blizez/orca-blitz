@@ -6,6 +6,7 @@ import { Textarea } from '@orca-blitz/ui/components/ui/textarea'
 import { Card, CardHeader, CardTitle, CardContent } from '@orca-blitz/ui/components/ui/card'
 import { Badge } from '@orca-blitz/ui/components/ui/badge'
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@orca-blitz/ui/components/ui/select'
+import { toast } from '@orca-blitz/ui/components/ui/toast'
 import { DeleteBusinessModal } from '../../layout/delete-business-modal'
 import type { Business } from '@orca-blitz/shared'
 
@@ -100,11 +101,13 @@ export function BusinessSettings({ business, onUpdate, onDelete }: BusinessSetti
   const saveDescription = () => {
     update('description', descDraft)
     setEditingDesc(false)
+    toast.add({ title: 'Cambios guardados', type: 'success' })
   }
 
   const saveName = () => {
     update('name', nameDraft)
     setEditingName(false)
+    toast.add({ title: 'Cambios guardados', description: nameDraft, type: 'success' })
   }
 
   return (
