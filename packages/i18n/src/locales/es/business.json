@@ -60,6 +60,8 @@
     "bodyPlaceholder": "Escribe el contenido de la publicación...",
     "cancel": "Cancelar",
     "savePost": "Guardar Publicación",
+    "editPost": "Editar Publicación",
+    "updatePost": "Actualizar",
     "status": {
       "draft": "Borrador",
       "scheduled": "Programado",
@@ -84,6 +86,8 @@
     "descriptionPlaceholder": "¿De qué trata esta campaña?",
     "cancel": "Cancelar",
     "saveCampaign": "Guardar Campaña",
+    "editCampaign": "Editar Campaña",
+    "updateCampaign": "Actualizar",
     "status": {
       "draft": "Borrador",
       "active": "Activa",

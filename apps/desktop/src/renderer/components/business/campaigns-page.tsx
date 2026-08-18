@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from 'react'
-import { Plus, Trash2, Megaphone } from 'lucide-react'
+import { Plus, Trash2, Megaphone, PenLine } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { cn } from '../../lib/utils'
 import { Button } from '@orca-blitz/ui/components/ui/button'
@@ -61,6 +61,7 @@ export function CampaignsPage({ businessId }: CampaignsPageProps) {
   })
   const [showForm, setShowForm] = useState(false)
   const [form, setForm] = useState(emptyForm)
+  const [editingItem, setEditingItem] = useState<Campaign | null>(null)
 
   useEffect(() => {
     localStorage.setItem(storageKey(businessId), JSON.stringify(items))
@@ -73,11 +74,20 @@ export function CampaignsPage({ businessId }: CampaignsPageProps) {
 
   const handleSubmit = () => {
     if (!form.name.trim()) return
-    setItems((prev) => [
-      { id: `campaign-${Date.now()}`, ...form, name: form.name.trim() },
-      ...prev,
-    ])
+    if (editingItem) {
+      setItems((prev) =>
+        prev.map((item) =>
+          item.id === editingItem.id ? { ...item, ...form, name: form.name.trim() } : item
+        )
+      )
+    } else {
+      setItems((prev) => [
+        { id: `campaign-${Date.now()}`, ...form, name: form.name.trim() },
+        ...prev,
+      ])
+    }
     setForm(emptyForm)
+    setEditingItem(null)
     setShowForm(false)
   }
 
@@ -151,13 +161,33 @@ export function CampaignsPage({ businessId }: CampaignsPageProps) {
                       <p className="mt-1 line-clamp-2 text-sm text-muted-foreground">{campaign.description}</p>
                     )}
                   </div>
-                  <button
-                    onClick={() => handleDelete(campaign.id)}
-                    aria-label={`Delete ${campaign.name}`}
-                    className="flex size-6 shrink-0 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-destructive/10 hover:text-destructive"
-                  >
-                    <Trash2 className="size-3.5" />
-                  </button>
+                  <div className="flex shrink-0 items-center gap-2">
+                    <button
+                      onClick={() => {
+                        setEditingItem(campaign)
+                        setForm({
+                          name: campaign.name,
+                          channel: campaign.channel,
+                          status: campaign.status,
+                          startDate: campaign.startDate,
+                          endDate: campaign.endDate,
+                          description: campaign.description,
+                        })
+                        setShowForm(true)
+                      }}
+                      aria-label={`Edit ${campaign.name}`}
+                      className="flex size-6 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent"
+                    >
+                      <PenLine className="size-3.5" />
+                    </button>
+                    <button
+                      onClick={() => handleDelete(campaign.id)}
+                      aria-label={`Delete ${campaign.name}`}
+                      className="flex size-6 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-destructive/10 hover:text-destructive"
+                    >
+                      <Trash2 className="size-3.5" />
+                    </button>
+                  </div>
                 </div>
               )
             })}
@@ -168,7 +198,7 @@ export function CampaignsPage({ businessId }: CampaignsPageProps) {
       <Dialog open={showForm} onOpenChange={setShowForm}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
-            <DialogTitle>{t('campaigns.newCampaign')}</DialogTitle>
+            <DialogTitle>{editingItem ? t('campaigns.editCampaign') : t('campaigns.newCampaign')}</DialogTitle>
             <DialogDescription>
               {t('campaigns.formDescription')}
             </DialogDescription>
@@ -250,11 +280,11 @@ export function CampaignsPage({ businessId }: CampaignsPageProps) {
           </div>
 
           <DialogFooter>
-            <Button variant="outline" onClick={() => setShowForm(false)}>
+            <Button variant="outline" onClick={() => { setEditingItem(null); setForm(emptyForm); setShowForm(false) }}>
               {t('campaigns.cancel')}
             </Button>
             <Button onClick={handleSubmit} disabled={!form.name.trim()}>
-              {t('campaigns.saveCampaign')}
+              {editingItem ? t('campaigns.updateCampaign') : t('campaigns.saveCampaign')}
             </Button>
           </DialogFooter>
         </DialogContent>
