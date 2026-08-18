@@ -117,5 +117,36 @@
     "saveNote": "Save Note",
     "editNote": "Edit Note",
     "updateNote": "Update"
+  },
+  "snippets": {
+    "title": "Quick Snippets",
+    "description": "Saved texts to reuse when creating content.",
+    "newSnippet": "New Snippet",
+    "editSnippet": "Edit Snippet",
+    "noSnippets": "No snippets yet",
+    "emptyDescription": "Save phrases, CTAs, payment details, and frequently used texts for quick copy.",
+    "createFirst": "Create your first snippet",
+    "formDescription": "Save a text to reuse later.",
+    "titleLabel": "Title",
+    "titlePlaceholder": "Snippet name",
+    "categoryLabel": "Category",
+    "bodyLabel": "Text",
+    "bodyPlaceholder": "Write the snippet text...",
+    "cancel": "Cancel",
+    "saveSnippet": "Save Snippet",
+    "updateSnippet": "Update",
+    "copied": "Copied to clipboard",
+    "copyError": "Failed to copy",
+    "deleted": "Snippet deleted",
+    "searchPlaceholder": "Search snippets...",
+    "categories": {
+      "all": "All",
+      "cta": "CTA",
+      "description": "Description",
+      "greeting": "Greeting",
+      "response": "Response",
+      "payment": "Payments",
+      "other": "Other"
+    }
   }
 }
