@@ -216,6 +216,8 @@ export default function App() {
               viewId={activeTabId}
               hasUrl={hasUrl}
               canForwardHome={canForwardHome}
+              platformId={activeTab?.icon ?? null}
+              businessId={activeBusinessForPage?.id ?? null}
               onGoHome={() => goHome(activeTabId)}
               onGoForwardHome={() => goForwardTab(activeTabId)}
             />

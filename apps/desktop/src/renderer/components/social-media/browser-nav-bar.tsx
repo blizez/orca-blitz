@@ -1,18 +1,22 @@
 import { useState, useEffect, useCallback } from 'react'
-import { ChevronLeft, ChevronRight, RotateCw } from 'lucide-react'
+import { ChevronLeft, ChevronRight, RotateCw, StickyNote } from 'lucide-react'
 import { cn } from '../../lib/utils'
+import { PlatformNotes } from './platform-notes'
 
 interface BrowserNavBarProps {
   viewId: string | null
   hasUrl: boolean
   canForwardHome: boolean
+  platformId: string | null
+  businessId: string | null
   onGoHome: () => void
   onGoForwardHome: () => void
 }
 
-export function BrowserNavBar({ viewId, hasUrl, canForwardHome, onGoHome, onGoForwardHome }: BrowserNavBarProps) {
+export function BrowserNavBar({ viewId, hasUrl, canForwardHome, platformId, businessId, onGoHome, onGoForwardHome }: BrowserNavBarProps) {
   const [canGoBack, setCanGoBack] = useState(false)
   const [canGoForward, setCanGoForward] = useState(false)
+  const [notesOpen, setNotesOpen] = useState(false)
 
   const refreshNavState = useCallback(async () => {
     if (!viewId || !hasUrl) {
@@ -116,6 +120,24 @@ export function BrowserNavBar({ viewId, hasUrl, canForwardHome, onGoHome, onGoFo
       >
         <RotateCw className="size-3.5" />
       </button>
+
+      {platformId && businessId && (
+        <>
+          <button
+            onClick={() => setNotesOpen(true)}
+            className="flex size-7 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+            title="Notas de plataforma"
+          >
+            <StickyNote className="size-4" />
+          </button>
+          <PlatformNotes
+            businessId={businessId}
+            platformId={platformId}
+            open={notesOpen}
+            onOpenChange={setNotesOpen}
+          />
+        </>
+      )}
     </div>
   )
 }
