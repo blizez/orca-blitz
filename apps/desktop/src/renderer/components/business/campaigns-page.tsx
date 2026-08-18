@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from 'react'
-import { Plus, Trash2, Megaphone, PenLine, Search, Copy } from 'lucide-react'
+import { Plus, Trash2, Megaphone, PenLine, Search, Copy, Clipboard, Check } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { cn } from '../../lib/utils'
 import { toast } from '@orca-blitz/ui/components/ui/toast'
@@ -66,6 +66,7 @@ export function CampaignsPage({ businessId }: CampaignsPageProps) {
   const [editingItem, setEditingItem] = useState<Campaign | null>(null)
   const [searchQuery, setSearchQuery] = useState('')
   const [statusFilter, setStatusFilter] = useState<Campaign['status'] | 'all'>('all')
+  const [copiedId, setCopiedId] = useState<string | null>(null)
 
   useEffect(() => {
     localStorage.setItem(storageKey(businessId), JSON.stringify(items))
@@ -119,6 +120,23 @@ export function CampaignsPage({ businessId }: CampaignsPageProps) {
     }
     setItems((prev) => [duplicated, ...prev])
     toast.add({ title: 'Campaña duplicada', type: 'success' })
+  }
+
+  const handleCopy = async (campaign: Campaign) => {
+    try {
+      const parts = [campaign.name]
+      if (campaign.description) parts.push(campaign.description)
+      parts.push(`Canal: ${campaign.channel}`)
+      if (campaign.startDate || campaign.endDate) {
+        parts.push(`Fechas: ${campaign.startDate || 'TBD'} → ${campaign.endDate || 'TBD'}`)
+      }
+      await navigator.clipboard.writeText(parts.join('\n\n'))
+      toast.add({ title: 'Copiado al portapapeles', type: 'success' })
+      setCopiedId(campaign.id)
+      setTimeout(() => setCopiedId(null), 1500)
+    } catch {
+      toast.add({ title: 'Error al copiar', type: 'error' })
+    }
   }
 
   const dateRange = (campaign: Campaign) => {
@@ -227,6 +245,13 @@ export function CampaignsPage({ businessId }: CampaignsPageProps) {
                     )}
                   </div>
                   <div className="flex shrink-0 items-center gap-2">
+                    <button
+                      onClick={() => handleCopy(campaign)}
+                      aria-label={`Copy ${campaign.name}`}
+                      className="flex size-6 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent"
+                    >
+                      {copiedId === campaign.id ? <Check className="size-3.5 text-green-500" /> : <Clipboard className="size-3.5" />}
+                    </button>
                     <button
                       onClick={() => {
                         setEditingItem(campaign)
