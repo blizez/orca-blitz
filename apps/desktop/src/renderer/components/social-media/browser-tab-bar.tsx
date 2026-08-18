@@ -6,6 +6,7 @@ export interface Tab {
   title: string
   url: string
   icon: string
+  iconComponent?: React.ComponentType<{ className?: string }>
   partition: string
   closable?: boolean
 }
@@ -41,6 +42,7 @@ export function BrowserTabBar({
               : 'text-muted-foreground hover:bg-muted/50 hover:text-foreground'
           )}
         >
+          {tab.iconComponent && <tab.iconComponent className="size-3 shrink-0" />}
           <span className="truncate flex-1">{tab.title}</span>
           {tab.closable !== false && (
             <button
