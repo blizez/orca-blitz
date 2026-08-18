@@ -55,6 +55,7 @@ export function BusinessItem({ business, isActive, expanded, activePage, onToggl
     { id: 'redes', label: t('features.socialMedia') },
     { id: 'content', label: t('features.content') },
     { id: 'campaigns', label: t('features.campaigns') },
+    { id: 'notes', label: t('features.notes') },
   ]
 
   useEffect(() => {

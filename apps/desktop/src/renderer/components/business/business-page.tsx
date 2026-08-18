@@ -2,6 +2,7 @@ import { SocialMediaPage, type Platform } from '../social-media/social-media-pag
 import { type Tab } from '../social-media/browser-tab-bar'
 import { ContentPage } from './content-page'
 import { CampaignsPage } from './campaigns-page'
+import { NotesPage } from './notes-page'
 import { BusinessOverview } from './business-overview'
 import type { Business } from '@orca-blitz/shared'
 
@@ -34,6 +35,10 @@ export function BusinessPage({ page, business, tabs, activeTabId, onPickPlatform
 
   if (featureId === 'campaigns') {
     return <CampaignsPage businessId={businessId} />
+  }
+
+  if (featureId === 'notes') {
+    return <NotesPage businessId={businessId} />
   }
 
   if (business) {

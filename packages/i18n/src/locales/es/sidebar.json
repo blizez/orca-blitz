@@ -13,7 +13,8 @@
   "features": {
     "socialMedia": "Redes Sociales",
     "content": "Contenido",
-    "campaigns": "Campañas"
+    "campaigns": "Campañas",
+    "notes": "Notas"
   },
   "menu": {
     "businessSettings": "Configuración del Negocio",
