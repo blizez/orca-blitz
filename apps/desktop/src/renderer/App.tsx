@@ -20,7 +20,7 @@ export default function App() {
   const [tabs, setTabs] = useState<Tab[]>([createNewTab()])
   const [activeTabId, setActiveTabId] = useState<string>(() => tabs[0].id)
   const [businessSettingsId, setBusinessSettingsId] = useState<string | null>(null)
-  const forwardStack = useRef<Record<string, { title: string; url: string; icon: string; partition: string }>>({})
+  const forwardStack = useRef<Record<string, { title: string; url: string; icon: string; iconComponent?: React.ComponentType<{ className?: string }>; partition: string }>>({})
 
   const businesses = useAppStore((s) => s.businesses)
   const setBusinesses = useAppStore((s) => s.setBusinesses)
@@ -78,7 +78,7 @@ export default function App() {
     setTabs((prev) =>
       prev.map((t) =>
         t.id === tabId
-          ? { ...t, title: platform.name, url: platform.url, icon: platform.id, partition: `persist:${platform.id}`, closable: true }
+          ? { ...t, title: platform.name, url: platform.url, icon: platform.id, iconComponent: platform.icon, partition: `persist:${platform.id}`, closable: true }
           : t
       )
     )
@@ -92,6 +92,7 @@ export default function App() {
           title: tab.title,
           url: tab.url,
           icon: tab.icon,
+          iconComponent: tab.iconComponent,
           partition: tab.partition,
         }
       }
@@ -110,7 +111,7 @@ export default function App() {
     setTabs((prev) =>
       prev.map((t) =>
         t.id === tabId
-          ? { ...t, title: saved.title, url: saved.url, icon: saved.icon, partition: saved.partition, closable: true }
+          ? { ...t, title: saved.title, url: saved.url, icon: saved.icon, iconComponent: saved.iconComponent, partition: saved.partition, closable: true }
           : t
       )
     )
