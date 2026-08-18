@@ -26,6 +26,13 @@
     "notifications": "Notificaciones",
     "contacts": "Contactos",
     "search": "Buscar",
-    "comingSoon": "Panel derecho — Próximamente"
+    "comingSoon": "Panel derecho — Próximamente",
+    "emptyState": "Seleccioná un negocio para ver su información",
+    "billing": "Facturación",
+    "billingEmpty": "Sin facturas registradas",
+    "reports": "Reportes",
+    "reportsEmpty": "Sin reportes disponibles",
+    "contactsPanel": "Contactos",
+    "contactsEmpty": "Sin contactos registrados"
   }
 }

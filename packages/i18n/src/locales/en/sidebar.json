@@ -26,6 +26,13 @@
     "notifications": "Notifications",
     "contacts": "Contacts",
     "search": "Search",
-    "comingSoon": "Right panel — Coming Soon"
+    "comingSoon": "Right panel — Coming Soon",
+    "emptyState": "Select a business to view its information",
+    "billing": "Billing",
+    "billingEmpty": "No invoices registered",
+    "reports": "Reports",
+    "reportsEmpty": "No reports available",
+    "contactsPanel": "Contacts",
+    "contactsEmpty": "No contacts registered"
   }
 }
