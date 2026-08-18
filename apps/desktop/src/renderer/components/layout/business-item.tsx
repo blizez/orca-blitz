@@ -32,6 +32,55 @@ const BUSINESS_TYPE_ICONS: Record<string, LucideIcon> = {
   other: Building2,
 }
 
+const CONTENT_STORAGE_KEY = (id: string) => `orca-business-content-${id}`
+const CAMPAIGNS_STORAGE_KEY = (id: string) => `orca-business-campaigns-${id}`
+
+function hasItems(key: string): boolean {
+  try {
+    const raw = localStorage.getItem(key)
+    if (!raw) return false
+    const parsed = JSON.parse(raw)
+    return Array.isArray(parsed) && parsed.length > 0
+  } catch {
+    return false
+  }
+}
+
+function completenessPercent(businessId: string): number {
+  const content = hasItems(CONTENT_STORAGE_KEY(businessId)) ? 50 : 0
+  const campaigns = hasItems(CAMPAIGNS_STORAGE_KEY(businessId)) ? 50 : 0
+  return content + campaigns
+}
+
+function CircularProgress({ percentage }: { percentage: number }) {
+  const radius = 6
+  const circumference = 2 * Math.PI * radius
+  const offset = circumference - (percentage / 100) * circumference
+
+  return (
+    <svg width="16" height="16" viewBox="0 0 16 16" className="shrink-0">
+      <circle
+        cx="8" cy="8" r={radius}
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        className="text-muted-foreground/30"
+      />
+      <circle
+        cx="8" cy="8" r={radius}
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeDasharray={circumference}
+        strokeDashoffset={offset}
+        strokeLinecap="round"
+        transform="rotate(-90 8 8)"
+        className="text-sidebar-primary transition-all duration-300"
+      />
+    </svg>
+  )
+}
+
 interface BusinessItemProps {
   business: Business
   isActive: boolean
@@ -48,8 +97,22 @@ export function BusinessItem({ business, isActive, expanded, activePage, onToggl
   const hasActiveChild = isActive && expanded
   const [showMenu, setShowMenu] = useState(false)
   const menuRef = useRef<HTMLDivElement>(null)
+  const [completeness, setCompleteness] = useState(() => completenessPercent(business.id))
 
   const Icon = BUSINESS_TYPE_ICONS[business.type] ?? Building2
+
+  useEffect(() => {
+    function recalc() {
+      setCompleteness(completenessPercent(business.id))
+    }
+    recalc()
+    const id = setInterval(recalc, 3000)
+    window.addEventListener('storage', recalc)
+    return () => {
+      clearInterval(id)
+      window.removeEventListener('storage', recalc)
+    }
+  }, [business.id])
 
   const businessFeatures = [
     { id: 'redes', label: t('features.socialMedia') },
@@ -85,6 +148,10 @@ export function BusinessItem({ business, isActive, expanded, activePage, onToggl
         >
           <Icon className="size-4 shrink-0" />
           <span className="flex-1 truncate">{business.name}</span>
+
+          {completeness < 100 && (
+            <CircularProgress percentage={completeness} />
+          )}
 
           <ChevronRight className={cn(
             'size-3 shrink-0 text-sidebar-foreground/40 transition-all duration-200 opacity-0 group-hover/item:opacity-100',
