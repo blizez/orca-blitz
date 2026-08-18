@@ -17,6 +17,7 @@ import {
   Trash2,
   ChevronRight,
 } from 'lucide-react'
+import { Tooltip, TooltipTrigger, TooltipContent } from '@orca-blitz/ui/components/ui/tooltip'
 import type { Business } from '@orca-blitz/shared'
 import type { LucideIcon } from 'lucide-react'
 
@@ -46,19 +47,20 @@ function hasItems(key: string): boolean {
   }
 }
 
-function completenessPercent(businessId: string): number {
-  const content = hasItems(CONTENT_STORAGE_KEY(businessId)) ? 50 : 0
-  const campaigns = hasItems(CAMPAIGNS_STORAGE_KEY(businessId)) ? 50 : 0
-  return content + campaigns
+function completenessPercent(businessId: string): { percentage: number; missingContent: boolean; missingCampaigns: boolean } {
+  const hasContent = hasItems(CONTENT_STORAGE_KEY(businessId))
+  const hasCampaigns = hasItems(CAMPAIGNS_STORAGE_KEY(businessId))
+  const percentage = (hasContent ? 50 : 0) + (hasCampaigns ? 50 : 0)
+  return { percentage, missingContent: !hasContent, missingCampaigns: !hasCampaigns }
 }
 
-function CircularProgress({ percentage }: { percentage: number }) {
+function CircularProgress({ percentage, className }: { percentage: number; className?: string }) {
   const radius = 6
   const circumference = 2 * Math.PI * radius
   const offset = circumference - (percentage / 100) * circumference
 
   return (
-    <svg width="16" height="16" viewBox="0 0 16 16" className="shrink-0">
+    <svg width="16" height="16" viewBox="0 0 16 16" className={cn("shrink-0", className)}>
       <circle
         cx="8" cy="8" r={radius}
         fill="none"
@@ -149,8 +151,21 @@ export function BusinessItem({ business, isActive, expanded, activePage, onToggl
           <Icon className="size-4 shrink-0" />
           <span className="flex-1 truncate">{business.name}</span>
 
-          {completeness < 100 && (
-            <CircularProgress percentage={completeness} />
+          {completeness.percentage < 100 && (
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <span>
+                  <CircularProgress percentage={completeness.percentage} className="opacity-0 group-hover/item:opacity-100 transition-opacity" />
+                </span>
+              </TooltipTrigger>
+              <TooltipContent>
+                {completeness.missingContent && completeness.missingCampaigns
+                  ? t('completeness.missingBoth')
+                  : completeness.missingContent
+                    ? t('completeness.missingContent')
+                    : t('completeness.missingCampaigns')}
+              </TooltipContent>
+            </Tooltip>
           )}
 
           <ChevronRight className={cn(

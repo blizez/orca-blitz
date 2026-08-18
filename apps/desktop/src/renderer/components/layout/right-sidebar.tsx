@@ -10,13 +10,11 @@ import {
   Square,
   X,
   Maximize2,
-  Inbox,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useAppStore } from '@/store'
 import { Tooltip, TooltipTrigger, TooltipContent } from '@orca-blitz/ui/components/ui/tooltip'
-
-type PanelId = 'billing' | 'reports' | 'contacts' | 'notifications'
+import type { RightPanelId } from '@/store'
 
 interface RightSidebarProps {
   collapsed: boolean
@@ -25,14 +23,12 @@ interface RightSidebarProps {
 
 export function RightSidebar({ collapsed, onToggleCollapse }: RightSidebarProps) {
   const { t } = useTranslation('sidebar')
-  const [activePanel, setActivePanel] = useState<PanelId | null>(null)
   const [isMaximized, setIsMaximized] = useState(false)
   const activeBusinessId = useAppStore((s) => s.activeBusinessId)
-  const businesses = useAppStore((s) => s.businesses)
+  const rightPanel = useAppStore((s) => s.rightPanel)
+  const setRightPanel = useAppStore((s) => s.setRightPanel)
 
-  const activeBusiness = businesses.find((b) => b.id === activeBusinessId) ?? null
-
-  const navItems: { id: PanelId; icon: typeof Receipt; label: string }[] = [
+  const navItems: { id: RightPanelId; icon: typeof Receipt; label: string }[] = [
     { id: 'billing', icon: Receipt, label: t('rightSidebar.billing') },
     { id: 'reports', icon: BarChart3, label: t('rightSidebar.reports') },
     { id: 'contacts', icon: Users, label: t('rightSidebar.contactsPanel') },
@@ -45,14 +41,16 @@ export function RightSidebar({ collapsed, onToggleCollapse }: RightSidebarProps)
     setIsMaximized(maximized)
   }
 
-  const handleNavClick = (id: PanelId) => {
-    if (activePanel === id) {
-      setActivePanel(null)
+  const handleNavClick = (id: RightPanelId) => {
+    if (rightPanel === id) {
+      setRightPanel(null)
     } else {
-      setActivePanel(id)
+      setRightPanel(id)
       if (collapsed) onToggleCollapse()
     }
   }
+
+  if (!activeBusinessId) return null
 
   return (
     <aside
@@ -108,7 +106,7 @@ export function RightSidebar({ collapsed, onToggleCollapse }: RightSidebarProps)
         <div className={cn('space-y-0.5', collapsed && 'flex flex-col items-center')}>
           {navItems.map((item) => {
             const Icon = item.icon
-            const isActive = activePanel === item.id
+            const isActive = rightPanel === item.id
 
             if (collapsed) {
               return (
@@ -151,57 +149,6 @@ export function RightSidebar({ collapsed, onToggleCollapse }: RightSidebarProps)
           })}
         </div>
       </nav>
-
-      <div className="flex-1 overflow-y-auto scrollbar-sleek">
-        {!activeBusinessId ? (
-          <EmptyState message={t('rightSidebar.emptyState')} />
-        ) : activePanel ? (
-          <PanelContent panel={activePanel} businessName={activeBusiness?.name ?? ''} />
-        ) : (
-          <EmptyState message={t('rightSidebar.comingSoon')} />
-        )}
-      </div>
     </aside>
-  )
-}
-
-function EmptyState({ message }: { message: string }) {
-  return (
-    <div className="flex flex-col items-center justify-center gap-2 p-4 text-center">
-      <Inbox className="size-8 text-muted-foreground/30" />
-      <p className="text-xs text-muted-foreground/60">{message}</p>
-    </div>
-  )
-}
-
-function PanelContent({ panel, businessName }: { panel: PanelId; businessName: string }) {
-  const { t } = useTranslation('sidebar')
-
-  const panelConfig: Record<PanelId, { title: string; emptyKey: string }> = {
-    billing: { title: t('rightSidebar.billing'), emptyKey: t('rightSidebar.billingEmpty') },
-    reports: { title: t('rightSidebar.reports'), emptyKey: t('rightSidebar.reportsEmpty') },
-    contacts: { title: t('rightSidebar.contactsPanel'), emptyKey: t('rightSidebar.contactsEmpty') },
-    notifications: { title: t('rightSidebar.notifications'), emptyKey: t('rightSidebar.comingSoon') },
-  }
-
-  const config = panelConfig[panel]
-
-  return (
-    <div className="p-3">
-      <div className="mb-2 flex items-center gap-2">
-        <h3 className="text-xs font-semibold uppercase tracking-wider text-sidebar-foreground/60">
-          {config.title}
-        </h3>
-        {businessName && (
-          <span className="truncate text-[11px] text-sidebar-foreground/40">
-            {businessName}
-          </span>
-        )}
-      </div>
-      <div className="flex flex-col items-center justify-center gap-2 rounded-lg border border-dashed border-sidebar-border py-8 text-center">
-        <Inbox className="size-6 text-muted-foreground/30" />
-        <p className="text-xs text-muted-foreground/60">{config.emptyKey}</p>
-      </div>
-    </div>
   )
 }

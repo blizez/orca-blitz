@@ -22,27 +22,11 @@ const steps = [
   { id: 5, titleKey: 'addBusiness.steps.goals.title', descKey: 'addBusiness.steps.goals.description' },
 ]
 
-const businessTypes = [
-  'E-commerce', 'Restaurant', 'Services', 'Retail', 'Healthcare',
-  'Education', 'Real Estate', 'SaaS', 'Other',
-]
-
-const channelOptions = [
-  'WhatsApp', 'Instagram', 'Facebook', 'Email',
-  'Phone', 'Live Chat', 'TikTok', 'LinkedIn',
-]
-
-const goalOptions = [
-  'Increase Sales', 'Improve Customer Support', 'Automate Processes',
-  'Better Analytics', 'Marketing Automation', 'Lead Management',
-]
-
-const teamSizes = ['Just me', '2-5', '6-10', '11-50', '50+']
-
-const revenueRanges = [
-  'Under $10k', '$10k - $50k', '$50k - $100k',
-  '$100k - $500k', '$500k - $1M', 'Over $1M', 'Pre-revenue',
-]
+const businessTypeKeys = ['ecommerce', 'restaurant', 'services', 'retail', 'healthcare', 'education', 'realEstate', 'saas', 'other']
+const channelKeys = ['whatsapp', 'instagram', 'facebook', 'email', 'phone', 'liveChat', 'tiktok', 'linkedin']
+const goalKeys = ['increaseSales', 'improveSupport', 'automateProcesses', 'betterAnalytics', 'marketingAutomation', 'leadManagement']
+const teamSizeKeys = ['solo', 'small', 'medium', 'large', 'enterprise']
+const revenueRangeKeys = ['under10k', '10k50k', '50k100k', '100k500k', '500k1m', 'over1m', 'preRevenue']
 
 export function AddBusinessModal({ open, onClose, onAdd }: AddBusinessModalProps) {
   const { t } = useTranslation('modals')
@@ -106,11 +90,6 @@ export function AddBusinessModal({ open, onClose, onAdd }: AddBusinessModalProps
           ))}
         </div>
 
-        <div className="mb-6">
-          <h3 className="text-sm font-medium mb-1">{t(currentStep.titleKey)}</h3>
-          <p className="text-xs text-muted-foreground">{t(currentStep.descKey)}</p>
-        </div>
-
         <div className="min-h-[200px]">
           {step === 1 && (
             <div className="space-y-4">
@@ -123,7 +102,7 @@ export function AddBusinessModal({ open, onClose, onAdd }: AddBusinessModalProps
                   <label className="text-xs font-medium text-muted-foreground">{t('addBusiness.fields.type')}</label>
                   <Select value={data.type || undefined} onValueChange={(v) => update('type', v as string)}>
                     <SelectTrigger size="sm" className="w-full"><SelectValue placeholder={t('addBusiness.options.select')} /></SelectTrigger>
-                    <SelectContent>{businessTypes.map((t) => <SelectItem key={t} value={t}>{t}</SelectItem>)}</SelectContent>
+                    <SelectContent>{businessTypeKeys.map((type) => <SelectItem key={type} value={type}>{t(`addBusiness.options.businessTypes.${type}`)}</SelectItem>)}</SelectContent>
                   </Select>
                 </div>
                 <div className="space-y-1.5">
@@ -153,10 +132,10 @@ export function AddBusinessModal({ open, onClose, onAdd }: AddBusinessModalProps
                 <Textarea value={data.audience} onChange={(e) => update('audience', e.target.value)} placeholder={t('addBusiness.placeholders.audience')} rows={2} className="text-sm resize-none" />
               </div>
               <div className="space-y-1.5">
-                <label className="text-xs font-medium text-muted-foreground">Team Size</label>
+                <label className="text-xs font-medium text-muted-foreground">{t('addBusiness.fields.teamSize')}</label>
                 <div className="flex gap-1.5 flex-wrap">
-                  {teamSizes.map((size) => (
-                    <button key={size} onClick={() => update('teamSize', size)} className={cn('rounded-md border px-3 py-1 text-xs transition-colors', data.teamSize === size ? 'border-primary bg-primary/10 text-primary font-medium' : 'border-border hover:bg-accent text-muted-foreground')}>{size}</button>
+                  {teamSizeKeys.map((size) => (
+                    <button key={size} onClick={() => update('teamSize', size)} className={cn('rounded-md border px-3 py-1 text-xs transition-colors', data.teamSize === size ? 'border-primary bg-primary/10 text-primary font-medium' : 'border-border hover:bg-accent text-muted-foreground')}>{t(`addBusiness.options.teamSizes.${size}`)}</button>
                   ))}
                 </div>
               </div>
@@ -166,27 +145,27 @@ export function AddBusinessModal({ open, onClose, onAdd }: AddBusinessModalProps
           {step === 3 && (
             <div className="space-y-4">
               <div className="space-y-1.5">
-                <label className="text-xs font-medium text-muted-foreground">Main Competitors</label>
-                <Textarea value={data.competitors} onChange={(e) => update('competitors', e.target.value)} placeholder="Who are your main competitors? (e.g. Store A, Brand B)" rows={2} className="text-sm resize-none" />
+                <label className="text-xs font-medium text-muted-foreground">{t('addBusiness.fields.competitors')}</label>
+                <Textarea value={data.competitors} onChange={(e) => update('competitors', e.target.value)} placeholder={t('addBusiness.placeholders.competitors')} rows={2} className="text-sm resize-none" />
               </div>
               <div className="space-y-1.5">
-                <label className="text-xs font-medium text-muted-foreground">What makes you different? (USP)</label>
-                <Textarea value={data.usp} onChange={(e) => update('usp', e.target.value)} placeholder="Why do customers choose you over competitors?" rows={2} className="text-sm resize-none" />
+                <label className="text-xs font-medium text-muted-foreground">{t('addBusiness.fields.usp')}</label>
+                <Textarea value={data.usp} onChange={(e) => update('usp', e.target.value)} placeholder={t('addBusiness.placeholders.usp')} rows={2} className="text-sm resize-none" />
               </div>
               <div className="space-y-1.5">
-                <label className="text-xs font-medium text-muted-foreground">Current Pain Points</label>
-                <Textarea value={data.painPoints} onChange={(e) => update('painPoints', e.target.value)} placeholder="What are your biggest challenges right now?" rows={2} className="text-sm resize-none" />
+                <label className="text-xs font-medium text-muted-foreground">{t('addBusiness.fields.painPoints')}</label>
+                <Textarea value={data.painPoints} onChange={(e) => update('painPoints', e.target.value)} placeholder={t('addBusiness.placeholders.painPoints')} rows={2} className="text-sm resize-none" />
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-1.5">
-                  <label className="text-xs font-medium text-muted-foreground">Monthly Revenue</label>
+                  <label className="text-xs font-medium text-muted-foreground">{t('addBusiness.fields.monthlyRevenue')}</label>
                   <Select value={data.monthlyRevenue || undefined} onValueChange={(v) => update('monthlyRevenue', v ?? '')}>
-                    <SelectTrigger size="sm" className="w-full"><SelectValue placeholder="Select..." /></SelectTrigger>
-                    <SelectContent>{revenueRanges.map((r) => <SelectItem key={r} value={r}>{r}</SelectItem>)}</SelectContent>
+                    <SelectTrigger size="sm" className="w-full"><SelectValue placeholder={t('addBusiness.options.select')} /></SelectTrigger>
+                    <SelectContent>{revenueRangeKeys.map((r) => <SelectItem key={r} value={r}>{t(`addBusiness.options.revenueRanges.${r}`)}</SelectItem>)}</SelectContent>
                   </Select>
                 </div>
                 <div className="space-y-1.5">
-                  <label className="text-xs font-medium text-muted-foreground">Year Established</label>
+                  <label className="text-xs font-medium text-muted-foreground">{t('addBusiness.fields.yearEstablished')}</label>
                   <Input value={data.yearEstablished} onChange={(e) => update('yearEstablished', e.target.value)} placeholder="2024" />
                 </div>
               </div>
@@ -195,14 +174,14 @@ export function AddBusinessModal({ open, onClose, onAdd }: AddBusinessModalProps
 
           {step === 4 && (
             <div className="space-y-4">
-              <p className="text-sm text-muted-foreground">Select all channels you use or want to use:</p>
+              <p className="text-sm text-muted-foreground">{t('addBusiness.helpers.channels')}</p>
               <div className="grid grid-cols-2 gap-2">
-                {channelOptions.map((ch) => (
+                {channelKeys.map((ch) => (
                   <button key={ch} onClick={() => toggleArrayItem('channels', ch)} className={cn('flex items-center gap-2 rounded-md border p-3 text-sm transition-colors text-left', data.channels.includes(ch) ? 'border-primary bg-primary/10 text-primary' : 'border-border hover:bg-accent')}>
                     <div className={cn('flex size-4 shrink-0 items-center justify-center rounded border', data.channels.includes(ch) ? 'border-primary bg-primary text-primary-foreground' : 'border-border')}>
                       {data.channels.includes(ch) && <Check className="size-3" />}
                     </div>
-                    {ch}
+                    {t(`addBusiness.options.channels.${ch}`)}
                   </button>
                 ))}
               </div>
@@ -211,14 +190,14 @@ export function AddBusinessModal({ open, onClose, onAdd }: AddBusinessModalProps
 
           {step === 5 && (
             <div className="space-y-4">
-              <p className="text-sm text-muted-foreground">What do you want to achieve? (select multiple)</p>
+              <p className="text-sm text-muted-foreground">{t('addBusiness.helpers.goals')}</p>
               <div className="grid grid-cols-1 gap-2">
-                {goalOptions.map((g) => (
+                {goalKeys.map((g) => (
                   <button key={g} onClick={() => toggleArrayItem('goals', g)} className={cn('flex items-center gap-2 rounded-md border p-3 text-sm transition-colors text-left', data.goals.includes(g) ? 'border-primary bg-primary/10 text-primary' : 'border-border hover:bg-accent')}>
                     <div className={cn('flex size-4 shrink-0 items-center justify-center rounded border', data.goals.includes(g) ? 'border-primary bg-primary text-primary-foreground' : 'border-border')}>
                       {data.goals.includes(g) && <Check className="size-3" />}
                     </div>
-                    {g}
+                    {t(`addBusiness.options.goals.${g}`)}
                   </button>
                 ))}
               </div>

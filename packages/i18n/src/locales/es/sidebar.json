@@ -21,6 +21,12 @@
     "changeIcon": "Cambiar Icono",
     "deleteBusiness": "Eliminar Negocio"
   },
+  "completeness": {
+    "missingContent": "Crea contenido para mejorar tu presencia",
+    "missingCampaigns": "Lanza una campaña para atraer clientes",
+    "missingBoth": "Crea contenido y lanza una campaña para completar tu perfil",
+    "complete": "Perfil completo"
+  },
   "rightSidebar": {
     "messages": "Mensajes",
     "notifications": "Notificaciones",

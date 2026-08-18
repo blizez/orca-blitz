@@ -32,6 +32,7 @@
       "description": "Brief Description",
       "products": "Products / Services *",
       "audience": "Target Audience",
+      "teamSize": "Team Size",
       "competitors": "Main Competitors",
       "usp": "What makes you different? (USP)",
       "painPoints": "Pain Points",
@@ -39,6 +40,10 @@
       "yearEstablished": "Year Established",
       "channels": "Channels *",
       "goals": "Goals *"
+    },
+    "helpers": {
+      "channels": "Select all channels you use or want to use:",
+      "goals": "What do you want to achieve? (select multiple)"
     },
     "placeholders": {
       "name": "My Store",
@@ -52,7 +57,52 @@
       "painPoints": "What are your biggest challenges?"
     },
     "options": {
-      "select": "Select..."
+      "select": "Select...",
+      "businessTypes": {
+        "ecommerce": "E-commerce",
+        "restaurant": "Restaurant",
+        "services": "Services",
+        "retail": "Retail",
+        "healthcare": "Healthcare",
+        "education": "Education",
+        "realEstate": "Real Estate",
+        "saas": "SaaS",
+        "other": "Other"
+      },
+      "channels": {
+        "whatsapp": "WhatsApp",
+        "instagram": "Instagram",
+        "facebook": "Facebook",
+        "email": "Email",
+        "phone": "Phone",
+        "liveChat": "Live Chat",
+        "tiktok": "TikTok",
+        "linkedin": "LinkedIn"
+      },
+      "goals": {
+        "increaseSales": "Increase Sales",
+        "improveSupport": "Improve Customer Support",
+        "automateProcesses": "Automate Processes",
+        "betterAnalytics": "Better Analytics",
+        "marketingAutomation": "Marketing Automation",
+        "leadManagement": "Lead Management"
+      },
+      "teamSizes": {
+        "solo": "Just me",
+        "small": "2-5",
+        "medium": "6-10",
+        "large": "11-50",
+        "enterprise": "50+"
+      },
+      "revenueRanges": {
+        "under10k": "Under $10k",
+        "10k50k": "$10k - $50k",
+        "50k100k": "$50k - $100k",
+        "100k500k": "$100k - $500k",
+        "500k1m": "$500k - $1M",
+        "over1m": "Over $1M",
+        "preRevenue": "Pre-revenue"
+      }
     },
     "actions": {
       "back": "Back",

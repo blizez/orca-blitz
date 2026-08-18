@@ -1,4 +1,5 @@
 import { useState, useCallback, useRef, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Titlebar } from './components/layout/titlebar'
 import { AppSidebar } from './components/layout/app-sidebar'
 import { RightSidebar } from './components/layout/right-sidebar'
@@ -13,6 +14,7 @@ import { useAppStore } from './store'
 import type { Business } from '@orca-blitz/shared'
 
 export default function App() {
+  const { t } = useTranslation('sidebar')
   const [activePage, setActivePage] = useState('home')
   const [sidebarOpen, setSidebarOpen] = useState(true)
   const [tabs, setTabs] = useState<Tab[]>([createNewTab()])
@@ -25,6 +27,7 @@ export default function App() {
   const setActiveBusinessId = useAppStore((s) => s.setActiveBusinessId)
   const rightSidebarOpen = useAppStore((s) => s.rightSidebarOpen)
   const toggleRightSidebar = useAppStore((s) => s.toggleRightSidebar)
+  const rightPanel = useAppStore((s) => s.rightPanel)
 
   useEffect(() => {
     window.api.businesses.list().then((data) => {
@@ -230,6 +233,8 @@ export default function App() {
             />
           ) : activePage === 'home' ? (
             <HomePage />
+          ) : rightPanel ? (
+            <RightPanelContent panel={rightPanel} businessName={activeBusinessForPage?.name ?? ''} />
           ) : isBusinessPage ? (
             <BusinessPage
               page={activePage}
@@ -259,6 +264,36 @@ export default function App() {
         collapsed={!rightSidebarOpen}
         onToggleCollapse={toggleRightSidebar}
       />
+    </div>
+  )
+}
+
+function RightPanelContent({ panel, businessName }: { panel: string; businessName: string }) {
+  const { t } = useTranslation('sidebar')
+
+  const panelConfig: Record<string, { title: string; description: string }> = {
+    billing: { title: t('rightSidebar.billing'), description: 'Gestiona facturación y pagos de tu negocio.' },
+    reports: { title: t('rightSidebar.reports'), description: 'Analiza el rendimiento de tu negocio.' },
+    contacts: { title: t('rightSidebar.contactsPanel'), description: 'Administra tus contactos y clientes.' },
+    notifications: { title: t('rightSidebar.notifications'), description: 'Revisa las notificaciones importantes.' },
+  }
+
+  const config = panelConfig[panel] ?? { title: panel, description: '' }
+
+  return (
+    <div className="h-full flex flex-col">
+      <header className="flex h-12 items-center border-b border-border px-6">
+        <h1 className="text-sm font-medium">{config.title}</h1>
+        {businessName && (
+          <span className="ml-2 text-xs text-muted-foreground">— {businessName}</span>
+        )}
+      </header>
+      <div className="flex-1 p-6">
+        <div className="mx-auto max-w-4xl space-y-6">
+          <h2 className="text-2xl font-bold">{config.title}</h2>
+          <p className="text-muted-foreground">{config.description}</p>
+        </div>
+      </div>
     </div>
   )
 }

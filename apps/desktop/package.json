@@ -12,18 +12,18 @@
   "dependencies": {
     "@base-ui/react": "^1.7.0",
     "@icons-pack/react-simple-icons": "^13.13.0",
+    "@orca-blitz/i18n": "workspace:*",
     "@orca-blitz/shared": "workspace:*",
     "@orca-blitz/ui": "workspace:*",
-    "@orca-blitz/i18n": "workspace:*",
-    "i18next": "^24.0.0",
-    "react-i18next": "^15.0.0",
-    "i18next-browser-languagedetector": "^8.0.0",
     "clsx": "^2.1.1",
     "cuelume": "^0.2.2",
+    "i18next": "^24.0.0",
+    "i18next-browser-languagedetector": "^8.0.0",
     "lucide-react": "^0.525.0",
+    "react-i18next": "^15.0.0",
     "react-icons": "^5.7.0",
     "tailwind-merge": "^3.6.0",
-    "zustand": "^5.0.0"
+    "zustand": "^5.0.15"
   },
   "devDependencies": {
     "@electron-toolkit/preload": "^3.0.0",

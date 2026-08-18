@@ -32,6 +32,7 @@
       "description": "Descripción Breve",
       "products": "Productos / Servicios *",
       "audience": "Audiencia Objetivo",
+      "teamSize": "Tamaño del Equipo",
       "competitors": "Principales Competidores",
       "usp": "¿Qué te hace diferente? (Punto de Venta Único)",
       "painPoints": "Puntos de Dolor",
@@ -39,6 +40,10 @@
       "yearEstablished": "Año de Fundación",
       "channels": "Canales *",
       "goals": "Objetivos *"
+    },
+    "helpers": {
+      "channels": "Selecciona todos los canales que usas o quieres usar:",
+      "goals": "¿Qué quieres lograr? (selecciona varios)"
     },
     "placeholders": {
       "name": "Mi Tienda",
@@ -52,7 +57,52 @@
       "painPoints": "¿Cuáles son tus mayores desafíos?"
     },
     "options": {
-      "select": "Seleccionar..."
+      "select": "Seleccionar...",
+      "businessTypes": {
+        "ecommerce": "E-commerce",
+        "restaurant": "Restaurante",
+        "services": "Servicios",
+        "retail": "Comercio",
+        "healthcare": "Salud",
+        "education": "Educación",
+        "realEstate": "Bienes Raíces",
+        "saas": "SaaS",
+        "other": "Otro"
+      },
+      "channels": {
+        "whatsapp": "WhatsApp",
+        "instagram": "Instagram",
+        "facebook": "Facebook",
+        "email": "Email",
+        "phone": "Teléfono",
+        "liveChat": "Chat en Vivo",
+        "tiktok": "TikTok",
+        "linkedin": "LinkedIn"
+      },
+      "goals": {
+        "increaseSales": "Aumentar Ventas",
+        "improveSupport": "Mejorar Soporte al Cliente",
+        "automateProcesses": "Automatizar Procesos",
+        "betterAnalytics": "Mejores Analíticas",
+        "marketingAutomation": "Automatización de Marketing",
+        "leadManagement": "Gestión de Leads"
+      },
+      "teamSizes": {
+        "solo": "Solo yo",
+        "small": "2-5",
+        "medium": "6-10",
+        "large": "11-50",
+        "enterprise": "50+"
+      },
+      "revenueRanges": {
+        "under10k": "Menos de $10k",
+        "10k50k": "$10k - $50k",
+        "50k100k": "$50k - $100k",
+        "100k500k": "$100k - $500k",
+        "500k1m": "$500k - $1M",
+        "over1m": "Más de $1M",
+        "preRevenue": "Pre-ingresos"
+      }
     },
     "actions": {
       "back": "Volver",
