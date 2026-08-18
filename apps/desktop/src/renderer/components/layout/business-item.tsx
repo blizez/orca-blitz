@@ -17,6 +17,7 @@ import {
   Trash2,
   ChevronRight,
 } from 'lucide-react'
+import { Badge } from '@orca-blitz/ui/components/ui/badge'
 import { Tooltip, TooltipTrigger, TooltipContent } from '@orca-blitz/ui/components/ui/tooltip'
 import type { Business } from '@orca-blitz/shared'
 import type { LucideIcon } from 'lucide-react'
@@ -44,6 +45,17 @@ function hasItems(key: string): boolean {
     return Array.isArray(parsed) && parsed.length > 0
   } catch {
     return false
+  }
+}
+
+function getItemCount(key: string): number {
+  try {
+    const raw = localStorage.getItem(key)
+    if (!raw) return 0
+    const parsed = JSON.parse(raw)
+    return Array.isArray(parsed) ? parsed.length : 0
+  } catch {
+    return 0
   }
 }
 
@@ -100,12 +112,20 @@ export function BusinessItem({ business, isActive, expanded, activePage, onToggl
   const [showMenu, setShowMenu] = useState(false)
   const menuRef = useRef<HTMLDivElement>(null)
   const [completeness, setCompleteness] = useState(() => completenessPercent(business.id))
+  const [itemCounts, setItemCounts] = useState(() => ({
+    content: getItemCount(CONTENT_STORAGE_KEY(business.id)),
+    campaigns: getItemCount(CAMPAIGNS_STORAGE_KEY(business.id)),
+  }))
 
   const Icon = BUSINESS_TYPE_ICONS[business.type] ?? Building2
 
   useEffect(() => {
     function recalc() {
       setCompleteness(completenessPercent(business.id))
+      setItemCounts({
+        content: getItemCount(CONTENT_STORAGE_KEY(business.id)),
+        campaigns: getItemCount(CAMPAIGNS_STORAGE_KEY(business.id)),
+      })
     }
     recalc()
     const id = setInterval(recalc, 3000)
@@ -117,10 +137,10 @@ export function BusinessItem({ business, isActive, expanded, activePage, onToggl
   }, [business.id])
 
   const businessFeatures = [
-    { id: 'redes', label: t('features.socialMedia') },
-    { id: 'content', label: t('features.content') },
-    { id: 'campaigns', label: t('features.campaigns') },
-    { id: 'notes', label: t('features.notes') },
+    { id: 'redes', label: t('features.socialMedia'), count: 0 },
+    { id: 'content', label: t('features.content'), count: itemCounts.content },
+    { id: 'campaigns', label: t('features.campaigns'), count: itemCounts.campaigns },
+    { id: 'notes', label: t('features.notes'), count: 0 },
   ]
 
   useEffect(() => {
@@ -233,6 +253,11 @@ export function BusinessItem({ business, isActive, expanded, activePage, onToggl
                   )}
                 >
                   {feature.label}
+                  {feature.count > 0 && (
+                    <Badge variant="secondary" className="ml-auto text-[10px] px-1.5 h-4 font-normal">
+                      {feature.count}
+                    </Badge>
+                  )}
                 </button>
               </li>
             )
