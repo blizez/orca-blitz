@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from 'react'
-import { Plus, Trash2, CalendarClock, PenLine, Search, Copy } from 'lucide-react'
+import { Plus, Trash2, CalendarClock, PenLine, Search, Copy, Clipboard, Check } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { cn } from '../../lib/utils'
 import { toast } from '@orca-blitz/ui/components/ui/toast'
@@ -63,6 +63,7 @@ export function ContentPage({ businessId }: ContentPageProps) {
   const [editingItem, setEditingItem] = useState<ContentItem | null>(null)
   const [searchQuery, setSearchQuery] = useState('')
   const [statusFilter, setStatusFilter] = useState<ContentItem['status'] | 'all'>('all')
+  const [copiedId, setCopiedId] = useState<string | null>(null)
 
   useEffect(() => {
     localStorage.setItem(storageKey(businessId), JSON.stringify(items))
@@ -116,6 +117,18 @@ export function ContentPage({ businessId }: ContentPageProps) {
     }
     setItems((prev) => [duplicated, ...prev])
     toast.add({ title: 'Contenido duplicado', type: 'success' })
+  }
+
+  const handleCopy = async (item: ContentItem) => {
+    try {
+      const text = `${item.title}\n\n${item.body || ''}`.trim()
+      await navigator.clipboard.writeText(text)
+      toast.add({ title: 'Copiado al portapapeles', type: 'success' })
+      setCopiedId(item.id)
+      setTimeout(() => setCopiedId(null), 1500)
+    } catch {
+      toast.add({ title: 'Error al copiar', type: 'error' })
+    }
   }
 
   return (
@@ -220,6 +233,13 @@ export function ContentPage({ businessId }: ContentPageProps) {
                         <span className={cn('size-1.5 rounded-full', status.dot)} />
                         {status.label}
                       </span>
+                      <button
+                        onClick={() => handleCopy(item)}
+                        aria-label={`Copy ${item.title}`}
+                        className="flex size-6 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent"
+                      >
+                        {copiedId === item.id ? <Check className="size-3.5 text-green-500" /> : <Clipboard className="size-3.5" />}
+                      </button>
                       <button
                         onClick={() => {
                           setEditingItem(item)
