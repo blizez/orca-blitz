@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from 'react'
-import { Plus, Trash2, Megaphone, PenLine } from 'lucide-react'
+import { Plus, Trash2, Megaphone, PenLine, Search } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { cn } from '../../lib/utils'
 import { Button } from '@orca-blitz/ui/components/ui/button'
@@ -7,6 +7,7 @@ import { Textarea } from '@orca-blitz/ui/components/ui/textarea'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@orca-blitz/ui/components/ui/dialog'
 import { Input } from '@orca-blitz/ui/components/ui/input'
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@orca-blitz/ui/components/ui/select'
+import { Badge } from '@orca-blitz/ui/components/ui/badge'
 import { Empty, EmptyHeader, EmptyMedia, EmptyTitle, EmptyDescription, EmptyContent } from '@orca-blitz/ui/components/ui/empty'
 
 interface Campaign {
@@ -62,15 +63,28 @@ export function CampaignsPage({ businessId }: CampaignsPageProps) {
   const [showForm, setShowForm] = useState(false)
   const [form, setForm] = useState(emptyForm)
   const [editingItem, setEditingItem] = useState<Campaign | null>(null)
+  const [searchQuery, setSearchQuery] = useState('')
+  const [statusFilter, setStatusFilter] = useState<Campaign['status'] | 'all'>('all')
 
   useEffect(() => {
     localStorage.setItem(storageKey(businessId), JSON.stringify(items))
   }, [businessId, items])
 
-  const sorted = useMemo(
-    () => [...items].sort((a, b) => (a.startDate < b.startDate ? 1 : -1)),
-    [items]
-  )
+  const filtered = useMemo(() => {
+    const query = searchQuery.toLowerCase().trim()
+    return [...items]
+      .filter((item) => {
+        if (statusFilter !== 'all' && item.status !== statusFilter) return false
+        if (query) {
+          return (
+            item.name.toLowerCase().includes(query) ||
+            item.description.toLowerCase().includes(query)
+          )
+        }
+        return true
+      })
+      .sort((a, b) => (a.startDate < b.startDate ? 1 : -1))
+  }, [items, searchQuery, statusFilter])
 
   const handleSubmit = () => {
     if (!form.name.trim()) return
@@ -116,7 +130,46 @@ export function CampaignsPage({ businessId }: CampaignsPageProps) {
           </Button>
         </div>
 
-        {sorted.length === 0 ? (
+        {items.length > 1 && (
+          <div className="space-y-3">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+              <Input
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder={t('campaigns.searchPlaceholder') ?? 'Search campaigns...'}
+                className="pl-9"
+              />
+            </div>
+            <div className="flex flex-wrap items-center gap-2">
+              <Badge
+                variant={statusFilter === 'all' ? 'default' : 'outline'}
+                className="cursor-pointer"
+                onClick={() => setStatusFilter('all')}
+              >
+                {t('campaigns.filterAll') ?? 'All'}
+              </Badge>
+              {(Object.keys(statusConfig) as Campaign['status'][]).map((status) => (
+                <Badge
+                  key={status}
+                  variant={statusFilter === status ? 'default' : 'outline'}
+                  className="cursor-pointer"
+                  onClick={() => setStatusFilter(status)}
+                >
+                  {statusConfig[status].label}
+                </Badge>
+              ))}
+              {statusFilter !== 'all' || searchQuery ? (
+                <span className="text-xs text-muted-foreground">
+                  {t('campaigns.showingCount', { showing: filtered.length, total: items.length }) ??
+                    `Showing ${filtered.length} of ${items.length}`}
+                </span>
+              ) : null}
+            </div>
+          </div>
+        )}
+
+        {filtered.length === 0 ? (
           <Empty>
             <EmptyHeader>
               <EmptyMedia variant="icon">
@@ -136,7 +189,7 @@ export function CampaignsPage({ businessId }: CampaignsPageProps) {
           </Empty>
         ) : (
           <div className="space-y-3">
-            {sorted.map((campaign) => {
+            {filtered.map((campaign) => {
               const status = statusConfig[campaign.status]
               return (
                 <div key={campaign.id} className="flex items-start justify-between gap-4 rounded-xl border border-border bg-card p-4">

@@ -66,7 +66,10 @@
       "draft": "Draft",
       "scheduled": "Scheduled",
       "published": "Published"
-    }
+    },
+    "searchPlaceholder": "Search posts...",
+    "filterAll": "All",
+    "showingCount": "Showing {{showing}} of {{total}}"
   },
   "campaigns": {
     "title": "Campaigns",
@@ -93,7 +96,10 @@
       "active": "Active",
       "paused": "Paused",
       "completed": "Completed"
-    }
+    },
+    "searchPlaceholder": "Search campaigns...",
+    "filterAll": "All",
+    "showingCount": "Showing {{showing}} of {{total}}"
   },
   "notes": {
     "title": "Notes",
