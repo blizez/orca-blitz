@@ -1,7 +1,8 @@
 import { useState, useEffect, useMemo } from 'react'
-import { Plus, Trash2, Megaphone, PenLine, Search } from 'lucide-react'
+import { Plus, Trash2, Megaphone, PenLine, Search, Copy } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { cn } from '../../lib/utils'
+import { toast } from '@orca-blitz/ui/components/ui/toast'
 import { Button } from '@orca-blitz/ui/components/ui/button'
 import { Textarea } from '@orca-blitz/ui/components/ui/textarea'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@orca-blitz/ui/components/ui/dialog'
@@ -107,6 +108,17 @@ export function CampaignsPage({ businessId }: CampaignsPageProps) {
 
   const handleDelete = (id: string) => {
     setItems((prev) => prev.filter((campaign) => campaign.id !== id))
+  }
+
+  const handleDuplicate = (campaign: Campaign) => {
+    const duplicated: Campaign = {
+      ...campaign,
+      id: `campaign-${Date.now()}`,
+      name: `${campaign.name} (Copia)`,
+      status: 'draft',
+    }
+    setItems((prev) => [duplicated, ...prev])
+    toast.add({ title: 'Campaña duplicada', type: 'success' })
   }
 
   const dateRange = (campaign: Campaign) => {
@@ -231,10 +243,17 @@ export function CampaignsPage({ businessId }: CampaignsPageProps) {
                       aria-label={`Edit ${campaign.name}`}
                       className="flex size-6 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent"
                     >
-                      <PenLine className="size-3.5" />
-                    </button>
-                    <button
-                      onClick={() => handleDelete(campaign.id)}
+                        <PenLine className="size-3.5" />
+                      </button>
+                      <button
+                        onClick={() => handleDuplicate(campaign)}
+                        aria-label={`Duplicate ${campaign.name}`}
+                        className="flex size-6 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent"
+                      >
+                        <Copy className="size-3.5" />
+                      </button>
+                      <button
+                        onClick={() => handleDelete(campaign.id)}
                       aria-label={`Delete ${campaign.name}`}
                       className="flex size-6 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-destructive/10 hover:text-destructive"
                     >
