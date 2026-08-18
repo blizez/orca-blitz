@@ -9,17 +9,22 @@ import { BrowserTabBar, type Tab } from './components/social-media/browser-tab-b
 import { BrowserNavBar } from './components/social-media/browser-nav-bar'
 import { createNewTab, type Platform } from './components/social-media/social-media-page'
 import { OrcaLogo } from '@orca-blitz/ui/components/ui/logo'
+import { useAppStore } from './store'
 import type { Business } from '@orca-blitz/shared'
 
 export default function App() {
   const [activePage, setActivePage] = useState('home')
   const [sidebarOpen, setSidebarOpen] = useState(true)
-  const [rightSidebarOpen, setRightSidebarOpen] = useState(false)
   const [tabs, setTabs] = useState<Tab[]>([createNewTab()])
   const [activeTabId, setActiveTabId] = useState<string>(() => tabs[0].id)
   const [businessSettingsId, setBusinessSettingsId] = useState<string | null>(null)
-  const [businesses, setBusinesses] = useState<Business[]>([])
   const forwardStack = useRef<Record<string, { title: string; url: string; icon: string; partition: string }>>({})
+
+  const businesses = useAppStore((s) => s.businesses)
+  const setBusinesses = useAppStore((s) => s.setBusinesses)
+  const setActiveBusinessId = useAppStore((s) => s.setActiveBusinessId)
+  const rightSidebarOpen = useAppStore((s) => s.rightSidebarOpen)
+  const toggleRightSidebar = useAppStore((s) => s.toggleRightSidebar)
 
   useEffect(() => {
     window.api.businesses.list().then((data) => {
@@ -34,6 +39,13 @@ export default function App() {
   }, [])
 
   const isSocialMedia = activePage.includes(':redes')
+
+  const handleNavigate = useCallback((page: string) => {
+    setActivePage(page)
+    const bizId = page.includes(':') ? page.split(':')[0] : page
+    const matchedBiz = businesses.find((b) => b.id === bizId)
+    setActiveBusinessId(matchedBiz ? bizId : null)
+  }, [businesses, setActiveBusinessId])
 
   const addTab = useCallback(() => {
     const newTab = createNewTab(true)
@@ -107,14 +119,15 @@ export default function App() {
   }, [])
 
   const handleUpdateBusiness = useCallback((id: string, data: Partial<Business>) => {
-    setBusinesses((prev) => prev.map((b) => b.id === id ? { ...b, ...data } : b))
-  }, [])
+    setBusinesses(businesses.map((b) => b.id === id ? { ...b, ...data } : b))
+  }, [businesses, setBusinesses])
 
   const handleDeleteBusiness = useCallback((id: string) => {
-    setBusinesses((prev) => prev.filter((b) => b.id !== id))
+    setBusinesses(businesses.filter((b) => b.id !== id))
     setBusinessSettingsId(null)
+    setActiveBusinessId(null)
     setActivePage('home')
-  }, [])
+  }, [businesses, setBusinesses, setActiveBusinessId])
 
   const isBusinessPage = activePage.includes(':') || (!activePage.startsWith('business-') && businesses.some((b) => activePage === b.id))
   const activeBusinessForPage = businesses.find((b) => activePage === b.id || activePage.startsWith(b.id + ':')) ?? null
@@ -164,7 +177,7 @@ export default function App() {
       {activePage !== 'settings' && (
         <AppSidebar
           activePage={activePage}
-          onNavigate={setActivePage}
+          onNavigate={handleNavigate}
           collapsed={!sidebarOpen}
           onToggleCollapse={() => setSidebarOpen(!sidebarOpen)}
           businesses={businesses}
@@ -207,7 +220,7 @@ export default function App() {
         <main className="flex-1 overflow-hidden">
           {activePage === 'settings' ? (
             <SettingsPage
-              onBack={() => { setActivePage('home'); setBusinessSettingsId(null) }}
+              onBack={() => { handleNavigate('home'); setBusinessSettingsId(null) }}
               businessId={businessSettingsId}
               business={activeBusiness}
               businesses={businesses}
@@ -244,7 +257,7 @@ export default function App() {
       </div>
       <RightSidebar
         collapsed={!rightSidebarOpen}
-        onToggleCollapse={() => setRightSidebarOpen(!rightSidebarOpen)}
+        onToggleCollapse={toggleRightSidebar}
       />
     </div>
   )
