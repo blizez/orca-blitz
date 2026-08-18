@@ -1,5 +1,7 @@
-import { ipcMain } from 'electron'
+import { ipcMain, app } from 'electron'
 import { randomUUID } from 'crypto'
+import { mkdirSync, readdirSync, existsSync, writeFileSync, readFileSync, rmSync } from 'fs'
+import { join } from 'path'
 
 interface Business {
   id: string
@@ -20,8 +22,47 @@ interface Business {
   teamSize: string
 }
 
+function slugify(text: string): string {
+  return text
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9\s-]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-')
+    .replace(/^-|-$/g, '')
+}
+
+function getBusinessesDir(): string {
+  const dir = join(app.getPath('userData'), 'businesses')
+  if (!existsSync(dir)) mkdirSync(dir, { recursive: true })
+  return dir
+}
+
+function getBusinessDir(slug: string): string {
+  const dir = join(getBusinessesDir(), slug)
+  if (!existsSync(dir)) mkdirSync(dir, { recursive: true })
+  return dir
+}
+
 const businesses = new Map<string, Business>()
 const settings = { theme: 'system' as string }
+
+function loadBusinessesFromDisk() {
+  const dir = getBusinessesDir()
+  const folders = readdirSync(dir, { withFileTypes: true })
+    .filter(d => d.isDirectory())
+    .map(d => d.name)
+  for (const folder of folders) {
+    const metaPath = join(dir, folder, 'business.json')
+    if (existsSync(metaPath)) {
+      try {
+        const data = JSON.parse(readFileSync(metaPath, 'utf-8')) as Business
+        businesses.set(data.id, data)
+      } catch { /* corrupt file, skip */ }
+    }
+  }
+}
 
 function notifyBusinesses() {
   const { BrowserWindow } = require('electron')
@@ -32,6 +73,8 @@ function notifyBusinesses() {
 }
 
 export function registerCoreHandlers() {
+  loadBusinessesFromDisk()
+
   ipcMain.handle('businesses:list', () => Array.from(businesses.values()))
 
   ipcMain.handle('businesses:create', (_e, data: Partial<Business>) => {
@@ -53,6 +96,9 @@ export function registerCoreHandlers() {
       goals: data.goals || [],
       teamSize: data.teamSize || 'Just me',
     }
+    const slug = slugify(biz.name)
+    const bizDir = getBusinessDir(slug)
+    writeFileSync(join(bizDir, 'business.json'), JSON.stringify(biz, null, 2), 'utf-8')
     businesses.set(biz.id, biz)
     notifyBusinesses()
     return biz
@@ -63,11 +109,20 @@ export function registerCoreHandlers() {
     if (!biz) return null
     const updated = { ...biz, ...data }
     businesses.set(id, updated)
+    const slug = slugify(updated.name)
+    const bizDir = getBusinessDir(slug)
+    writeFileSync(join(bizDir, 'business.json'), JSON.stringify(updated, null, 2), 'utf-8')
     notifyBusinesses()
     return updated
   })
 
   ipcMain.handle('businesses:delete', (_e, id: string) => {
+    const biz = businesses.get(id)
+    if (biz) {
+      const slug = slugify(biz.name)
+      const bizDir = join(getBusinessesDir(), slug)
+      if (existsSync(bizDir)) rmSync(bizDir, { recursive: true })
+    }
     businesses.delete(id)
     notifyBusinesses()
     return true

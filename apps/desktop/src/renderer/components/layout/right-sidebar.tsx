@@ -99,7 +99,10 @@ export function RightSidebar({ collapsed, onToggleCollapse }: RightSidebarProps)
                   <TooltipTrigger
                     render={
                       <button
-                        onClick={() => setActiveItem(isActive ? null : item.id)}
+                        onClick={() => {
+                          setActiveItem(item.id)
+                          if (collapsed) onToggleCollapse()
+                        }}
                         className={cn(
                           'flex w-full size-7 items-center justify-center rounded-md transition-colors',
                           isActive

@@ -51,8 +51,8 @@ export function AppSidebar({ activePage, onNavigate, collapsed, onToggleCollapse
     biz.name.toLowerCase().includes(searchQuery.toLowerCase())
   )
 
-  const handleAddBusiness = (data: Omit<Business, 'id'>) => {
-    onBusinessesChange([...businesses, { ...data, id: Date.now().toString() }])
+  const handleAddBusiness = async (data: Omit<Business, 'id'>) => {
+    await window.api.businesses.create(data)
   }
 
   const handleDeleteBusiness = (id: string) => {
@@ -66,9 +66,9 @@ export function AppSidebar({ activePage, onNavigate, collapsed, onToggleCollapse
     )
   }
 
-  const confirmDelete = () => {
+  const confirmDelete = async () => {
     if (!deleteTarget) return
-    onBusinessesChange(businesses.filter((b) => b.id !== deleteTarget.id))
+    await window.api.businesses.delete(deleteTarget.id)
     if (activePage === `business-${deleteTarget.id}`) {
       onNavigate('home')
     }
@@ -105,6 +105,23 @@ export function AppSidebar({ activePage, onNavigate, collapsed, onToggleCollapse
       </div>
 
       <nav className={cn('flex-1 overflow-y-auto py-2', collapsed ? 'px-0' : 'px-1.5')}>
+        {!collapsed && businesses.length > 0 && (
+          <div className="px-2 pb-2">
+            <div className="relative">
+              <Search className="absolute left-2 top-1/2 size-3.5 -translate-y-1/2 text-sidebar-foreground/40 pointer-events-none" />
+              <Input
+                ref={searchRef}
+                type="text"
+                placeholder={t('businesses.search')}
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                onKeyDown={(e) => e.key === 'Escape' && setSearchQuery('')}
+                className="h-7 pl-7 text-xs bg-background border-sidebar-border"
+              />
+            </div>
+          </div>
+        )}
+
         <div className="mb-4">
           <div className={cn(
             'flex items-center justify-between',
@@ -158,23 +175,6 @@ export function AppSidebar({ activePage, onNavigate, collapsed, onToggleCollapse
               </button>
             )}
           </div>
-
-          {!collapsed && businesses.length > 0 && (
-            <div className="px-2 pb-1.5">
-              <div className="relative">
-                <Search className="absolute left-2 top-1/2 size-3.5 -translate-y-1/2 text-sidebar-foreground/40 pointer-events-none" />
-                <Input
-                  ref={searchRef}
-                  type="text"
-                  placeholder={t('businesses.search')}
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  onKeyDown={(e) => e.key === 'Escape' && setSearchQuery('')}
-                  className="h-7 pl-7 text-xs bg-background border-sidebar-border"
-                />
-              </div>
-            </div>
-          )}
 
           {businesses.length === 0 && !collapsed && (
             <p className="px-2 py-2 text-xs text-sidebar-foreground/40">
