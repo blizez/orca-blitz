@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from 'react'
-import { Plus, Trash2, Megaphone, PenLine, Search, Copy, Clipboard, Check } from 'lucide-react'
+import { Plus, Trash2, Megaphone, PenLine, Search, Copy, Clipboard, Check, ChevronDown } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { cn } from '../../lib/utils'
 import { toast } from '@orca-blitz/ui/components/ui/toast'
@@ -9,6 +9,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, Di
 import { Input } from '@orca-blitz/ui/components/ui/input'
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@orca-blitz/ui/components/ui/select'
 import { Badge } from '@orca-blitz/ui/components/ui/badge'
+import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from '@orca-blitz/ui/components/ui/dropdown-menu'
 import { Empty, EmptyHeader, EmptyMedia, EmptyTitle, EmptyDescription, EmptyContent } from '@orca-blitz/ui/components/ui/empty'
 
 interface Campaign {
@@ -139,6 +140,14 @@ export function CampaignsPage({ businessId }: CampaignsPageProps) {
     }
   }
 
+  const handleQuickStatusChange = (id: string, newStatus: Campaign['status']) => {
+    setItems((prev) =>
+      prev.map((item) =>
+        item.id === id ? { ...item, status: newStatus } : item
+      )
+    )
+  }
+
   const dateRange = (campaign: Campaign) => {
     if (!campaign.startDate && !campaign.endDate) return null
     return `${campaign.startDate || 'TBD'} → ${campaign.endDate || 'TBD'}`
@@ -222,19 +231,29 @@ export function CampaignsPage({ businessId }: CampaignsPageProps) {
             {filtered.map((campaign) => {
               const status = statusConfig[campaign.status]
               return (
-                <div key={campaign.id} className="flex items-start justify-between gap-4 rounded-xl border border-border bg-card p-4">
+                <div key={campaign.id} className="group flex items-start justify-between gap-4 rounded-xl border border-border bg-card p-4">
                   <div className="min-w-0">
                     <div className="flex flex-wrap items-center gap-2">
                       <p className="text-sm font-medium">{campaign.name}</p>
-                      <span
-                        className={cn(
-                          'flex items-center gap-1.5 rounded-full bg-muted px-2 py-0.5 text-[11px] font-medium',
-                          campaign.status === 'active' ? 'text-green-500' : campaign.status === 'paused' ? 'text-yellow-500' : campaign.status === 'completed' ? 'text-blue-500' : 'text-muted-foreground'
-                        )}
-                      >
-                        <span className={cn('size-1.5 rounded-full', status.dot)} />
-                        {status.label}
-                      </span>
+                      <DropdownMenu>
+                        <DropdownMenuTrigger className="flex items-center gap-1.5 rounded-full bg-muted px-2 py-0.5 text-[11px] font-medium cursor-pointer hover:bg-accent transition-colors">
+                          <span className={cn('size-1.5 rounded-full', status.dot)} />
+                          {status.label}
+                          <ChevronDown className="size-3 text-muted-foreground" />
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="start">
+                          {statusOptions.map((option) => (
+                            <DropdownMenuItem
+                              key={option.value}
+                              onClick={() => handleQuickStatusChange(campaign.id, option.value)}
+                              className="gap-2"
+                            >
+                              <span className={cn('size-1.5 rounded-full', statusDots[option.value])} />
+                              {option.label}
+                            </DropdownMenuItem>
+                          ))}
+                        </DropdownMenuContent>
+                      </DropdownMenu>
                     </div>
                     <p className="mt-1 text-xs text-muted-foreground">
                       {campaign.channel}
