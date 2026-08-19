@@ -8,6 +8,7 @@ interface AppStore {
   snippetsDrawerOpen: boolean
   setActiveBusinessId: (id: string | null) => void
   setBusinesses: (businesses: Business[]) => void
+  reorderBusiness: (fromIndex: number, toIndex: number) => void
   toggleRightSidebar: () => void
   setRightSidebarOpen: (open: boolean) => void
   toggleSnippetsDrawer: () => void
@@ -21,6 +22,13 @@ export const useAppStore = create<AppStore>((set) => ({
   snippetsDrawerOpen: false,
   setActiveBusinessId: (id) => set({ activeBusinessId: id }),
   setBusinesses: (businesses) => set({ businesses }),
+  reorderBusiness: (from, to) =>
+    set((state) => {
+      const items = [...state.businesses]
+      const [moved] = items.splice(from, 1)
+      items.splice(to, 0, moved)
+      return { businesses: items }
+    }),
   toggleRightSidebar: () => set((s) => ({ rightSidebarOpen: !s.rightSidebarOpen })),
   setRightSidebarOpen: (open) => set({ rightSidebarOpen: open }),
   toggleSnippetsDrawer: () => set((s) => ({ snippetsDrawerOpen: !s.snippetsDrawerOpen })),
