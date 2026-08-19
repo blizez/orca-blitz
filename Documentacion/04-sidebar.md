@@ -55,4 +55,11 @@ Este boton esta en la parte inferior. Haz click para ir a los ajustes de la app.
 
 ### Boton de ayuda (?)
 
-Este boton esta junto a Settings. Muestra un menu con opciones de ayuda.
+Este boton esta junto a Settings. Muestra un menu con opciones de ayuda, como enviar feedback y acceder a la documentacion.
+
+### Menu de contexto
+
+Cuando pasas el mouse sobre un negocio, aparecen tres puntos `...` que abren un menu con opciones:
+- **Business Settings** — Configuracion completa del negocio
+- **Change Icon** — Cambiar el icono del negocio (proximamente)
+- **Delete Business** — Eliminar el negocio

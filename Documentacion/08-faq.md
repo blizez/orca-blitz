@@ -87,3 +87,6 @@ Haz click en el boton `?` en la barra lateral y selecciona "Send Feedback".
 
 **Donde encuentro mas informacion?**
 Haz click en `?` y selecciona "Documentation".
+
+**Que opciones hay en el menu de ayuda?**
+El menu de ayuda contiene opciones para enviar feedback y acceder a la documentacion.

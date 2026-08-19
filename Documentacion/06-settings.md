@@ -59,17 +59,7 @@ Muestra cuantas veces has usado la app este mes.
 
 ### Payment Methods (Metodos de pago)
 
-Aqui gestionas como cobras. Puedes:
-
-- Ver los metodos por defecto (PayPal y Binance Pay)
-- Agregar metodos personalizados (Yape, Stripe, tu banco, etc.)
-- Subir codigos QR para cada metodo
-- Editar nombre y numero de cuenta
-- Eliminar metodos personalizados
-
-Cada metodo se muestra como un acordeon que se expande con click.
-
-Para mas detalles, ve a la seccion "Metodos de pago" en [Negocios](05-negocios.md).
+Aqui gestionas como cobras. Para mas detalles, consulta la guia de [Metodos de pago](09-pagos.md).
 
 ---
 

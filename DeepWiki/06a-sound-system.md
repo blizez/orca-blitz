@@ -11,7 +11,7 @@
 ```
 apps/desktop/src/renderer/
 ├── main.tsx                          ← SoundProvider en wrap tree
-└── lib/sound-context.tsx             ← Provider + hook (74 lineas)
+└── lib/sound-context.tsx             ← Provider + hook
 ```
 
 ---

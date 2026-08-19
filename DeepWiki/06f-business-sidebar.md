@@ -4,8 +4,8 @@
 
 ```
 apps/desktop/src/renderer/components/layout/
-├── app-sidebar.tsx     ← Sidebar container + state (215 lineas)
-└── business-item.tsx   ← Business item + expand/collapse (156 lineas)
+├── app-sidebar.tsx     ← Sidebar container + state
+└── business-item.tsx   ← Business item + expand/collapse
 ```
 
 ---

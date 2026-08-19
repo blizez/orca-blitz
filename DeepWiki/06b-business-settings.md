@@ -3,7 +3,7 @@
 ## Ubicacion
 
 ```
-apps/desktop/src/renderer/components/settings/pages/business-settings.tsx (346 lineas)
+apps/desktop/src/renderer/components/settings/pages/business-settings.tsx
 ```
 
 ---

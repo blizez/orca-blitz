@@ -4,10 +4,10 @@
 
 ```
 apps/desktop/src/renderer/components/social-media/
-├── social-media-page.tsx     ← Page container + platform picker (104 lineas)
-├── browser-view.tsx          ← BrowserView wrapper con IPC (132 lineas)
-├── browser-tab-bar.tsx       ← Tab bar con create/close (67 lineas)
-└── browser-nav-bar.tsx       ← Back/Forward/Reload (121 lineas)
+├── social-media-page.tsx     ← Page container + platform picker
+├── browser-view.tsx          ← BrowserView wrapper con IPC
+├── browser-tab-bar.tsx       ← Tab bar con create/close
+└── browser-nav-bar.tsx       ← Back/Forward/Reload
 ```
 
 ---

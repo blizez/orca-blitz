@@ -3,8 +3,8 @@
 ## Estado
 
 ```
-Implementado:  ~8%
-Scaffolding:   ~92%
+Implementado:  ~30%
+Scaffolding:   ~70%
 ```
 
 ---

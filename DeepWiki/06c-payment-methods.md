@@ -3,7 +3,7 @@
 ## Ubicacion
 
 ```
-apps/desktop/src/renderer/components/settings/pages/billing.tsx (247 lineas)
+apps/desktop/src/renderer/components/settings/pages/billing.tsx
 ```
 
 ---
