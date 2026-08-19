@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react'
-import { loadAllThemes } from './theme-css-loader'
+import { loadAllThemes, applyThemeInline, clearThemeVars } from './theme-css-loader'
 
 type ThemeMode = 'light' | 'dark' | 'system'
 
@@ -51,7 +51,8 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     if (colorTheme) {
       root.classList.add(colorTheme)
     }
-  }, [colorTheme])
+    applyThemeInline(colorTheme, resolvedTheme === 'dark')
+  }, [colorTheme, resolvedTheme])
 
   useEffect(() => {
     if (theme === 'system') {

@@ -111,11 +111,7 @@ export function AppearanceSettings() {
                         }}
                         className="flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-sm hover:bg-accent hover:text-accent-foreground transition-colors"
                       >
-                        <div className="flex gap-0.5">
-                          <div className="size-3 rounded-full border border-border" style={{ backgroundColor: ct.preview.bg }} />
-                          <div className="size-3 rounded-full border border-border" style={{ backgroundColor: ct.preview.fg }} />
-                          <div className="size-3 rounded-full border border-border" style={{ backgroundColor: ct.preview.primary }} />
-                        </div>
+                        <div className="size-3 rounded-full border border-border" style={{ backgroundColor: ct.preview.primary }} />
                         <span className="flex-1 text-left">{ct.name}</span>
                         {colorTheme === ct.className && <Check className="size-3.5 text-primary" />}
                       </button>

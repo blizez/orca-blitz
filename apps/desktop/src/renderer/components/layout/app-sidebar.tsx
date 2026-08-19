@@ -120,7 +120,7 @@ export function AppSidebar({ activePage, onNavigate, collapsed, onToggleCollapse
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 onKeyDown={(e) => e.key === 'Escape' && setSearchQuery('')}
-                className="h-7 pl-7 text-xs bg-background border-sidebar-border"
+                className="h-7 pl-7 text-xs border-sidebar-border"
               />
             </div>
           </div>

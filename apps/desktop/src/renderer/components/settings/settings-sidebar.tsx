@@ -14,6 +14,7 @@ import {
   Store,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { Input } from '@orca-blitz/ui/components/ui/input'
 import type { Business } from '@orca-blitz/shared'
 
 interface SettingsSidebarProps {
@@ -96,12 +97,12 @@ export function SettingsSidebar({ activeTab, onTabChange, onBack, businessId, bu
       <div className="px-3 py-2">
         <div className="relative">
           <Search className="absolute left-2 top-1/2 size-3.5 -translate-y-1/2 text-sidebar-foreground/60" />
-          <input
+          <Input
             type="text"
             placeholder={t('sidebar.search')}
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="h-8 w-full rounded-md border border-sidebar-border bg-background pl-7 pr-2 text-sm placeholder:text-sidebar-foreground/60 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+            className="h-8 pl-7 text-xs"
           />
         </div>
       </div>
@@ -126,7 +127,7 @@ export function SettingsSidebar({ activeTab, onTabChange, onBack, businessId, bu
                     className={cn(
                       'flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-sm transition-colors',
                       activeTab === item.id
-                        ? 'bg-sidebar-accent text-sidebar-accent-foreground font-semibold'
+                        ? 'bg-primary text-primary-foreground font-semibold'
                         : 'text-sidebar-foreground/60 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground'
                     )}
                   >
