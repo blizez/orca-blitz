@@ -65,28 +65,7 @@ Haz click en el nombre del negocio en la barra lateral. Se expande y muestra sus
 
 ## Configuracion de un negocio (Business Settings)
 
-1. Haz click en los tres puntos `...` junto al negocio
-2. Selecciona **Business Settings**
-
-Aqui puedes ver y editar toda la informacion de tu negocio:
-
-- **Nombre** — Edita el nombre con el boton de lapiz
-- **Tipo** — Tipo de negocio (E-commerce, Restaurant, Services, etc.)
-- **Industria** — Moda, Comida, Tecnologia, etc.
-- **Tamano del equipo** — Solo yo, 2-5, 6-10, 11-50, 50+
-- **Descripcion** — Describe tu negocio. Haz click en **Edit** para modificarla
-- **Productos / Servicios** — Que vendes
-- **Audiencia objetivo** — Quienes son tus clientes
-- **Sitio web** — Direccion de tu pagina
-- **Competidores principales** — Quienes son tus rivales
-- **Que te hace diferente (USP)** — Por que te eligen a ti
-- **Problemas actuales** — Que dificultades tienes
-- **Ingresos mensuales** — Rango de ingresos
-- **Ano de fundacion** — En que ano empezaste
-- **Canales activos** — Canales de comunicacion que usas
-- **Metas** — Objetivos del negocio
-
-Los cambios se guardan automaticamente.
+Para configurar un negocio en detalle, consulta la guia de [Configuracion del negocio](16-configuracion-negocio.md).
 
 ---
 
@@ -123,35 +102,7 @@ Eliminar el negocio. Se te pedira que escribas el nombre para confirmar.
 
 ## Metodos de pago
 
-En **Settings → Payment Methods** puedes gestionar como cobras:
-
-### Metodos por defecto
-
-- **PayPal** — Metodo de pago incluido
-- **Binance Pay** — Metodo de pago incluido
-
-### Agregar un metodo personalizado
-
-1. Haz click en **Add Method**
-2. Escribe el nombre (ejemplo: Yape, Stripe, tu banco)
-3. Escribe tu numero de cuenta o correo
-4. Haz click en **Add**
-
-### Configurar un metodo
-
-1. Haz click en la flecha `>` al lado del metodo
-2. Edita el nombre o numero de cuenta
-3. Sube un codigo QR (opcional) — Haz click en **Upload QR** y selecciona una imagen
-4. Haz click en **Save**
-
-### Eliminar un metodo personalizado
-
-1. Haz click en la flecha `>` para expandir el metodo
-2. Haz click en el icono de basura
-3. Escribe el nombre del metodo para confirmar
-4. Haz click en **Delete**
-
-**Nota:** Los metodos por defecto (PayPal y Binance Pay) no se pueden eliminar.
+En **Settings → Payment Methods** puedes gestionar como cobras. Para mas detalles, consulta la guia de [Metodos de pago](09-pagos.md).
 
 ---
 

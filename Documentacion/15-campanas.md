@@ -62,3 +62,4 @@ Las campanas se ordenan por fecha de inicio, de mas reciente a mas antigua.
 - Puedes crear campanas sin fechas si solo quieres planear ideas
 - Usa el periodo de fecha para llevar un control de cuando empieza y termina cada campana
 - Si no tienes campanas, veras un mensaje para crear tu primera campana
+- Actualmente solo puedes crear y eliminar campanas (la edicion estara disponible proximamente)

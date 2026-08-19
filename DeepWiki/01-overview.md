@@ -4,7 +4,7 @@
 
 orca-blitz es una plataforma empresarial open source para automatizar y gestionar negocios. Construida con Electron + React + TypeScript.
 
-**Estado:** Fase temprana (~8% implementado). Desktop shell funcional con sidebar, settings y CRUD de negocios.
+**Estado:** Fase temprana (~30% implementado). Desktop shell funcional con sidebar, settings, CRUD de negocios, social media browser, content calendar y campaigns.
 
 ---
 
@@ -65,13 +65,13 @@ UI Components (packages/ui/src/components/ui/)
 
 ## Archivos Clave
 
-| Archivo | Lineas | Descripcion |
-|---------|--------|-------------|
-| `src/main/index.ts` | 79 | Main: BrowserWindow, IPC, Menu |
-| `src/preload/index.ts` | 77 | Preload: window.api namespaces |
-| `src/renderer/App.tsx` | 47 | App shell: routing + layout |
-| `src/renderer/main.tsx` | 13 | Entry: ThemeProvider + TooltipProvider |
-| `src/renderer/components/layout/titlebar.tsx` | 72 | Titlebar custom |
-| `src/renderer/components/layout/app-sidebar.tsx` | 175 | Sidebar + CRUD negocios |
-| `src/renderer/lib/theme-context.tsx` | 64 | Theme switching |
-| `packages/ui/src/globals.css` | 132 | Design tokens (oklch) |
+| Archivo | Descripcion |
+|---------|-------------|
+| `src/main/index.ts` | Main: BrowserWindow, IPC, Menu |
+| `src/preload/index.ts` | Preload: window.api namespaces |
+| `src/renderer/App.tsx` | App shell: routing + layout |
+| `src/renderer/main.tsx` | Entry: ThemeProvider + TooltipProvider |
+| `src/renderer/components/layout/titlebar.tsx` | Titlebar custom |
+| `src/renderer/components/layout/app-sidebar.tsx` | Sidebar + CRUD negocios |
+| `src/renderer/lib/theme-context.tsx` | Theme switching |
+| `packages/ui/src/globals.css` | Design tokens (oklch) |

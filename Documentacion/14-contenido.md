@@ -61,3 +61,4 @@ Las publicaciones se ordenan por fecha, de mas reciente a mas antigua.
 - Puedes crear publicaciones sin fecha si solo quieres guardar ideas
 - Usa el estado "Draft" para borradores y "Scheduled" para publicaciones programadas
 - Si no tienes publicaciones, veras un mensaje para crear tu primera publicacion
+- Actualmente solo puedes crear y eliminar publicaciones (la edicion estara disponible proximamente)

@@ -1,6 +1,6 @@
 ﻿Ultima actualizacion: 2026-08-11
 
-# DeepWiki â€” orca-blitz
+# DeepWiki — orca-blitz
 
 Documentacion tecnica del proyecto orca-blitz. Basada en el codigo implementado actualmente.
 
@@ -39,8 +39,8 @@ Documentacion tecnica del proyecto orca-blitz. Basada en el codigo implementado 
 ## Estado del Proyecto
 
 ```
-Implementado:  ~8%
-Scaffolding:   ~92% (directorios vacios definidos en AGENTS.md)
+Implementado:  ~30%
+Scaffolding:   ~70% (directorios vacios definidos en AGENTS.md)
 ```
 
 ### Lo que funciona
@@ -61,11 +61,11 @@ Scaffolding:   ~92% (directorios vacios definidos en AGENTS.md)
 
 ### Lo que es scaffolding vacio
 
-- `packages/core/` â€” logica de negocio
-- `packages/features/` â€” CRM, Automation, Analytics, etc.
-- `packages/ai/` â€” inteligencia artificial
-- `packages/plugins/` â€” sistema de plugins
-- `server/` â€” backend
-- `apps/web/` â€” app web
-- `apps/mobile/` â€” app mobile
+- `packages/core/` — logica de negocio
+- `packages/features/` — CRM, Automation, Analytics, etc.
+- `packages/ai/` — inteligencia artificial
+- `packages/plugins/` — sistema de plugins
+- `server/` — backend
+- `apps/web/` — app web
+- `apps/mobile/` — app mobile
 

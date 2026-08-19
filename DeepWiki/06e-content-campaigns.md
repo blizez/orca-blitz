@@ -4,9 +4,9 @@
 
 ```
 apps/desktop/src/renderer/components/business/
-├── content-page.tsx       ← CRUD de posts (251 lineas)
-├── campaigns-page.tsx     ← CRUD de campanas (265 lineas)
-└── business-page.tsx      ← Router por feature (37 lineas)
+├── content-page.tsx       ← CRUD de posts
+├── campaigns-page.tsx     ← CRUD de campanas
+└── business-page.tsx      ← Router por feature
 ```
 
 ---

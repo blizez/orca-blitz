@@ -86,7 +86,7 @@ Select (Root)
 
 ---
 
-## Sidebar (723 lineas)
+## Sidebar
 
 El componente mas grande. Incluye:
 
@@ -126,9 +126,9 @@ export {
 
 ---
 
-## AddBusinessModal (330 lineas)
+## AddBusinessModal
 
-Cuestionario de 4 pasos con:
+Cuestionario de 5 pasos con:
 
 ```typescript
 interface BusinessData {
@@ -232,7 +232,7 @@ export function useSound()                     // Hook: { enabled, volume, toggl
 
 ---
 
-## Business Settings (346 lineas)
+## Business Settings
 
 Pagina de configuracion individual de un negocio con edicion inline.
 
@@ -265,7 +265,7 @@ interface BusinessData {
 
 ---
 
-## Billing Settings — Accordion (247 lineas)
+## Billing Settings — Accordion
 
 Reescritura completa. Antes: tarjetas estaticas. Ahora: accordion expandible con CRUD.
 
@@ -286,7 +286,7 @@ function BillingSettings()
 
 ---
 
-## Add Business Modal — 5 Steps (263 lineas)
+## Add Business Modal — 5 Steps
 
 Wizard de 5 pasos (antes 4). Nuevo paso: **Market**.
 
@@ -312,7 +312,7 @@ const steps = [
 
 ---
 
-## BusinessItem — Sidebar (156 lineas)
+## BusinessItem — Sidebar
 
 Componente de negocio en la sidebar con sub-features expandibles.
 
@@ -339,7 +339,7 @@ interface BusinessItemProps {
 
 ---
 
-## AppSidebar — Multiple Expanded (215 lineas)
+## AppSidebar — Multiple Expanded
 
 ```typescript
 // apps/desktop/src/renderer/components/layout/app-sidebar.tsx
@@ -364,7 +364,7 @@ interface AppSidebarProps {
 
 ---
 
-## HomePage — Empty State (50 lineas)
+## HomePage — Empty State
 
 Reescritura. Antes: placeholder generico. Ahora: empty state con logo y CTAs.
 
@@ -384,7 +384,7 @@ Reescritura. Antes: placeholder generico. Ahora: empty state con logo y CTAs.
 
 ---
 
-## Settings Page — Business Integration (89 lineas)
+## Settings Page — Business Integration
 
 ```typescript
 // apps/desktop/src/renderer/components/settings/settings-page.tsx
@@ -403,7 +403,7 @@ Cuando `businessId` esta definido y `activeTab === 'business'`, renderiza `Busin
 
 ---
 
-## Settings Sidebar — Businesses List (159 lineas)
+## Settings Sidebar — Businesses List
 
 ```typescript
 // apps/desktop/src/renderer/components/settings/settings-sidebar.tsx

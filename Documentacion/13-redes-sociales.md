@@ -60,3 +60,4 @@ Estos botones funcionan igual que en un navegador normal.
 - Las plataformas se cargan como en un navegador web
 - Si una plataforma tarda en cargar, veras un indicador de carga
 - Puedes cerrar pestanas que no estes usando para mantener el orden
+- Cada plataforma tiene sesion independiente (puedes tener WhatsApp e Instagram abiertos con diferentes cuentas)

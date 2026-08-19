@@ -5,7 +5,7 @@
 ```
 ┌─────────────────────────────────────────────────────────┐
 │                    MAIN PROCESS                         │
-│  src/main/index.ts (79 lineas)                          │
+│  src/main/index.ts                                      │
 │                                                         │
 │  ┌─────────────────────────────────────────────────┐    │
 │  │ BrowserWindow (frame: false)                    │    │
@@ -28,7 +28,7 @@
                        │ ipcMain.handle / ipcMain.on
 ┌──────────────────────┴──────────────────────────────────┐
 │                    PRELOAD                               │
-│  src/preload/index.ts (77 lineas)                        │
+│  src/preload/index.ts                                    │
 │                                                         │
 │  ┌─────────────────────────────────────────────────┐    │
 │  │ contextBridge.exposeInMainWorld('electron',     │    │
@@ -71,7 +71,7 @@
 ## Flujo de Datos: Crear Negocio
 
 ```
-1. Usuario llena AddBusinessModal (4 pasos)
+1. Usuario llena AddBusinessModal (5 pasos)
        │
 2. onSubmit(data) llama a onAdd(data)
        │
@@ -103,7 +103,7 @@ const api = {
     isMaximized: () => ipcRenderer.invoke('window:isMaximized'),
     onMaximized: (cb) => {
       ipcRenderer.on('window:maximized', (_, maximized) => cb(maximized))
-      return () => ipcRenderer.removeListener('window:maximized', handler)
+      return () => ipcRenderer.removeAllListeners('window:maximized')
     }
   }
 }
@@ -167,97 +167,6 @@ function pathAliasPlugin(): Plugin {
 2. `load` reescribe imports internos de `packages/ui/` — cuando un archivo en `ui/src/` importa `@/lib/utils`, se reemplaza con la ruta absoluta real
 
 Esto permite que los componentes de `packages/ui/` usen `@/` sin depender del alias del renderer.
-
----
-
-## Routing
-
-Sin react-router. Routing manual:
-
-```typescript
-// apps/desktop/src/renderer/App.tsx
-const [activePage, setActivePage] = useState('home')
-
-// Pages:
-// 'home'         → <HomePage />
-// 'settings'     → <SettingsPage />
-// 'business-{id}' → placeholder
-// otros           → placeholder
-```
-
----
-
-## Sound System
-
-Nuevo sistema de sonidos via `cuelume` (dependencia `^0.2.2`). Provider en `main.tsx` envuelve toda la app.
-
-```typescript
-// apps/desktop/src/renderer/lib/sound-context.tsx
-interface SoundContextValue {
-  enabled: boolean
-  volume: number
-  toggleEnabled: () => void
-  setVolume: (v: number) => void
-  play: (name?: SoundName, opts?: { volume?: number }) => void
-}
-
-const STORAGE_KEY = 'orca-sound-enabled'  // localStorage
-const VOLUME_KEY = 'orca-sound-volume'    // localStorage
-```
-
-**Inicializacion:**
-1. `bind()` se llama una vez en mount (`useEffect`)
-2. Estado leido de localStorage (default: `enabled=true`, `volume=0.7`)
-3. Cambios de estado sincronizados con cuelume via `setEnabled()` / `cuelumeSetVolume()`
-4. Persistencia automatica a localStorage en cada cambio
-
-**Uso:**
-```typescript
-import { useSound } from '../../lib/sound-context'
-
-const { play } = useSound()
-play('success')   // Ejecuta sonido
-play()             // Default sound
-```
-
-**Provided en:**
-```typescript
-// apps/desktop/src/renderer/main.tsx
-<ThemeProvider>
-  <SoundProvider>
-    <TooltipProvider>
-      <App />
-    </TooltipProvider>
-  </SoundProvider>
-</ThemeProvider>
-```
-
----
-
-## Business Settings State
-
-El state de negocios se centraliza en `App.tsx` y se pasa via props (no Context):
-
-```typescript
-// apps/desktop/src/renderer/App.tsx
-const [businesses, setBusinesses] = useState<Business[]>(() => {
-  const saved = localStorage.getItem('orca-businesses')
-  return saved ? JSON.parse(saved) : []
-})
-
-// Callbacks tipados
-const handleUpdateBusiness = useCallback((id: string, data: Partial<Business>) => {
-  setBusinesses((prev) => prev.map((b) => b.id === id ? { ...b, ...data } : b))
-}, [])
-
-const handleDeleteBusiness = useCallback((id: string) => {
-  setBusinesses((prev) => prev.filter((b) => b.id !== id))
-  setBusinessSettingsId(null)
-  setActivePage('home')
-}, [])
-```
-
-El `BusinessSettings` recibe `business` + `onUpdate` + `onDelete` como props. Cada campo se actualiza inline y persiste a localStorage via el `useEffect` en App.
 
 ---
 
