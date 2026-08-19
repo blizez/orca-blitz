@@ -4,6 +4,7 @@ import { useTheme } from '@/lib/theme-context'
 import { useTranslation } from 'react-i18next'
 import { Plus, X, Check } from 'lucide-react'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@orca-blitz/ui/components/ui/select'
+import { colorThemes } from '@orca-blitz/ui'
 
 const themes = [
   { id: 'system' as const, labelKey: 'appearance.theme.system' },
@@ -11,24 +12,10 @@ const themes = [
   { id: 'light' as const, labelKey: 'appearance.theme.light' },
 ]
 
-const palettes = [
-  { id: 'default', label: 'Default', color: '#6366f1' },
-  { id: 'blue', label: 'Blue', color: '#3b82f6' },
-  { id: 'green', label: 'Green', color: '#22c55e' },
-  { id: 'red', label: 'Red', color: '#ef4444' },
-  { id: 'orange', label: 'Orange', color: '#f97316' },
-  { id: 'yellow', label: 'Yellow', color: '#eab308' },
-  { id: 'pink', label: 'Pink', color: '#ec4899' },
-  { id: 'purple', label: 'Purple', color: '#a855f7' },
-  { id: 'teal', label: 'Teal', color: '#14b8a6' },
-  { id: 'zinc', label: 'Zinc', color: '#71717a' },
-]
-
 export function AppearanceSettings() {
-  const { theme, setTheme } = useTheme()
+  const { theme, setTheme, colorTheme, setColorTheme } = useTheme()
   const { t, i18n } = useTranslation('settings')
   const [showPalettes, setShowPalettes] = useState(false)
-  const [selectedPalette, setSelectedPalette] = useState('default')
   const menuRef = useRef<HTMLDivElement>(null)
 
   const getInitialLang = (): string => {
@@ -111,22 +98,26 @@ export function AppearanceSettings() {
                 </button>
 
                 {showPalettes && (
-                  <div className="absolute right-0 top-full z-50 mt-1 w-[180px] rounded-lg border border-border bg-popover p-1 shadow-md">
+                  <div className="absolute right-0 top-full z-50 mt-1 w-[200px] rounded-lg border border-border bg-popover p-1 shadow-md">
                     <p className="px-2 py-1 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
                       {t('appearance.palettes')}
                     </p>
-                    {palettes.map((palette) => (
+                    {colorThemes.map((ct) => (
                       <button
-                        key={palette.id}
+                        key={ct.id}
                         onClick={() => {
-                          setSelectedPalette(palette.id)
+                          setColorTheme(ct.className)
                           setShowPalettes(false)
                         }}
                         className="flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-sm hover:bg-accent hover:text-accent-foreground transition-colors"
                       >
-                        <div className="size-3.5 rounded-full" style={{ backgroundColor: palette.color }} />
-                        <span className="flex-1 text-left">{palette.label}</span>
-                        {selectedPalette === palette.id && <Check className="size-3.5 text-primary" />}
+                        <div className="flex gap-0.5">
+                          <div className="size-3 rounded-full border border-border" style={{ backgroundColor: ct.preview.bg }} />
+                          <div className="size-3 rounded-full border border-border" style={{ backgroundColor: ct.preview.fg }} />
+                          <div className="size-3 rounded-full border border-border" style={{ backgroundColor: ct.preview.primary }} />
+                        </div>
+                        <span className="flex-1 text-left">{ct.name}</span>
+                        {colorTheme === ct.className && <Check className="size-3.5 text-primary" />}
                       </button>
                     ))}
                   </div>

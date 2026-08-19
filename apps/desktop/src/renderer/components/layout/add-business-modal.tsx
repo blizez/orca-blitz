@@ -72,7 +72,7 @@ export function AddBusinessModal({ open, onClose, onAdd }: AddBusinessModalProps
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
-      <div className="fixed inset-0 bg-black/50 backdrop-blur-sm" onClick={onClose} />
+      <div className="fixed inset-0 bg-foreground/50 backdrop-blur-sm" onClick={onClose} />
       <div className="relative z-50 w-full max-w-lg rounded-xl border border-border bg-background p-6 shadow-lg">
         <div className="flex items-center justify-between mb-4">
           <div>

@@ -1,11 +1,14 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react'
+import { loadAllThemes } from './theme-css-loader'
 
-type Theme = 'light' | 'dark' | 'system'
+type ThemeMode = 'light' | 'dark' | 'system'
 
 interface ThemeContextProps {
-  theme: Theme
+  theme: ThemeMode
   resolvedTheme: 'light' | 'dark'
-  setTheme: (theme: Theme) => void
+  colorTheme: string
+  setTheme: (theme: ThemeMode) => void
+  setColorTheme: (id: string) => void
 }
 
 const ThemeContext = createContext<ThemeContextProps | null>(null)
@@ -16,9 +19,14 @@ function getSystemTheme(): 'light' | 'dark' {
 }
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
-  const [theme, setThemeState] = useState<Theme>(() => {
+  const [theme, setThemeState] = useState<ThemeMode>(() => {
     if (typeof window === 'undefined') return 'system'
-    return (localStorage.getItem('orca-theme') as Theme) || 'system'
+    return (localStorage.getItem('orca-theme') as ThemeMode) || 'system'
+  })
+
+  const [colorTheme, setColorThemeState] = useState<string>(() => {
+    if (typeof window === 'undefined') return ''
+    return localStorage.getItem('orca-color-theme') || ''
   })
 
   const [resolvedTheme, setResolvedTheme] = useState<'light' | 'dark'>(() => {
@@ -27,11 +35,23 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   })
 
   useEffect(() => {
-    const root = document.documentElement
+    loadAllThemes()
+  }, [])
 
+  useEffect(() => {
+    const root = document.documentElement
     root.classList.remove('light', 'dark')
     root.classList.add(resolvedTheme)
   }, [resolvedTheme])
+
+  useEffect(() => {
+    const root = document.documentElement
+    const allThemeClasses = Array.from(root.classList).filter((c) => c.startsWith('theme-'))
+    allThemeClasses.forEach((c) => root.classList.remove(c))
+    if (colorTheme) {
+      root.classList.add(colorTheme)
+    }
+  }, [colorTheme])
 
   useEffect(() => {
     if (theme === 'system') {
@@ -45,13 +65,18 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     }
   }, [theme])
 
-  const setTheme = (newTheme: Theme) => {
+  const setTheme = (newTheme: ThemeMode) => {
     setThemeState(newTheme)
     localStorage.setItem('orca-theme', newTheme)
   }
 
+  const setColorTheme = (id: string) => {
+    setColorThemeState(id)
+    localStorage.setItem('orca-color-theme', id)
+  }
+
   return (
-    <ThemeContext.Provider value={{ theme, resolvedTheme, setTheme }}>
+    <ThemeContext.Provider value={{ theme, resolvedTheme, colorTheme, setTheme, setColorTheme }}>
       {children}
     </ThemeContext.Provider>
   )

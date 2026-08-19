@@ -58,7 +58,7 @@ export function Titlebar({ center, rightSidebarOpen, onToggleRightSidebar }: Tit
         </button>
         <button
           onClick={() => window.api.window.close()}
-          className="flex size-7 items-center justify-center rounded-md text-muted-foreground hover:bg-red-500 hover:text-white transition-colors"
+          className="flex size-7 items-center justify-center rounded-md text-muted-foreground hover:bg-destructive hover:text-destructive-foreground transition-colors"
         >
           <X className="size-3.5" />
         </button>
