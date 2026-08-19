@@ -108,7 +108,7 @@ export function SnippetsDrawer({ businessId }: SnippetsDrawerProps) {
           </SheetHeader>
 
           <div className="flex flex-col gap-3 px-4 pb-4 flex-1 min-h-0">
-            <div className="flex overflow-x-auto gap-1.5 pb-1 -mx-1 px-1 scrollbar-sleek">
+            <div className="flex overflow-x-auto gap-1.5 pb-1 px-1 scrollbar-visible">
               <Button
                 size="sm"
                 variant={categoryFilter === 'all' ? 'default' : 'ghost'}

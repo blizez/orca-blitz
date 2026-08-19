@@ -1,11 +1,14 @@
 import { useState, useCallback, useRef, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
+import { Receipt, BarChart3, Users, Bell, FileText } from 'lucide-react'
+import { Empty, EmptyHeader, EmptyMedia, EmptyTitle, EmptyDescription } from '@orca-blitz/ui/components/ui/empty'
 import { Titlebar } from './components/layout/titlebar'
 import { AppSidebar } from './components/layout/app-sidebar'
 import { RightSidebar } from './components/layout/right-sidebar'
 import { SettingsPage } from './components/settings/settings-page'
 import { HomePage } from './components/home/home-page'
 import { BusinessPage } from './components/business/business-page'
+import { SnippetsDrawer } from './components/business/snippets-drawer'
 import { BrowserTabBar, type Tab } from './components/social-media/browser-tab-bar'
 import { BrowserNavBar } from './components/social-media/browser-nav-bar'
 import { createNewTab, type Platform } from './components/social-media/social-media-page'
@@ -25,9 +28,11 @@ export default function App() {
   const businesses = useAppStore((s) => s.businesses)
   const setBusinesses = useAppStore((s) => s.setBusinesses)
   const setActiveBusinessId = useAppStore((s) => s.setActiveBusinessId)
+  const activeBusinessId = useAppStore((s) => s.activeBusinessId)
   const rightSidebarOpen = useAppStore((s) => s.rightSidebarOpen)
   const toggleRightSidebar = useAppStore((s) => s.toggleRightSidebar)
-  const rightPanel = useAppStore((s) => s.rightPanel)
+  const setRightSidebarOpen = useAppStore((s) => s.setRightSidebarOpen)
+  const toggleSnippetsDrawer = useAppStore((s) => s.toggleSnippetsDrawer)
 
   useEffect(() => {
     window.api.businesses.list().then((data) => {
@@ -45,10 +50,13 @@ export default function App() {
 
   const handleNavigate = useCallback((page: string) => {
     setActivePage(page)
+    const isPanel = ['billing', 'reports', 'contacts', 'notifications'].includes(page)
+    if (isPanel) return
     const bizId = page.includes(':') ? page.split(':')[0] : page
     const matchedBiz = businesses.find((b) => b.id === bizId)
     setActiveBusinessId(matchedBiz ? bizId : null)
-  }, [businesses, setActiveBusinessId])
+    if (matchedBiz) setRightSidebarOpen(true)
+  }, [businesses, setActiveBusinessId, setRightSidebarOpen])
 
   const addTab = useCallback(() => {
     const newTab = createNewTab(true)
@@ -189,7 +197,7 @@ export default function App() {
           onBusinessSettings={handleBusinessSettings}
         />
       )}
-      <div className="flex flex-1 flex-col min-w-0 min-h-0 overflow-hidden">
+      <div className="flex flex-col flex-1 min-w-0 min-h-0 overflow-hidden">
         <Titlebar
           center={
             activePage === 'settings' ? (
@@ -206,96 +214,180 @@ export default function App() {
               />
             ) : undefined
           }
+          rightSidebarOpen={rightSidebarOpen}
+          onToggleRightSidebar={activeBusinessId ? toggleRightSidebar : undefined}
         />
-        {isSocialMedia && (() => {
-          const activeTab = tabs.find((t) => t.id === activeTabId)
-          const hasUrl = !!activeTab?.url
-          const canForwardHome = !!forwardStack.current[activeTabId]
-          return (
-            <BrowserNavBar
-              viewId={activeTabId}
-              hasUrl={hasUrl}
-              canForwardHome={canForwardHome}
-              platformId={activeTab?.icon ?? null}
-              businessId={activeBusinessForPage?.id ?? null}
-              onGoHome={() => goHome(activeTabId)}
-              onGoForwardHome={() => goForwardTab(activeTabId)}
-            />
-          )
-        })()}
-        <main className="flex-1 overflow-hidden">
-          {activePage === 'settings' ? (
-            <SettingsPage
-              onBack={() => { handleNavigate('home'); setBusinessSettingsId(null) }}
-              businessId={businessSettingsId}
-              business={activeBusiness}
-              businesses={businesses}
-              onUpdateBusiness={handleUpdateBusiness}
-              onDeleteBusiness={handleDeleteBusiness}
-              onSelectBusiness={(biz) => setBusinessSettingsId(biz.id)}
-            />
-          ) : activePage === 'home' ? (
-            <HomePage />
-          ) : rightPanel ? (
-            <RightPanelContent panel={rightPanel} businessName={activeBusinessForPage?.name ?? ''} />
-          ) : isBusinessPage ? (
-            <BusinessPage
-              page={activePage}
-              business={activeBusinessForPage}
-              tabs={isSocialMedia ? tabs : undefined}
-              activeTabId={isSocialMedia ? activeTabId : undefined}
-              onPickPlatform={isSocialMedia ? pickPlatform : undefined}
-            />
-          ) : (
-            <>
-              <header className="flex h-12 items-center border-b border-border px-6">
-                <h1 className="text-sm font-medium capitalize">{activePage.replace('-', ' ')}</h1>
-              </header>
-              <div className="p-6">
-                <div className="mx-auto max-w-4xl space-y-6">
-                  <h2 className="text-2xl font-bold capitalize">{activePage.replace('-', ' ')}</h2>
-                  <p className="text-muted-foreground">
-                    This is the {activePage} module. Start building features here.
-                  </p>
-                </div>
-              </div>
-            </>
-          )}
-        </main>
+        <div className="flex flex-1 min-w-0 min-h-0 overflow-hidden">
+          <div className="flex flex-col flex-1 min-w-0 min-h-0 overflow-hidden">
+            {isSocialMedia && (() => {
+              const activeTab = tabs.find((t) => t.id === activeTabId)
+              const hasUrl = !!activeTab?.url
+              const canForwardHome = !!forwardStack.current[activeTabId]
+              return (
+                <BrowserNavBar
+                  viewId={activeTabId}
+                  hasUrl={hasUrl}
+                  canForwardHome={canForwardHome}
+                  platformId={activeTab?.icon ?? null}
+                  businessId={activeBusinessForPage?.id ?? null}
+                  onGoHome={() => goHome(activeTabId)}
+                  onGoForwardHome={() => goForwardTab(activeTabId)}
+                />
+              )
+            })()}
+            <main className="flex-1 overflow-hidden">
+              {activePage === 'settings' ? (
+                <SettingsPage
+                  onBack={() => { handleNavigate('home'); setBusinessSettingsId(null) }}
+                  businessId={businessSettingsId}
+                  business={activeBusiness}
+                  businesses={businesses}
+                  onUpdateBusiness={handleUpdateBusiness}
+                  onDeleteBusiness={handleDeleteBusiness}
+                  onSelectBusiness={(biz) => setBusinessSettingsId(biz.id)}
+                />
+              ) : activePage === 'home' ? (
+                <HomePage />
+              ) : activePage === 'billing' ? (
+                <BillingPage />
+              ) : activePage === 'reports' ? (
+                <ReportsPage />
+              ) : activePage === 'contacts' ? (
+                <ContactsPage />
+              ) : activePage === 'notifications' ? (
+                <NotificationsPage />
+              ) : isBusinessPage ? (
+                <BusinessPage
+                  page={activePage}
+                  business={activeBusinessForPage}
+                  tabs={isSocialMedia ? tabs : undefined}
+                  activeTabId={isSocialMedia ? activeTabId : undefined}
+                  onPickPlatform={isSocialMedia ? pickPlatform : undefined}
+                />
+              ) : (
+                <>
+                  <header className="flex h-12 items-center border-b border-border px-6">
+                    <h1 className="text-sm font-medium capitalize">{activePage.replace('-', ' ')}</h1>
+                  </header>
+                  <div className="p-6">
+                    <div className="mx-auto max-w-4xl space-y-6">
+                      <h2 className="text-2xl font-bold capitalize">{activePage.replace('-', ' ')}</h2>
+                      <p className="text-muted-foreground">
+                        This is the {activePage} module. Start building features here.
+                      </p>
+                    </div>
+                  </div>
+                </>
+              )}
+            </main>
+          </div>
+          <RightSidebar onNavigate={handleNavigate} />
+        </div>
       </div>
-      <RightSidebar
-        collapsed={!rightSidebarOpen}
-        onToggleCollapse={toggleRightSidebar}
-      />
+
+      {activeBusinessId && (
+        <>
+          <button
+            onClick={toggleSnippetsDrawer}
+            className="fixed bottom-6 z-50 flex size-12 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg transition-colors hover:bg-primary/90"
+            style={{ right: `${24 + (rightSidebarOpen ? 52 : 0)}px` }}
+          >
+            <FileText className="size-5" />
+          </button>
+          <SnippetsDrawer businessId={activeBusinessId} />
+        </>
+      )}
     </div>
   )
 }
 
-function RightPanelContent({ panel, businessName }: { panel: string; businessName: string }) {
+function BillingPage() {
   const { t } = useTranslation('sidebar')
-
-  const panelConfig: Record<string, { title: string; description: string }> = {
-    billing: { title: t('rightSidebar.billing'), description: 'Gestiona facturación y pagos de tu negocio.' },
-    reports: { title: t('rightSidebar.reports'), description: 'Analiza el rendimiento de tu negocio.' },
-    contacts: { title: t('rightSidebar.contactsPanel'), description: 'Administra tus contactos y clientes.' },
-    notifications: { title: t('rightSidebar.notifications'), description: 'Revisa las notificaciones importantes.' },
-  }
-
-  const config = panelConfig[panel] ?? { title: panel, description: '' }
-
   return (
-    <div className="h-full flex flex-col">
-      <header className="flex h-12 items-center border-b border-border px-6">
-        <h1 className="text-sm font-medium">{config.title}</h1>
-        {businessName && (
-          <span className="ml-2 text-xs text-muted-foreground">— {businessName}</span>
-        )}
-      </header>
-      <div className="flex-1 p-6">
-        <div className="mx-auto max-w-4xl space-y-6">
-          <h2 className="text-2xl font-bold">{config.title}</h2>
-          <p className="text-muted-foreground">{config.description}</p>
+    <div className="h-full overflow-y-auto scrollbar-sleek">
+      <div className="mx-auto max-w-4xl space-y-6 p-6">
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <h1 className="text-xl font-semibold">{t('rightSidebar.billing')}</h1>
+            <p className="mt-1 text-sm text-muted-foreground">Gestiona facturación y pagos de tu negocio.</p>
+          </div>
         </div>
+        <Empty>
+          <EmptyHeader>
+            <EmptyMedia variant="icon"><Receipt /></EmptyMedia>
+            <EmptyTitle>Sin facturación</EmptyTitle>
+            <EmptyDescription>Agrega métodos de pago y gestiona tus facturas desde la configuración.</EmptyDescription>
+          </EmptyHeader>
+        </Empty>
+      </div>
+    </div>
+  )
+}
+
+function ReportsPage() {
+  const { t } = useTranslation('sidebar')
+  return (
+    <div className="h-full overflow-y-auto scrollbar-sleek">
+      <div className="mx-auto max-w-4xl space-y-6 p-6">
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <h1 className="text-xl font-semibold">{t('rightSidebar.reports')}</h1>
+            <p className="mt-1 text-sm text-muted-foreground">Analiza el rendimiento de tu negocio.</p>
+          </div>
+        </div>
+        <Empty>
+          <EmptyHeader>
+            <EmptyMedia variant="icon"><BarChart3 /></EmptyMedia>
+            <EmptyTitle>Sin reportes</EmptyTitle>
+            <EmptyDescription>Los reportes se generarán automáticamente cuando tengas actividad.</EmptyDescription>
+          </EmptyHeader>
+        </Empty>
+      </div>
+    </div>
+  )
+}
+
+function ContactsPage() {
+  const { t } = useTranslation('sidebar')
+  return (
+    <div className="h-full overflow-y-auto scrollbar-sleek">
+      <div className="mx-auto max-w-4xl space-y-6 p-6">
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <h1 className="text-xl font-semibold">{t('rightSidebar.contactsPanel')}</h1>
+            <p className="mt-1 text-sm text-muted-foreground">Administra tus contactos y clientes.</p>
+          </div>
+        </div>
+        <Empty>
+          <EmptyHeader>
+            <EmptyMedia variant="icon"><Users /></EmptyMedia>
+            <EmptyTitle>Sin contactos</EmptyTitle>
+            <EmptyDescription>Tus contactos aparecerán aquí cuando interactúen con tu negocio.</EmptyDescription>
+          </EmptyHeader>
+        </Empty>
+      </div>
+    </div>
+  )
+}
+
+function NotificationsPage() {
+  const { t } = useTranslation('sidebar')
+  return (
+    <div className="h-full overflow-y-auto scrollbar-sleek">
+      <div className="mx-auto max-w-4xl space-y-6 p-6">
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <h1 className="text-xl font-semibold">{t('rightSidebar.notifications')}</h1>
+            <p className="mt-1 text-sm text-muted-foreground">Revisa las notificaciones importantes.</p>
+          </div>
+        </div>
+        <Empty>
+          <EmptyHeader>
+            <EmptyMedia variant="icon"><Bell /></EmptyMedia>
+            <EmptyTitle>Sin notificaciones</EmptyTitle>
+            <EmptyDescription>Recibirás notificaciones importantes aquí.</EmptyDescription>
+          </EmptyHeader>
+        </Empty>
       </div>
     </div>
   )
