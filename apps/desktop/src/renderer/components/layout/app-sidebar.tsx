@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, useCallback } from 'react'
 import {
   Building2,
   Settings,
@@ -8,6 +8,9 @@ import {
   PanelLeftOpen,
 } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
+import { DndContext, closestCenter, PointerSensor, KeyboardSensor, useSensor, useSensors } from '@dnd-kit/core'
+import type { DragEndEvent } from '@dnd-kit/core'
+import { SortableContext, verticalListSortingStrategy, sortableKeyboardCoordinates } from '@dnd-kit/sortable'
 import { cn } from '@/lib/utils'
 import { toast } from '@orca-blitz/ui/components/ui/toast'
 import { HelpMenu } from './help-menu'
@@ -15,8 +18,9 @@ import { Tooltip, TooltipTrigger, TooltipContent } from '@orca-blitz/ui/componen
 import { Input } from '@orca-blitz/ui/components/ui/input'
 import { AddBusinessModal } from './add-business-modal'
 import { DeleteBusinessModal } from './delete-business-modal'
-import { BusinessItem } from './business-item'
+import { SortableBusinessItem } from './sortable-business-item'
 import { OrcaLogo } from '@orca-blitz/ui/components/ui/logo'
+import { useAppStore } from '@/store'
 import type { Business } from '@orca-blitz/shared'
 
 interface AppSidebarProps {
@@ -36,6 +40,25 @@ export function AppSidebar({ activePage, onNavigate, collapsed, onToggleCollapse
   const [expandedBiz, setExpandedBiz] = useState<string[]>([])
   const [searchQuery, setSearchQuery] = useState('')
   const searchRef = useRef<HTMLInputElement>(null)
+  const reorderBusiness = useAppStore((s) => s.reorderBusiness)
+
+  const sensors = useSensors(
+    useSensor(PointerSensor, { activationConstraint: { distance: 5 } }),
+    useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates })
+  )
+
+  const handleDragEnd = useCallback(
+    (event: DragEndEvent) => {
+      const { active, over } = event
+      if (!over || active.id === over.id) return
+      const oldIndex = businesses.findIndex((b) => b.id === active.id)
+      const newIndex = businesses.findIndex((b) => b.id === over.id)
+      if (oldIndex !== -1 && newIndex !== -1) {
+        reorderBusiness(oldIndex, newIndex)
+      }
+    },
+    [businesses, reorderBusiness]
+  )
 
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
@@ -193,21 +216,26 @@ export function AppSidebar({ activePage, onNavigate, collapsed, onToggleCollapse
           )}
 
           {filteredBusinesses.length > 0 && !collapsed && (
-            <ul className="space-y-0.5">
-              {filteredBusinesses.map((biz) => (
-                <BusinessItem
-                  key={biz.id}
-                  business={biz}
-                  isActive={activePage.startsWith(biz.id)}
-                  expanded={expandedBiz.includes(biz.id)}
-                  activePage={activePage}
-                  onToggle={handleToggleBusiness}
-                  onSelect={(id) => onNavigate(id)}
-                  onDelete={handleDeleteBusiness}
-                  onBusinessSettings={onBusinessSettings}
-                />
-              ))}
-            </ul>
+            <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+              <SortableContext items={businesses.map((b) => b.id)} strategy={verticalListSortingStrategy}>
+                <ul className="space-y-0.5">
+                  {filteredBusinesses.map((biz) => (
+                    <SortableBusinessItem
+                      key={biz.id}
+                      business={biz}
+                      isActive={activePage.startsWith(biz.id)}
+                      expanded={expandedBiz.includes(biz.id)}
+                      activePage={activePage}
+                      onToggle={handleToggleBusiness}
+                      onSelect={(id) => onNavigate(id)}
+                      onDelete={handleDeleteBusiness}
+                      onBusinessSettings={onBusinessSettings}
+                      isDragDisabled={searchQuery.length > 0 || businesses.length <= 1}
+                    />
+                  ))}
+                </ul>
+              </SortableContext>
+            </DndContext>
           )}
         </div>
       </nav>
