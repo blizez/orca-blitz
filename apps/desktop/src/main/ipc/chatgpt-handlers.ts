@@ -1,5 +1,5 @@
 import { ipcMain, BrowserWindow } from 'electron'
-import { streamChatGPT, fetchChatGPTUser, type ChatGPTMessage } from './chatgpt-client'
+import { streamChatGPT, fetchChatGPTUser } from './chatgpt-client'
 
 const tokens = new Map<string, string>()
 

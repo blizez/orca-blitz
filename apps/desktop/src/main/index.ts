@@ -5,6 +5,9 @@ import { registerBrowserHandlers } from './ipc/browser-handlers'
 import { registerCoreHandlers } from './ipc/core-handlers'
 import { registerOpenAIAuthHandlers } from './ipc/openai-auth'
 import { registerChatGPTHandlers } from './ipc/chatgpt-handlers'
+import { registerMessagingHandlers } from './ipc/messaging-handlers'
+import { registerMetaAuthHandlers } from './ipc/meta-auth'
+import { registerGmailAuthHandlers } from './ipc/gmail-auth'
 
 let mainWindow: BrowserWindow | null = null
 
@@ -43,6 +46,7 @@ function createWindow(): void {
     return { action: 'deny' }
   })
 
+
   mainWindow.webContents.session.setPermissionRequestHandler((_, permission, callback) => {
     const allowedPermissions = ['media', 'geolocation', 'notifications', 'clipboard-read', 'clipboard-sanitized-write']
     if (allowedPermissions.includes(permission)) {
@@ -69,6 +73,9 @@ app.whenReady().then(() => {
   Menu.setApplicationMenu(null)
 
   registerCoreHandlers()
+  registerMessagingHandlers()
+  registerMetaAuthHandlers()
+  registerGmailAuthHandlers()
 
   ipcMain.on('window:minimize', () => mainWindow?.minimize())
   ipcMain.on('window:maximize', () => {

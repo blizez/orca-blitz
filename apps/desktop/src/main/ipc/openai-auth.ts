@@ -49,7 +49,6 @@ async function fetchAvailableModels(_accessToken: string) {
 }
 
 export function registerOpenAIAuthHandlers(mainWindow: BrowserWindow) {
-  let currentCodeVerifier: string | null = null
   let authServer: http.Server | null = null
 
   ipcMain.handle('openai:start-auth', async () => {
@@ -61,7 +60,6 @@ export function registerOpenAIAuthHandlers(mainWindow: BrowserWindow) {
     const codeVerifier = generateCodeVerifier()
     const codeChallenge = generateCodeChallenge(codeVerifier)
     const state = generateState()
-    currentCodeVerifier = codeVerifier
 
     const redirectUri = `http://localhost:${REDIRECT_PORT}/auth/callback`
 
@@ -151,6 +149,5 @@ export function registerOpenAIAuthHandlers(mainWindow: BrowserWindow) {
       authServer.close()
       authServer = null
     }
-    currentCodeVerifier = null
   })
 }

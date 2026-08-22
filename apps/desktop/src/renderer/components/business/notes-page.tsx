@@ -12,6 +12,8 @@ interface NoteItem {
   title: string
   content: string
   createdAt: string
+  status?: 'todo' | 'in_progress' | 'done'
+  platformId?: string
 }
 
 interface NotesPageProps {
@@ -109,7 +111,19 @@ export function NotesPage({ businessId }: NotesPageProps) {
               <div key={item.id} className="flex flex-col gap-2 rounded-xl border border-border bg-card p-4">
                 <div className="flex items-start justify-between gap-2">
                   <div className="min-w-0">
-                    <p className="truncate text-sm font-medium">{item.title}</p>
+                    <div className="flex items-center gap-1.5">
+                      <p className="truncate text-sm font-medium">{item.title}</p>
+                      {item.status && item.status !== 'todo' && (
+                        <span className="rounded-full bg-muted px-1.5 py-0.5 text-[10px] leading-none text-muted-foreground">
+                          {item.status === 'in_progress' ? 'En curso' : 'Hecho'}
+                        </span>
+                      )}
+                      {item.platformId && (
+                        <span className="rounded-full border border-border px-1.5 py-0.5 text-[10px] leading-none text-muted-foreground">
+                          {item.platformId}
+                        </span>
+                      )}
+                    </div>
                     <p className="mt-1 text-xs text-muted-foreground">
                       {new Date(item.createdAt).toLocaleDateString()}
                     </p>

@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react'
-import { ChevronLeft, ChevronRight, RotateCw, StickyNote } from 'lucide-react'
+import { ChevronLeft, ChevronRight, RotateCw, NotepadText } from 'lucide-react'
 import { cn } from '../../lib/utils'
 import { PlatformNotes } from './platform-notes'
 
@@ -14,21 +14,18 @@ interface BrowserNavBarProps {
 }
 
 export function BrowserNavBar({ viewId, hasUrl, canForwardHome, platformId, businessId, onGoHome, onGoForwardHome }: BrowserNavBarProps) {
-  const [canGoBack, setCanGoBack] = useState(false)
   const [canGoForward, setCanGoForward] = useState(false)
   const [notesOpen, setNotesOpen] = useState(false)
 
   const refreshNavState = useCallback(async () => {
     if (!viewId || !hasUrl) {
-      setCanGoBack(false)
       setCanGoForward(false)
       return
     }
-    const [back, forward] = await Promise.all([
+    const [, forward] = await Promise.all([
       window.api.browser.canGoBack(viewId),
       window.api.browser.canGoForward(viewId),
     ])
-    setCanGoBack(back)
     setCanGoForward(forward)
   }, [viewId, hasUrl])
 
@@ -123,13 +120,15 @@ export function BrowserNavBar({ viewId, hasUrl, canForwardHome, platformId, busi
 
       {platformId && businessId && (
         <>
-          <button
-            onClick={() => setNotesOpen(true)}
-            className="flex size-7 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
-            title="Notas de plataforma"
-          >
-            <StickyNote className="size-4" />
-          </button>
+          <div className="ml-auto flex items-center">
+            <button
+              onClick={() => setNotesOpen(true)}
+              className="flex size-7 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+              title="Notas de plataforma"
+            >
+              <NotepadText className="size-4" />
+            </button>
+          </div>
           <PlatformNotes
             businessId={businessId}
             platformId={platformId}

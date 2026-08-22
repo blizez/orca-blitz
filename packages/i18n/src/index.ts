@@ -8,6 +8,7 @@ import enSettings from './locales/en/settings.json'
 import enProviders from './locales/en/providers.json'
 import enBusiness from './locales/en/business.json'
 import enModals from './locales/en/modals.json'
+import enInbox from './locales/en/inbox.json'
 
 import esCommon from './locales/es/common.json'
 import esSidebar from './locales/es/sidebar.json'
@@ -15,6 +16,7 @@ import esSettings from './locales/es/settings.json'
 import esProviders from './locales/es/providers.json'
 import esBusiness from './locales/es/business.json'
 import esModals from './locales/es/modals.json'
+import esInbox from './locales/es/inbox.json'
 
 i18n
   .use(LanguageDetector)
@@ -28,6 +30,7 @@ i18n
         providers: enProviders,
         business: enBusiness,
         modals: enModals,
+        inbox: enInbox,
       },
       es: {
         common: esCommon,
@@ -36,6 +39,7 @@ i18n
         providers: esProviders,
         business: esBusiness,
         modals: esModals,
+        inbox: esInbox,
       },
     },
     fallbackLng: 'en',

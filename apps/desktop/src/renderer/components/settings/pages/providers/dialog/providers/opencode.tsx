@@ -1,5 +1,4 @@
 import { Tabs, TabsList, TabsTrigger } from '@orca-blitz/ui/components/ui/tabs'
-import { opencodeTabs } from '../../constants'
 import { ApiKeyForm } from '../api-key-form'
 import type { BuiltInProvider } from '../../types'
 

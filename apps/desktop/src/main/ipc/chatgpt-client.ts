@@ -25,7 +25,6 @@ export async function* streamChatGPT(
   model: string,
   messages: Array<{ role: 'user' | 'assistant'; content: string }>,
 ): AsyncGenerator<string, void, unknown> {
-  const conversationId = uuid()
   const parentId = uuid()
 
   const apiMessages: ChatGPTMessage[] = messages.map((m) => ({

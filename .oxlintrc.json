@@ -1,0 +1,14 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": ["react"],
+  "categories": {
+    "correctness": "error"
+  },
+  "rules": {
+    "react/set-state-in-effect": "warn",
+    "react/static-components": "warn",
+    "react/refs": "warn",
+    "react-hooks/exhaustive-deps": "warn"
+  },
+  "ignorePatterns": ["node_modules/**", "out/**", "dist/**"]
+}

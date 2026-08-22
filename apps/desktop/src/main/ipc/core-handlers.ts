@@ -129,19 +129,17 @@ export function registerCoreHandlers() {
   })
 
   ipcMain.handle('customers:list', () => [])
-  ipcMain.handle('customers:get', (_e, id: string) => null)
+  ipcMain.handle('customers:get', (_e, _id: string) => null)
   ipcMain.handle('customers:create', (_e, data: unknown) => ({ id: randomUUID(), ...(data as object) }))
-  ipcMain.handle('customers:update', (_e, id: string, data: unknown) => null)
-  ipcMain.handle('customers:delete', (_e, id: string) => true)
+  ipcMain.handle('customers:update', (_e, _id: string, _data: unknown) => null)
+  ipcMain.handle('customers:delete', (_e, _id: string) => true)
 
   ipcMain.handle('workflows:list', () => [])
   ipcMain.handle('workflows:create', (_e, data: unknown) => ({ id: randomUUID(), ...(data as object) }))
-  ipcMain.handle('workflows:execute', (_e, id: string) => ({ success: true }))
+  ipcMain.handle('workflows:execute', (_e, _id: string) => ({ success: true }))
 
-  ipcMain.handle('integrations:sendMessage', (_e, channel: string, data: unknown) => ({ success: true }))
-
-  ipcMain.handle('reports:generate', (_e, config: unknown) => ({ reportId: randomUUID() }))
-  ipcMain.handle('reports:export', (_e, format: string) => ({ path: '' }))
+  ipcMain.handle('reports:generate', (_e, _config: unknown) => ({ reportId: randomUUID() }))
+  ipcMain.handle('reports:export', (_e, _format: string) => ({ path: '' }))
 
   ipcMain.handle('settings:get', () => settings)
   ipcMain.handle('settings:update', (_e, prefs: Partial<typeof settings>) => {
@@ -150,7 +148,7 @@ export function registerCoreHandlers() {
   })
 
   ipcMain.handle('plugins:list', () => [])
-  ipcMain.handle('plugins:install', (_e, manifest: unknown) => ({ success: true }))
-  ipcMain.handle('plugins:enable', (_e, id: string) => true)
-  ipcMain.handle('plugins:disable', (_e, id: string) => true)
+  ipcMain.handle('plugins:install', (_e, _manifest: unknown) => ({ success: true }))
+  ipcMain.handle('plugins:enable', (_e, _id: string) => true)
+  ipcMain.handle('plugins:disable', (_e, _id: string) => true)
 }

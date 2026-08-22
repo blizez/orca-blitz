@@ -6,6 +6,7 @@ const CHROME_UA =
   'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36'
 
 const views = new Map<string, WebContentsView>()
+const platformIds = new WeakMap<Electron.WebContents, string>()
 let activeViewId: string | null = null
 
 const CSS_BY_PLATFORM: Record<string, string> = {}
@@ -33,7 +34,8 @@ function getPreloadPath(): string {
 }
 
 function injectCSS(view: WebContentsView) {
-  const platformId = (view.webContents as any).__platformId
+  const platformId = platformIds.get(view.webContents)
+  if (!platformId) return
   const css = CSS_BY_PLATFORM[platformId]
   if (!css) return
   view.webContents.insertCSS(css)
@@ -54,7 +56,7 @@ export function registerBrowserHandlers(mainWindow: BrowserWindow) {
         preload: preloadPath
       }
     })
-    ;(view.webContents as any).__platformId = platformId
+    platformIds.set(view.webContents, platformId)
 
     view.webContents.setUserAgent(CHROME_UA)
 

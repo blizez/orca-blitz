@@ -21,8 +21,14 @@ export function BrowserView({ viewId, url, partition, isActive, platformId }: Br
     return { x: Math.round(rect.x), y: Math.round(rect.y), width: Math.round(rect.width), height: Math.round(rect.height) }
   }, [])
 
+  const isElectron = typeof navigator !== 'undefined' && navigator.userAgent.includes('Electron')
+
   useEffect(() => {
     if (!url) return
+    if (!isElectron) {
+      setLoaded(true)
+      return
+    }
     const id = viewId
     window.api.browser.create(id, url, partition, platformId || '')
 
@@ -39,9 +45,10 @@ export function BrowserView({ viewId, url, partition, isActive, platformId }: Br
       unsubFail()
       window.api.browser.destroy(id)
     }
-  }, [url, partition, platformId])
+  }, [viewId, url, partition, platformId, isElectron])
 
   useEffect(() => {
+    if (!isElectron) return
     const id = viewId
     cancelAnimationFrame(rafRef.current)
 
@@ -60,9 +67,10 @@ export function BrowserView({ viewId, url, partition, isActive, platformId }: Br
     }
 
     return () => cancelAnimationFrame(rafRef.current)
-  }, [isActive, loaded, url, getBounds])
+  }, [isElectron, viewId, isActive, loaded, url, getBounds])
 
   useEffect(() => {
+    if (!isElectron) return
     if (!loaded || !isActive || !url) return
     const id = viewId
 
@@ -73,9 +81,33 @@ export function BrowserView({ viewId, url, partition, isActive, platformId }: Br
     if (containerRef.current) observer.observe(containerRef.current)
 
     return () => observer.disconnect()
-  }, [loaded, isActive, url, getBounds])
+  }, [isElectron, viewId, loaded, isActive, url, getBounds])
 
   if (!url) return null
+
+  if (!isElectron) {
+    return (
+      <div ref={containerRef} className="absolute inset-0 flex flex-col items-center justify-center gap-4 bg-background p-8 text-center">
+        <div className="max-w-md space-y-3">
+          <p className="text-sm font-medium">Vista embebida solo disponible en la app de escritorio</p>
+          <p className="text-xs text-muted-foreground">
+            Estás en modo web (localhost:5173). WhatsApp y otras plataformas bloquean iframes. Usa la app Electron para
+            el navegador Chromium integrado.
+          </p>
+        </div>
+        <button
+          type="button"
+          onClick={() => window.open(url, '_blank', 'noopener,noreferrer')}
+          className="rounded-lg bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground hover:bg-primary/90"
+        >
+          Abrir {platformId || 'sitio'} en el navegador
+        </button>
+        <p className="text-xs text-muted-foreground">
+          Ejecuta <code className="rounded bg-muted px-1 py-0.5">pnpm dev</code> y abre la ventana de Electron.
+        </p>
+      </div>
+    )
+  }
 
   return (
     <div ref={containerRef} className="absolute inset-0">

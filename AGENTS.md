@@ -4,6 +4,27 @@ Este documento define cómo trabajar en orca-blitz. Toda la IA que modifique có
 
 ---
 
+## ⚠️ Estado actual vs roadmap
+
+Este documento mezcla **reglas vigentes** con **arquitectura objetivo (roadmap)**. Antes de actuar, distinguir:
+
+**Vigente hoy:**
+- Monorepo pnpm (`pnpm-workspace.yaml`): `apps/desktop` (Electron + React + electron-vite), `packages/ui`, `packages/shared`, `packages/i18n`
+- Calidad: TypeScript strict en todos los targets, OxLint (`.oxlintrc.json`), oxfmt, Vitest — scripts en la raíz: `lint`, `lint:fix`, `format`, `typecheck`, `test`
+- Arquitectura Electron de 3 procesos, preload con `window.api` tipado
+- Mensajería WhatsApp/Telegram en `apps/desktop/src/main/messaging/`
+
+**Roadmap (NO existe aún, no asumir que está):**
+- `server/`, `relay/`, `plugins/`, `tests/`, `config/max-lines-baseline.txt`, `config/reliability-gates.jsonc`
+- Turborepo (`turbo.json`), Husky/lint-staged, Playwright
+- Apps `web/` y `mobile/` como workspaces separados
+- Slices de Zustand por dominio (`store/slices/*.ts`) — hoy hay stores planos por feature
+- Marketplace y SDK de plugins
+
+Las reglas de estilo, naming, seguridad y comunicación por eventos aplican desde ya a todo código nuevo.
+
+---
+
 ## Design System
 
 Todo el trabajo de UI — layout, color, tipografía, spacing, selección de componentes, comportamiento UX — debe seguir [`docs/STYLEGUIDE.md`](docs/STYLEGUIDE.md). Usa los tokens definidos en `packages/ui/src/globals.css` (fuente canonical) y los primitives de shadcn en `packages/ui/src/components/ui/`. No inventar nuevos valores de color, tamaños de fuente, o niveles de sombra cuando ya exista uno documentado que cubra el rol. Cuando STYLEGUIDE.md no responda, seguir el orden de resolución de su última sección.

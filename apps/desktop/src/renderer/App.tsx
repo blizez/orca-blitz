@@ -17,12 +17,12 @@ import { useAppStore } from './store'
 import type { Business } from '@orca-blitz/shared'
 
 export default function App() {
-  const { t } = useTranslation('sidebar')
   const [activePage, setActivePage] = useState('home')
   const [sidebarOpen, setSidebarOpen] = useState(true)
   const [tabs, setTabs] = useState<Tab[]>([createNewTab()])
   const [activeTabId, setActiveTabId] = useState<string>(() => tabs[0].id)
   const [businessSettingsId, setBusinessSettingsId] = useState<string | null>(null)
+  const [businessSettingsTab, setBusinessSettingsTab] = useState<string>('business')
   const forwardStack = useRef<Record<string, { title: string; url: string; icon: string; iconComponent?: React.ComponentType<{ className?: string }>; partition: string }>>({})
 
   const businesses = useAppStore((s) => s.businesses)
@@ -44,7 +44,7 @@ export default function App() {
     })
 
     return unsubscribe
-  }, [])
+  }, [setBusinesses])
 
   const isSocialMedia = activePage.includes(':redes')
 
@@ -125,8 +125,10 @@ export default function App() {
     )
   }, [])
 
-  const handleBusinessSettings = useCallback((biz: Business) => {
+  const handleBusinessSettings = useCallback((biz: Business, tab?: string) => {
     setBusinessSettingsId(biz.id)
+    setBusinessSettingsTab(tab ?? 'business')
+    setActiveBusinessId(biz.id)
     setActivePage('settings')
   }, [])
 
@@ -239,6 +241,7 @@ export default function App() {
               {activePage === 'settings' ? (
                 <SettingsPage
                   onBack={() => { handleNavigate('home'); setBusinessSettingsId(null) }}
+                  initialTab={businessSettingsTab}
                   businessId={businessSettingsId}
                   business={activeBusiness}
                   businesses={businesses}
@@ -263,6 +266,7 @@ export default function App() {
                   tabs={isSocialMedia ? tabs : undefined}
                   activeTabId={isSocialMedia ? activeTabId : undefined}
                   onPickPlatform={isSocialMedia ? pickPlatform : undefined}
+                  onOpenSettings={isSocialMedia && activeBusinessForPage ? () => handleBusinessSettings(activeBusinessForPage) : undefined}
                 />
               ) : (
                 <>

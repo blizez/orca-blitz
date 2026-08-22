@@ -303,7 +303,7 @@ export function ContentPage({ businessId }: ContentPageProps) {
             <div className="grid grid-cols-2 gap-3">
               <div className="space-y-1">
                 <label className="text-sm font-medium">{t('content.channelLabel')}</label>
-                <Select value={form.channel} onValueChange={(value) => setForm({ ...form, channel: value })}>
+                <Select value={form.channel} onValueChange={(value) => { if (typeof value === 'string') setForm({ ...form, channel: value }) }}>
                   <SelectTrigger className="w-full">
                     <SelectValue />
                   </SelectTrigger>

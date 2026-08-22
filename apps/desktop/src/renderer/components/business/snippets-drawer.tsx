@@ -13,10 +13,6 @@ import { SnippetForm, type SavedSnippet, type SnippetCategory } from './snippet-
 
 const STORAGE_KEY = (businessId: string) => `orca-business-snippets-${businessId}`
 
-const CATEGORY_FILTERS: { key: 'all'; labelKey: string }[] = [
-  { key: 'all', labelKey: 'snippets.categories.all' },
-]
-
 const CATEGORY_OPTIONS: { value: SnippetCategory; labelKey: string }[] = [
   { value: 'cta', labelKey: 'snippets.categories.cta' },
   { value: 'description', labelKey: 'snippets.categories.description' },

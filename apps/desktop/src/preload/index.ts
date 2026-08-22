@@ -38,12 +38,50 @@ const api = {
     }
   },
   integrations: {
-    sendMessage: (channel: string, data: unknown) => ipcRenderer.invoke('integrations:sendMessage', channel, data),
+    connect: (businessId: string) => ipcRenderer.invoke('integrations:connect', businessId),
+    telegramConnect: (businessId: string) => ipcRenderer.invoke('integrations:telegram:connect', businessId),
+    telegramStartLogin: (businessId: string, phone: string) => ipcRenderer.invoke('integrations:telegram:start-login', businessId, phone),
+    telegramSubmitCode: (businessId: string, code: string) => ipcRenderer.invoke('integrations:telegram:submit-code', businessId, code),
+    telegramSubmitPassword: (businessId: string, password: string) => ipcRenderer.invoke('integrations:telegram:submit-password', businessId, password),
+    telegramDisconnect: (businessId: string) => ipcRenderer.invoke('integrations:telegram:disconnect', businessId),
+    metaGetStatus: (businessId: string, channel: string) => ipcRenderer.invoke('integrations:meta:getStatus', businessId, channel),
+    metaStart: (businessId: string, channel: string) => ipcRenderer.invoke('integrations:meta:start', businessId, channel),
+    metaDisconnect: (businessId: string, channel: string) => ipcRenderer.invoke('integrations:meta:disconnect', businessId, channel),
+    instagramLogin: (businessId: string, username: string, password: string) =>
+      ipcRenderer.invoke('integrations:instagram:login', businessId, username, password),
+    instagramDisconnect: (businessId: string) => ipcRenderer.invoke('integrations:instagram:disconnect', businessId),
+    messengerLogin: (businessId: string, email: string, password: string) =>
+      ipcRenderer.invoke('integrations:messenger:login', businessId, email, password),
+    messengerDisconnect: (businessId: string) => ipcRenderer.invoke('integrations:messenger:disconnect', businessId),
+    gmailGetStatus: (businessId: string) => ipcRenderer.invoke('integrations:gmail:getStatus', businessId),
+    gmailConnect: (businessId: string) => ipcRenderer.invoke('integrations:gmail:start', businessId),
+    gmailDisconnect: (businessId: string) => ipcRenderer.invoke('integrations:gmail:disconnect', businessId),
+    disconnect: (businessId: string) => ipcRenderer.invoke('integrations:disconnect', businessId),
+    getStatus: (businessId: string, channel = 'whatsapp') => ipcRenderer.invoke('integrations:getStatus', businessId, channel),
+    listConversations: (businessId: string, channel = 'whatsapp') => ipcRenderer.invoke('integrations:listConversations', businessId, channel),
+    listMessages: (businessId: string, jid: string, channel = 'whatsapp') => ipcRenderer.invoke('integrations:listMessages', businessId, jid, channel),
+    markRead: (businessId: string, jid: string, channel = 'whatsapp') => ipcRenderer.invoke('integrations:markRead', businessId, jid, channel),
+    sendMessage: (businessId: string, jid: string, text: string, channel = 'whatsapp') => ipcRenderer.invoke('integrations:sendMessage', businessId, jid, text, channel),
     onMessage: (callback: (...args: unknown[]) => void) => {
       ipcRenderer.on('integrations:message', (_event, ...args) => callback(...args))
       return () => {
         ipcRenderer.removeAllListeners('integrations:message')
       }
+    },
+    onQR: (callback: (data: { businessId: string; qr: string }) => void) => {
+      const handler = (_event: unknown, data: { businessId: string; qr: string }) => callback(data)
+      ipcRenderer.on('integrations:qr', handler)
+      return () => ipcRenderer.removeListener('integrations:qr', handler)
+    },
+    onStatus: (callback: (data: unknown) => void) => {
+      const handler = (_event: unknown, data: unknown) => callback(data)
+      ipcRenderer.on('integrations:status', handler)
+      return () => ipcRenderer.removeListener('integrations:status', handler)
+    },
+    onConversationsChanged: (callback: (data: { businessId: string }) => void) => {
+      const handler = (_event: unknown, data: { businessId: string }) => callback(data)
+      ipcRenderer.on('integrations:conversations-changed', handler)
+      return () => ipcRenderer.removeListener('integrations:conversations-changed', handler)
     }
   },
   reports: {

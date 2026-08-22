@@ -13,6 +13,7 @@ import type { Business } from '@orca-blitz/shared'
 
 interface SettingsPageProps {
   onBack: () => void
+  initialTab?: string
   businessId?: string | null
   business?: Business | null
   businesses?: Business[]
@@ -32,13 +33,13 @@ const pages: Record<string, React.ComponentType> = {
   security: SecuritySettings,
 }
 
-export function SettingsPage({ onBack, businessId, business, businesses, onUpdateBusiness, onDeleteBusiness, onSelectBusiness }: SettingsPageProps) {
-  const [activeTab, setActiveTab] = useState(businessId ? 'business' : 'appearance')
+export function SettingsPage({ onBack, initialTab, businessId, business, businesses, onUpdateBusiness, onDeleteBusiness, onSelectBusiness }: SettingsPageProps) {
+  const [activeTab, setActiveTab] = useState(businessId ? (initialTab ?? 'business') : 'appearance')
 
   const isBusinessMode = !!businessId && business
   const ActivePage = isBusinessMode && activeTab === 'business'
     ? () => business && onUpdateBusiness && onDeleteBusiness ? (
-        <BusinessSettings business={business} onUpdate={onUpdateBusiness} onDelete={onDeleteBusiness} />
+        <BusinessSettings key={business.id} business={business} onUpdate={onUpdateBusiness} onDelete={onDeleteBusiness} />
       ) : null
     : pages[activeTab] ?? AppearanceSettings
 
@@ -58,10 +59,10 @@ export function SettingsPage({ onBack, businessId, business, businesses, onUpdat
         onBusinessSelect={handleBusinessSelect}
       />
       <main className="flex-1 overflow-y-auto">
-        <div className={`mx-auto p-6 ${isBusinessMode && activeTab === 'business' ? 'max-w-4xl' : 'max-w-2xl'}`}>
+          <div className={`mx-auto p-6 ${isBusinessMode ? 'max-w-4xl' : 'max-w-2xl'}`}>
           {isBusinessMode && activeTab === 'business'
             ? (business && onUpdateBusiness && onDeleteBusiness ? (
-                <BusinessSettings business={business} onUpdate={onUpdateBusiness} onDelete={onDeleteBusiness} />
+                <BusinessSettings key={business.id} business={business} onUpdate={onUpdateBusiness} onDelete={onDeleteBusiness} />
               ) : null)
             : <ActivePage />}
         </div>

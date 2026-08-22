@@ -1,6 +1,5 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
 import {
-  Building2,
   Settings,
   Plus,
   Search,
@@ -9,7 +8,7 @@ import {
 } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { DndContext, closestCenter, PointerSensor, KeyboardSensor, useSensor, useSensors } from '@dnd-kit/core'
-import type { DragEndEvent } from '@dnd-kit/core'
+import type { DragEndEvent, Modifier } from '@dnd-kit/core'
 import { SortableContext, verticalListSortingStrategy, sortableKeyboardCoordinates } from '@dnd-kit/sortable'
 import { cn } from '@/lib/utils'
 import { toast } from '@orca-blitz/ui/components/ui/toast'
@@ -33,7 +32,7 @@ interface AppSidebarProps {
   onBusinessSettings: (business: Business) => void
 }
 
-export function AppSidebar({ activePage, onNavigate, collapsed, onToggleCollapse, businesses, onBusinessesChange, onBusinessSettings }: AppSidebarProps) {
+export function AppSidebar({ activePage, onNavigate, collapsed, onToggleCollapse, businesses, onBusinessSettings }: AppSidebarProps) {
   const { t } = useTranslation('sidebar')
   const [showModal, setShowModal] = useState(false)
   const [deleteTarget, setDeleteTarget] = useState<Business | null>(null)
@@ -46,6 +45,8 @@ export function AppSidebar({ activePage, onNavigate, collapsed, onToggleCollapse
     useSensor(PointerSensor, { activationConstraint: { distance: 5 } }),
     useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates })
   )
+
+  const restrictToVerticalAxis: Modifier = ({ transform }) => ({ ...transform, x: 0 })
 
   const handleDragEnd = useCallback(
     (event: DragEndEvent) => {
@@ -216,7 +217,7 @@ export function AppSidebar({ activePage, onNavigate, collapsed, onToggleCollapse
           )}
 
           {filteredBusinesses.length > 0 && !collapsed && (
-            <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+            <DndContext sensors={sensors} modifiers={[restrictToVerticalAxis]} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
               <SortableContext items={businesses.map((b) => b.id)} strategy={verticalListSortingStrategy}>
                 <ul className="space-y-0.5">
                   {filteredBusinesses.map((biz) => (

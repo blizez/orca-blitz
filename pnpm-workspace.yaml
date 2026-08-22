@@ -5,6 +5,15 @@ packages:
   - "relay"
   - "plugins/*"
 allowBuilds:
+  baileys: true
+  bufferutil: true
   electron: true
   electron-winstaller: true
+  es5-ext: true
   esbuild: true
+  protobufjs: true
+  sqlite3: true
+  utf-8-validate: true
+# Baileys (WhatsApp) depende de libsignal via git con commit fijado en lockfile.
+# Sin esto, pnpm 11 bloquea la instalación (ERR_PNPM_EXOTIC_SUBDEP).
+blockExoticSubdeps: false

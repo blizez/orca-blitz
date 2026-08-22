@@ -1,25 +1,13 @@
 import { useState } from 'react'
-import { SiWhatsapp, SiInstagram, SiFacebook, SiTiktok, SiTelegram, SiX } from 'react-icons/si'
 import { MessageCircle } from 'lucide-react'
 import { cn } from '../../lib/utils'
 import { type Tab } from './browser-tab-bar'
 import { BrowserView } from './browser-view'
+import { InboxPage } from './inbox/inbox-page'
+import { futurePlatforms, priorityPlatforms, platforms, type SocialMediaPlatform } from './social-media-platforms'
 
-export interface Platform {
-  id: string
-  name: string
-  url: string
-  icon: React.ComponentType<{ className?: string }>
-}
-
-export const platforms: Platform[] = [
-  { id: 'whatsapp', name: 'WhatsApp', url: 'https://web.whatsapp.com', icon: SiWhatsapp },
-  { id: 'instagram', name: 'Instagram', url: 'https://www.instagram.com', icon: SiInstagram },
-  { id: 'facebook', name: 'Facebook', url: 'https://www.facebook.com', icon: SiFacebook },
-  { id: 'tiktok', name: 'TikTok', url: 'https://www.tiktok.com', icon: SiTiktok },
-  { id: 'telegram', name: 'Telegram', url: 'https://web.telegram.org', icon: SiTelegram },
-  { id: 'twitter', name: 'X / Twitter', url: 'https://x.com', icon: SiX },
-]
+export type Platform = SocialMediaPlatform
+export { platforms }
 
 export function createNewTab(closable = false): Tab {
   return {
@@ -33,28 +21,30 @@ export function createNewTab(closable = false): Tab {
 }
 
 interface SocialMediaPageProps {
+  businessId: string
+  onOpenSettings: () => void
   tabs: Tab[]
   activeTabId: string
   onPickPlatform: (tabId: string, platform: Platform) => void
 }
 
-export function SocialMediaPage({ tabs, activeTabId, onPickPlatform }: SocialMediaPageProps) {
+export function SocialMediaPage({ businessId, onOpenSettings, tabs, activeTabId, onPickPlatform }: SocialMediaPageProps) {
+  const [showInbox, setShowInbox] = useState(false)
   const activeTab = tabs.find((t) => t.id === activeTabId)
   const isNewTab = activeTab?.url === ''
 
   return (
     <div className="relative flex h-full flex-col overflow-hidden">
-      {isNewTab && activeTab && (
+      {isNewTab && activeTab && showInbox ? <InboxPage businessId={businessId} onBack={() => setShowInbox(false)} onOpenSettings={onOpenSettings} /> : isNewTab && activeTab && (
         <div className="flex flex-1 items-center justify-center p-6">
           <div className="mx-auto max-w-2xl space-y-6 text-center">
             <div>
-              <h2 className="text-xl font-semibold">Open a Social Network</h2>
-              <p className="mt-1 text-sm text-muted-foreground">
-                Select a platform to open it in this tab.
-              </p>
+              <h2 className="text-xl font-semibold">Social Media CRM</h2>
+              <p className="mt-1 text-sm text-muted-foreground">Conecta y administra tus canales prioritarios desde un solo lugar.</p>
             </div>
+            <p className="text-left text-xs font-semibold uppercase tracking-wide text-muted-foreground">Canales prioritarios</p>
             <div className="grid grid-cols-3 gap-3">
-              {platforms.map((platform) => {
+              {priorityPlatforms.map((platform) => {
                 const Icon = platform.icon
                 return (
                   <button
@@ -68,12 +58,19 @@ export function SocialMediaPage({ tabs, activeTabId, onPickPlatform }: SocialMed
                 )
               })}
             </div>
+            <p className="text-left text-xs font-semibold uppercase tracking-wide text-muted-foreground">Próximamente</p>
+            <div className="grid grid-cols-2 gap-3">
+              {futurePlatforms.map((platform) => {
+                const Icon = platform.icon
+                return <button key={platform.id} type="button" onClick={() => onPickPlatform(activeTab.id, platform)} className="flex items-center gap-2 rounded-xl border border-border bg-card p-3 text-left text-muted-foreground transition-colors hover:bg-accent"><Icon className="size-5" /><span className="text-sm font-medium">{platform.name}</span></button>
+              })}
+            </div>
             <div className="h-px bg-border" />
             <div className="grid grid-cols-3 gap-3">
-              <div className="col-span-3 flex flex-col items-center justify-center gap-2 rounded-xl border border-dashed border-border bg-card p-4">
+              <button type="button" onClick={() => setShowInbox(true)} className="col-span-3 flex flex-col items-center justify-center gap-2 rounded-xl border border-dashed border-border bg-card p-4 transition-colors hover:bg-accent">
                 <MessageCircle className="size-6 text-muted-foreground" />
                 <span className="text-sm font-medium text-muted-foreground">Unified Inbox</span>
-              </div>
+              </button>
             </div>
           </div>
         </div>

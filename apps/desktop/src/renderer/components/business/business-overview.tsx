@@ -1,8 +1,7 @@
-import { Building2, TrendingUp, Calendar, DollarSign, Users, Globe, Target, AlertTriangle } from 'lucide-react'
+import { Building2, TrendingUp, Calendar, DollarSign, Users, Globe, Target } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@orca-blitz/ui/components/ui/card'
+import { Card, CardHeader, CardTitle, CardContent } from '@orca-blitz/ui/components/ui/card'
 import { Badge } from '@orca-blitz/ui/components/ui/badge'
-import { Separator } from '@orca-blitz/ui/components/ui/separator'
 import { Skeleton } from '@orca-blitz/ui/components/ui/skeleton'
 import type { Business } from '@orca-blitz/shared'
 

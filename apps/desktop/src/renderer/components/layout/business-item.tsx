@@ -106,9 +106,8 @@ interface BusinessItemProps {
   onBusinessSettings?: (business: Business) => void
 }
 
-export function BusinessItem({ business, isActive, expanded, activePage, onToggle, onSelect, onDelete, onBusinessSettings }: BusinessItemProps) {
+export function BusinessItem({ business, expanded, activePage, onToggle, onSelect, onDelete, onBusinessSettings }: BusinessItemProps) {
   const { t } = useTranslation('sidebar')
-  const hasActiveChild = isActive && expanded
   const [showMenu, setShowMenu] = useState(false)
   const menuRef = useRef<HTMLDivElement>(null)
   const [completeness, setCompleteness] = useState(() => completenessPercent(business.id))
@@ -173,10 +172,8 @@ export function BusinessItem({ business, isActive, expanded, activePage, onToggl
 
           {completeness.percentage < 100 && (
             <Tooltip>
-              <TooltipTrigger asChild>
-                <span>
-                  <CircularProgress percentage={completeness.percentage} className="opacity-0 group-hover/item:opacity-100 transition-opacity" />
-                </span>
+              <TooltipTrigger render={<span />}>
+                <CircularProgress percentage={completeness.percentage} className="opacity-0 group-hover/item:opacity-100 transition-opacity" />
               </TooltipTrigger>
               <TooltipContent>
                 {completeness.missingContent && completeness.missingCampaigns

@@ -26,6 +26,13 @@ interface SettingsSidebarProps {
   onBusinessSelect?: (business: Business) => void
 }
 
+interface SidebarItem {
+  id: string
+  label: string
+  icon: typeof Store
+  business?: Business
+}
+
 export function SettingsSidebar({ activeTab, onTabChange, onBack, businessId, businesses = [], onBusinessSelect }: SettingsSidebarProps) {
   const { t } = useTranslation('settings')
   const [search, setSearch] = useState('')
@@ -61,7 +68,7 @@ export function SettingsSidebar({ activeTab, onTabChange, onBack, businessId, bu
     },
   ]
 
-  const businessGroup = businesses.length > 0
+  const businessGroup: Array<{ label: string; items: SidebarItem[] }> = businesses.length > 0
     ? [{
         label: 'Businesses',
         items: businesses.map((biz) => ({
@@ -73,7 +80,7 @@ export function SettingsSidebar({ activeTab, onTabChange, onBack, businessId, bu
       }]
     : []
 
-  const allGroups = [...settingsGroups, ...businessGroup]
+  const allGroups: Array<{ label: string; items: SidebarItem[] }> = [...settingsGroups, ...businessGroup]
 
   const filtered = allGroups
     .map((group) => ({

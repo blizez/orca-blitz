@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { AlertTriangle } from 'lucide-react'
 import { Button } from '@orca-blitz/ui/components/ui/button'
 import { useSound } from '../../lib/sound-context'
 

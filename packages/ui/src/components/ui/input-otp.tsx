@@ -1,5 +1,5 @@
 import * as React from "react"
-import { OTPInput, OTPInputContext } from "input-otp"
+import { OTPInput, OTPInputContext, type RenderProps } from "input-otp"
 
 import { cn } from "@/lib/utils"
 import { MinusIcon } from "lucide-react"
@@ -45,8 +45,11 @@ function InputOTPSlot({
 }: React.ComponentProps<"div"> & {
   index: number
 }) {
-  const inputOTPContext = React.useContext(OTPInputContext)
-  const { char, hasFakeCaret, isActive } = inputOTPContext?.slots[index] ?? {}
+  const ctx = React.useContext(OTPInputContext) as Partial<RenderProps> | undefined
+  const slot = ctx?.slots?.[index]
+  const char = slot?.char ?? null
+  const hasFakeCaret = slot?.hasFakeCaret ?? false
+  const isActive = slot?.isActive ?? false
 
   return (
     <div

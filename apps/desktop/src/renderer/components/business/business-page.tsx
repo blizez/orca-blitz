@@ -12,9 +12,10 @@ interface BusinessPageProps {
   tabs?: Tab[]
   activeTabId?: string
   onPickPlatform?: (tabId: string, platform: Platform) => void
+  onOpenSettings?: () => void
 }
 
-export function BusinessPage({ page, business, tabs, activeTabId, onPickPlatform }: BusinessPageProps) {
+export function BusinessPage({ page, business, tabs, activeTabId, onPickPlatform, onOpenSettings }: BusinessPageProps) {
   const parts = page.split(':')
   const businessId = parts[0]
   const featureId = parts[1]
@@ -22,7 +23,9 @@ export function BusinessPage({ page, business, tabs, activeTabId, onPickPlatform
   return (
     <div className="relative h-full">
       {featureId === 'redes' && tabs && activeTabId && onPickPlatform ? (
-        <SocialMediaPage
+         <SocialMediaPage
+           businessId={businessId}
+           onOpenSettings={onOpenSettings ?? (() => {})}
           tabs={tabs}
           activeTabId={activeTabId}
           onPickPlatform={onPickPlatform}

@@ -8,6 +8,7 @@ import { Badge } from '@orca-blitz/ui/components/ui/badge'
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@orca-blitz/ui/components/ui/select'
 import { toast } from '@orca-blitz/ui/components/ui/toast'
 import { DeleteBusinessModal } from '../../layout/delete-business-modal'
+import { BusinessIntegrations } from './business-integrations'
 import type { Business } from '@orca-blitz/shared'
 
 interface BusinessSettingsProps {
@@ -16,14 +17,9 @@ interface BusinessSettingsProps {
   onDelete: (id: string) => void
 }
 
-const businessTypes = [
-  'E-commerce', 'Restaurant', 'Services', 'Retail', 'Healthcare',
-  'Education', 'Real Estate', 'SaaS', 'Other',
-]
-
 const teamSizes = ['Just me', '2-5', '6-10', '11-50', '50+']
 
-function EditableStatCard({ icon: Icon, label, value, children }: {
+function EditableStatCard({ icon: Icon, label, children }: {
   icon: React.ComponentType<{ className?: string }>
   label: string
   value: string
@@ -286,6 +282,11 @@ export function BusinessSettings({ business, onUpdate, onDelete }: BusinessSetti
           </CardContent>
         </Card>
       )}
+
+      <div className="space-y-2">
+        <p className="text-xs font-medium text-muted-foreground">Connected channels</p>
+        <BusinessIntegrations businessId={business.id} business={business} embedded />
+      </div>
 
       <DeleteBusinessModal
         open={showDelete}

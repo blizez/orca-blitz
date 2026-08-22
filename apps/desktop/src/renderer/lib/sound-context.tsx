@@ -19,14 +19,14 @@ function readEnabled(): boolean {
   try {
     const v = localStorage.getItem(STORAGE_KEY)
     return v === null ? true : v === 'true'
-  } catch (_e) { return true }
+  } catch { return true }
 }
 
 function readVolume(): number {
   try {
     const v = localStorage.getItem(VOLUME_KEY)
     return v === null ? 0.7 : Math.min(1, Math.max(0, Number(v)))
-  } catch (_e) { return 0.7 }
+  } catch { return 0.7 }
 }
 
 export function SoundProvider({ children }: { children: React.ReactNode }) {
@@ -39,11 +39,11 @@ export function SoundProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => { cuelumeSetVolume(volume) }, [volume])
 
   useEffect(() => {
-    try { localStorage.setItem(STORAGE_KEY, String(enabled)) } catch (_e) { /* ignore */ }
+    try { localStorage.setItem(STORAGE_KEY, String(enabled)) } catch { /* ignore */ }
   }, [enabled])
 
   useEffect(() => {
-    try { localStorage.setItem(VOLUME_KEY, String(volume)) } catch (_e) { /* ignore */ }
+    try { localStorage.setItem(VOLUME_KEY, String(volume)) } catch { /* ignore */ }
   }, [volume])
 
   const toggleEnabled = useCallback(() => setEnabledState((p) => !p), [])

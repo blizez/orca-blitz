@@ -1,6 +1,6 @@
 import { forwardRef } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Loader2, Cpu } from 'lucide-react'
+import { Cpu } from 'lucide-react'
 import { Label } from '@orca-blitz/ui/components/ui/label'
 import { cn } from '@/lib/utils'
 

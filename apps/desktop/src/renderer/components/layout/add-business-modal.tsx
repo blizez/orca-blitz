@@ -68,8 +68,6 @@ export function AddBusinessModal({ open, onClose, onAdd }: AddBusinessModalProps
     onClose()
   }
 
-  const currentStep = steps[step - 1]
-
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       <div className="fixed inset-0 bg-black/50 backdrop-blur-sm" onClick={onClose} />

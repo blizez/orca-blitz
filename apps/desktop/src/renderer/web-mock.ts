@@ -76,10 +76,60 @@ const api = {
     execute: async (_id: string) => ({ success: true }),
     onChanged: (cb: Listener) => { bus.on('workflows:changed', cb); return () => bus.off('workflows:changed', cb) },
   },
-  integrations: {
-    sendMessage: async (_channel: string, _data: unknown) => ({ success: true }),
-    onMessage: (cb: Listener) => { bus.on('integrations:message', cb); return () => bus.off('integrations:message', cb) },
-  },
+  integrations: (() => {
+    const sessions = new Map<string, Record<string, unknown>>()
+    // restore persisted sessions
+    try {
+      const raw = localStorage.getItem('oc_sessions')
+      if (raw) (JSON.parse(raw) as [string, Record<string, unknown>][]).forEach(([k, v]) => sessions.set(k, v))
+    } catch {}
+    const key = (businessId: string, channel: string) => `${businessId}:${channel}`
+    const get = (businessId: string, channel: string) =>
+      sessions.get(key(businessId, channel)) ?? { businessId, channel, status: 'disconnected' }
+    const set = (businessId: string, channel: string, patch: Record<string, unknown>) => {
+      const next = { ...get(businessId, channel), ...patch, businessId, channel }
+      sessions.set(key(businessId, channel), next)
+      localStorage.setItem('oc_sessions', JSON.stringify([...sessions.entries()]))
+      bus.emit('integrations:status', next)
+      return next
+    }
+    return {
+      connect: async (businessId: string) => {
+        // simulate QR flow in web
+        const s = set(businessId, 'whatsapp', { status: 'qr' })
+        setTimeout(() => bus.emit('integrations:qr', { businessId, qr: 'mock-qr-' + Date.now() }), 300)
+        return s
+      },
+      telegramConnect: async (businessId: string) => set(businessId, 'telegram', { status: 'phone' }),
+      telegramStartLogin: async (businessId: string, _phone: string) => set(businessId, 'telegram', { status: 'code' }),
+      telegramSubmitCode: async (businessId: string, _code: string) => set(businessId, 'telegram', { status: 'password' }),
+      telegramSubmitPassword: async (businessId: string, _password: string) =>
+        set(businessId, 'telegram', { status: 'connected', phone: '+000000' }),
+      telegramDisconnect: async (businessId: string) => set(businessId, 'telegram', { status: 'disconnected' }),
+      metaGetStatus: async (businessId: string, channel: string) => get(businessId, channel),
+      metaStart: async (businessId: string, channel: string) => set(businessId, channel, { status: 'error', error: 'meta_credentials_missing' }),
+      metaDisconnect: async (businessId: string, channel: string) => set(businessId, channel, { status: 'disconnected', error: undefined }),
+      instagramLogin: async (businessId: string, username: string, _password: string) =>
+        set(businessId, 'instagram', { status: 'connected', phone: username, name: username }),
+      instagramDisconnect: async (businessId: string) => set(businessId, 'instagram', { status: 'disconnected', error: undefined }),
+      messengerLogin: async (businessId: string, email: string, _password: string) =>
+        set(businessId, 'facebook', { status: 'connected', phone: email, name: email }),
+      messengerDisconnect: async (businessId: string) => set(businessId, 'facebook', { status: 'disconnected', error: undefined }),
+      gmailGetStatus: async (businessId: string) => get(businessId, 'gmail'),
+      gmailConnect: async (businessId: string) => set(businessId, 'gmail', { status: 'error', error: 'google_credentials_missing' }),
+      gmailDisconnect: async (businessId: string) => set(businessId, 'gmail', { status: 'disconnected', error: undefined }),
+      disconnect: async (businessId: string) => set(businessId, 'whatsapp', { status: 'disconnected' }),
+      getStatus: async (businessId: string, channel = 'whatsapp') => get(businessId, channel),
+      listConversations: async (_businessId: string, _channel = 'whatsapp') => [],
+      listMessages: async (_businessId: string, _jid: string, _channel = 'whatsapp') => [],
+      markRead: async (_businessId: string, _jid: string, _channel = 'whatsapp') => {},
+      sendMessage: async (_businessId: string, _jid: string, _text: string, _channel = 'whatsapp') => {},
+      onMessage: (cb: Listener) => { bus.on('integrations:message', cb); return () => bus.off('integrations:message', cb) },
+      onQR: (cb: Listener) => { bus.on('integrations:qr', cb as Listener); return () => bus.off('integrations:qr', cb as Listener) },
+      onStatus: (cb: Listener) => { bus.on('integrations:status', cb); return () => bus.off('integrations:status', cb) },
+      onConversationsChanged: (cb: Listener) => { bus.on('integrations:conversations-changed', cb); return () => bus.off('integrations:conversations-changed', cb) },
+    }
+  })(),
   reports: {
     generate: async (_config: unknown) => ({ reportId: uuid() }),
     export: async (_format: string) => ({ path: '' }),

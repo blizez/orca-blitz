@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react'
+import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Plus, Trash2, CreditCard, ChevronRight, Upload, X } from 'lucide-react'
 import { cn } from '@/lib/utils'

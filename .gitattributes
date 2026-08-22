@@ -1,0 +1,23 @@
+# Normaliza EOL a LF en el repo, checkout con LF en todas las plataformas
+* text=auto eol=lf
+*.ts text
+*.tsx text
+*.js text
+*.mjs text
+*.cjs text
+*.json text
+*.md text
+*.css text
+*.html text
+*.yaml text
+*.yml text
+# Binarios
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.webp binary
+*.ico binary
+*.woff binary
+*.woff2 binary
+*.ttf binary

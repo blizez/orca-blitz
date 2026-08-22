@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react'
 import { Tabs, TabsList, TabsTrigger } from '@orca-blitz/ui/components/ui/tabs'
 import { Button } from '@orca-blitz/ui/components/ui/button'
 import { Input } from '@orca-blitz/ui/components/ui/input'

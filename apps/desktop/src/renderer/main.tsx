@@ -6,18 +6,23 @@ import { Toaster } from '@orca-blitz/ui/components/ui/toast'
 import '@orca-blitz/i18n'
 import App from './App'
 import '@orca-blitz/ui/globals.css'
+import { RenderErrorBoundary } from './components/layout/render-error-boundary'
 
 if (!window.api) {
   await import('./web-mock')
 }
 
+window.addEventListener('unhandledrejection', (event) => console.error('[renderer] unhandled rejection', event.reason))
+
 createRoot(document.getElementById('root')!).render(
-  <ThemeProvider>
-    <SoundProvider>
-      <TooltipProvider delay={400}>
-        <App />
-        <Toaster />
-      </TooltipProvider>
-    </SoundProvider>
-  </ThemeProvider>
+  <RenderErrorBoundary>
+    <ThemeProvider>
+      <SoundProvider>
+        <TooltipProvider delay={400}>
+          <App />
+          <Toaster />
+        </TooltipProvider>
+      </SoundProvider>
+    </ThemeProvider>
+  </RenderErrorBoundary>
 )

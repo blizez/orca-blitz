@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react'
-import { loadAllThemes, applyThemeInline, clearThemeVars } from './theme-css-loader'
+import { loadAllThemes, applyThemeInline } from './theme-css-loader'
 
 type ThemeMode = 'light' | 'dark' | 'system'
 

@@ -1,4 +1,4 @@
-import { Store, Plus, Upload } from 'lucide-react'
+import { Plus, Upload } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { OrcaLogo } from '@orca-blitz/ui/components/ui/logo'
 import { Button } from '@orca-blitz/ui/components/ui/button'
