@@ -1,7 +1,7 @@
-import { app } from 'electron'
-import { mkdirSync } from 'fs'
-import { join } from 'path'
-import { DatabaseSync } from 'node:sqlite'
+import { app } from "electron";
+import { mkdirSync } from "fs";
+import { join } from "path";
+import { DatabaseSync } from "node:sqlite";
 
 const schema = `
 CREATE TABLE IF NOT EXISTS sessions (
@@ -40,29 +40,32 @@ CREATE INDEX IF NOT EXISTS messages_chat_idx
   ON messages (business_id, jid, timestamp DESC);
 CREATE INDEX IF NOT EXISTS contacts_recent_idx
   ON contacts (business_id, last_message_at DESC);
-`
+`;
 
-let database: DatabaseSync | null = null
+let database: DatabaseSync | null = null;
 
 export function getDatabase(): DatabaseSync {
-  if (database) return database
+  if (database) return database;
 
-  const directory = join(app.getPath('userData'), 'messaging')
-  mkdirSync(directory, { recursive: true })
-  database = new DatabaseSync(join(directory, 'messages.db'))
-  database.exec(schema)
-  migrateColumns(database)
-  return database
+  const directory = join(app.getPath("userData"), "messaging");
+  mkdirSync(directory, { recursive: true });
+  database = new DatabaseSync(join(directory, "messages.db"));
+  database.exec(schema);
+  migrateColumns(database);
+  return database;
 }
 
 function migrateColumns(db: DatabaseSync): void {
-  for (const table of ['contacts', 'messages']) {
-    const columns = db.prepare(`PRAGMA table_info(${table})`).all() as unknown as Array<{ name: string }>
-    if (!columns.some((column) => column.name === 'channel')) db.exec(`ALTER TABLE ${table} ADD COLUMN channel TEXT NOT NULL DEFAULT 'whatsapp'`)
+  for (const table of ["contacts", "messages"]) {
+    const columns = db.prepare(`PRAGMA table_info(${table})`).all() as unknown as Array<{
+      name: string;
+    }>;
+    if (!columns.some((column) => column.name === "channel"))
+      db.exec(`ALTER TABLE ${table} ADD COLUMN channel TEXT NOT NULL DEFAULT 'whatsapp'`);
   }
 }
 
 export function closeDatabase(): void {
-  database?.close()
-  database = null
+  database?.close();
+  database = null;
 }
