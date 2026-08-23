@@ -1,4 +1,5 @@
-export type { Business, BusinessData } from './types/business'
+export type { Business, BusinessData } from "./types/business";
+export type { AppSettings } from "./types/settings";
 export type {
   ChannelType,
   ChannelConnectionStatus,
@@ -6,4 +7,4 @@ export type {
   Conversation,
   MessageType,
   UnifiedMessage,
-} from './types/messaging'
+} from "./types/messaging";

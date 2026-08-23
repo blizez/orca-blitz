@@ -2,6 +2,7 @@
   "name": "orca-blitz",
   "version": "1.0.0",
   "private": true,
+  "license": "ISC",
   "type": "module",
   "scripts": {
     "dev": "pnpm --filter @orca-blitz/desktop dev",
@@ -13,18 +14,29 @@
     "lint:fix": "oxlint --fix .",
     "format": "oxfmt --write .",
     "format:check": "oxfmt --check .",
-    "typecheck": "pnpm -r --if-present typecheck"
+    "typecheck": "pnpm -r --if-present typecheck",
+    "prepare": "husky"
   },
-  "license": "ISC",
+  "lint-staged": {
+    "*.{ts,tsx,js,jsx}": [
+      "oxlint --fix",
+      "oxfmt --write"
+    ],
+    "*.{json,md,css,html}": [
+      "oxfmt --write"
+    ]
+  },
+  "devDependencies": {
+    "husky": "^9.1.7",
+    "lint-staged": "^17.3.0",
+    "oxfmt": "^0.18.0",
+    "oxlint": "^1.79.0"
+  },
   "devEngines": {
     "packageManager": {
       "name": "pnpm",
       "version": "^11.21.0",
       "onFail": "download"
     }
-  },
-  "devDependencies": {
-    "oxfmt": "^0.18.0",
-    "oxlint": "^1.79.0"
   }
 }
