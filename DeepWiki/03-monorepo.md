@@ -65,10 +65,10 @@ resolve: {
 }
 ```
 
-| Alias | Resuelve a |
-|-------|-----------|
-| `@/` | `apps/desktop/src/renderer/` |
-| `@orca-blitz/ui` | `packages/ui/src/` |
+| Alias            | Resuelve a                   |
+| ---------------- | ---------------------------- |
+| `@/`             | `apps/desktop/src/renderer/` |
+| `@orca-blitz/ui` | `packages/ui/src/`           |
 
 ---
 

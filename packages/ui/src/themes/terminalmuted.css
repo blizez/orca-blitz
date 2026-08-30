@@ -31,9 +31,9 @@
   --sidebar-accent-foreground: rgb(31, 46, 36);
   --sidebar-border: rgb(199, 209, 203);
   --sidebar-ring: rgb(54, 125, 80);
-  --font-sans: ui-monospace, 'JetBrains Mono', 'Fira Code', 'Menlo', monospace;
+  --font-sans: ui-monospace, "JetBrains Mono", "Fira Code", "Menlo", monospace;
   --font-serif: Georgia, serif;
-  --font-mono: ui-monospace, 'JetBrains Mono', 'Fira Code', 'Menlo', monospace;
+  --font-mono: ui-monospace, "JetBrains Mono", "Fira Code", "Menlo", monospace;
   --radius: 0rem;
   --shadow-x: 2px;
   --shadow-y: 2px;
@@ -43,11 +43,11 @@
   --shadow-color: hsl(142, 20%, 15%);
   --shadow-2xs: 2px 2px 0px 0px hsl(142 20% 15% / 0.05);
   --shadow-xs: 2px 2px 0px 0px hsl(142 20% 15% / 0.05);
-  --shadow-sm: 2px 2px 0px 0px hsl(142 20% 15% / 0.10), 2px 1px 2px -1px hsl(142 20% 15% / 0.10);
-  --shadow: 2px 2px 0px 0px hsl(142 20% 15% / 0.10), 2px 1px 2px -1px hsl(142 20% 15% / 0.10);
-  --shadow-md: 2px 2px 0px 0px hsl(142 20% 15% / 0.10), 2px 2px 4px -1px hsl(142 20% 15% / 0.10);
-  --shadow-lg: 2px 2px 0px 0px hsl(142 20% 15% / 0.10), 2px 4px 6px -1px hsl(142 20% 15% / 0.10);
-  --shadow-xl: 2px 2px 0px 0px hsl(142 20% 15% / 0.10), 2px 8px 10px -1px hsl(142 20% 15% / 0.10);
+  --shadow-sm: 2px 2px 0px 0px hsl(142 20% 15% / 0.1), 2px 1px 2px -1px hsl(142 20% 15% / 0.1);
+  --shadow: 2px 2px 0px 0px hsl(142 20% 15% / 0.1), 2px 1px 2px -1px hsl(142 20% 15% / 0.1);
+  --shadow-md: 2px 2px 0px 0px hsl(142 20% 15% / 0.1), 2px 2px 4px -1px hsl(142 20% 15% / 0.1);
+  --shadow-lg: 2px 2px 0px 0px hsl(142 20% 15% / 0.1), 2px 4px 6px -1px hsl(142 20% 15% / 0.1);
+  --shadow-xl: 2px 2px 0px 0px hsl(142 20% 15% / 0.1), 2px 8px 10px -1px hsl(142 20% 15% / 0.1);
   --shadow-2xl: 2px 2px 0px 0px hsl(142 20% 15% / 0.25);
   --tracking-normal: -0.01em;
   --spacing: 0.25rem;
@@ -86,9 +86,9 @@
   --sidebar-accent-foreground: rgb(203, 230, 213);
   --sidebar-border: rgb(33, 44, 37);
   --sidebar-ring: rgb(69, 161, 103);
-  --font-sans: ui-monospace, 'JetBrains Mono', 'Fira Code', 'Menlo', monospace;
+  --font-sans: ui-monospace, "JetBrains Mono", "Fira Code", "Menlo", monospace;
   --font-serif: Georgia, serif;
-  --font-mono: ui-monospace, 'JetBrains Mono', 'Fira Code', 'Menlo', monospace;
+  --font-mono: ui-monospace, "JetBrains Mono", "Fira Code", "Menlo", monospace;
   --radius: 0rem;
   --shadow-x: 3px;
   --shadow-y: 3px;
@@ -98,10 +98,10 @@
   --shadow-color: hsl(0, 0%, 0%);
   --shadow-2xs: 3px 3px 0px 0px hsl(0 0% 0% / 0.25);
   --shadow-xs: 3px 3px 0px 0px hsl(0 0% 0% / 0.25);
-  --shadow-sm: 3px 3px 0px 0px hsl(0 0% 0% / 0.50), 3px 1px 2px -1px hsl(0 0% 0% / 0.50);
-  --shadow: 3px 3px 0px 0px hsl(0 0% 0% / 0.50), 3px 1px 2px -1px hsl(0 0% 0% / 0.50);
-  --shadow-md: 3px 3px 0px 0px hsl(0 0% 0% / 0.50), 3px 2px 4px -1px hsl(0 0% 0% / 0.50);
-  --shadow-lg: 3px 3px 0px 0px hsl(0 0% 0% / 0.50), 3px 4px 6px -1px hsl(0 0% 0% / 0.50);
-  --shadow-xl: 3px 3px 0px 0px hsl(0 0% 0% / 0.50), 3px 8px 10px -1px hsl(0 0% 0% / 0.50);
+  --shadow-sm: 3px 3px 0px 0px hsl(0 0% 0% / 0.5), 3px 1px 2px -1px hsl(0 0% 0% / 0.5);
+  --shadow: 3px 3px 0px 0px hsl(0 0% 0% / 0.5), 3px 1px 2px -1px hsl(0 0% 0% / 0.5);
+  --shadow-md: 3px 3px 0px 0px hsl(0 0% 0% / 0.5), 3px 2px 4px -1px hsl(0 0% 0% / 0.5);
+  --shadow-lg: 3px 3px 0px 0px hsl(0 0% 0% / 0.5), 3px 4px 6px -1px hsl(0 0% 0% / 0.5);
+  --shadow-xl: 3px 3px 0px 0px hsl(0 0% 0% / 0.5), 3px 8px 10px -1px hsl(0 0% 0% / 0.5);
   --shadow-2xl: 3px 3px 0px 0px hsl(0 0% 0% / 1.25);
 }

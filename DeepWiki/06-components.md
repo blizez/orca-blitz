@@ -181,6 +181,7 @@ const providers = [
 ```
 
 **Caracteristicas:**
+
 - Tarjetas con icono light/dark mode (dual theme support via `<span className="block dark:hidden">`)
 - Boton "Configure" abre `Dialog` con `Input` de password para API key
 - Registra en `settings-page.tsx` como `ai: ProvidersSettings` (reemplaza al anterior `AISettings`)
@@ -246,6 +247,7 @@ interface BusinessSettingsProps {
 ```
 
 **Secciones:**
+
 - Header: nombre editable (inline), Trash2 → DeleteBusinessModal
 - "About this business": Type (Select), Industry (Input), Team Size (Select), Description (editable Textarea)
 - Market: Products, Audience, Website, Competitors (Textarea), USP (Textarea), Pain Points (Textarea)
@@ -253,6 +255,7 @@ interface BusinessSettingsProps {
 - Active Channels (Badge read-only), Goals (Badge read-only)
 
 **BusinessData interface (extendida):**
+
 ```typescript
 interface BusinessData {
   id: string; name: string; type: string; industry: string; description: string
@@ -278,6 +281,7 @@ function BillingSettings()
 ```
 
 **Features:**
+
 - `Collapsible` de Base UI para expandir cada metodo
 - QR code upload via `<input type="file" accept="image/*">` oculto
 - Add method dialog (Name + Account/Number)
@@ -302,6 +306,7 @@ const steps = [
 ```
 
 **Step 3 — Market (nuevo):**
+
 - Main Competitors (Textarea)
 - What makes you different? USP (Textarea)
 - Current Pain Points (Textarea)
@@ -331,6 +336,7 @@ interface BusinessItemProps {
 ```
 
 **Features:**
+
 - `expanded` controlado desde `AppSidebar` via `expandedBiz: string[]`
 - CSS transitions: `max-h-0 opacity-0` → `max-h-40 opacity-100` con `duration-200`
 - Border highlight cuando expandido: `border border-sidebar-border` vs `border-transparent`
@@ -353,6 +359,7 @@ const handleToggleBusiness = (id: string) => {
 ```
 
 **Props actualizadas:**
+
 ```typescript
 interface AppSidebarProps {
   // ...existentes

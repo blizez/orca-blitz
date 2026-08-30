@@ -54,6 +54,7 @@ Si. Haz click en **Add Method**, escribe el nombre (ejemplo: Yape, Stripe) y tu 
 Si. Puedes activar o desactivar los sonidos en **Settings → Notifications**.
 
 **Que sonidos hay?**
+
 - Sonido al cambiar un interruptor
 - Sonido de exito al crear un negocio
 - Sonido de error al eliminar un negocio

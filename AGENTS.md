@@ -9,12 +9,14 @@ Este documento define cómo trabajar en orca-blitz. Toda la IA que modifique có
 Este documento mezcla **reglas vigentes** con **arquitectura objetivo (roadmap)**. Antes de actuar, distinguir:
 
 **Vigente hoy:**
+
 - Monorepo pnpm (`pnpm-workspace.yaml`): `apps/desktop` (Electron + React + electron-vite), `packages/ui`, `packages/shared`, `packages/i18n`
 - Calidad: TypeScript strict en todos los targets, OxLint (`.oxlintrc.json`), oxfmt, Vitest — scripts en la raíz: `lint`, `lint:fix`, `format`, `typecheck`, `test`
 - Arquitectura Electron de 3 procesos, preload con `window.api` tipado
 - Mensajería WhatsApp/Telegram en `apps/desktop/src/main/messaging/`
 
 **Roadmap (NO existe aún, no asumir que está):**
+
 - `server/`, `relay/`, `plugins/`, `tests/`, `config/max-lines-baseline.txt`, `config/reliability-gates.jsonc`
 - Turborepo (`turbo.json`), Husky/lint-staged, Playwright
 - Apps `web/` y `mobile/` como workspaces separados
@@ -58,7 +60,7 @@ Todo el trabajo de UI — layout, color, tipografía, spacing, selección de com
 ### Naming de archivos
 
 - **Nunca** usar nombres vagos como `helpers`, `utils`, `common`, `misc`, `shared-stuff`
-- Nombrar archivos por lo que *realmente* contienen — preferir el concepto de dominio concreto (ej: `tab-group-state.ts`, `terminal-orphan-cleanup.ts`) sobre el rol genérico (`tabs-helpers.ts`, `terminal-utils.ts`)
+- Nombrar archivos por lo que _realmente_ contienen — preferir el concepto de dominio concreto (ej: `tab-group-state.ts`, `terminal-orphan-cleanup.ts`) sobre el rol genérico (`tabs-helpers.ts`, `terminal-utils.ts`)
 - Si llegas a `helpers`, el archivo probablemente tiene más de una responsabilidad y debe ser dividido, o hay un mejor nombre oculto en el código que describe qué operan las funciones
 
 ### Naming de carpetas
@@ -356,14 +358,14 @@ ai.generated
 
 El store se compone de slices especializados:
 
-| Slice | Responsabilidad |
-|-------|----------------|
-| ui | Sidebar, modales, filtros, sorting |
-| customers | Clientes, leads, deals |
-| workflows | Automatizaciones, ejecuciones |
-| conversations | Chat con clientes, historial |
-| integrations | Estado de integraciones externas |
-| settings | Preferencias del usuario |
+| Slice         | Responsabilidad                    |
+| ------------- | ---------------------------------- |
+| ui            | Sidebar, modales, filtros, sorting |
+| customers     | Clientes, leads, deals             |
+| workflows     | Automatizaciones, ejecuciones      |
+| conversations | Chat con clientes, historial       |
+| integrations  | Estado de integraciones externas   |
+| settings      | Preferencias del usuario           |
 
 ### Cross-Slice Cascades
 
@@ -434,6 +436,7 @@ Usar `path.join` o utilidades de path de Electron/Node — nunca asumir `/` o `\
 ### Platform detection
 
 Solo para:
+
 - Ajustes
 - Rendimiento
 - Integraciones
@@ -441,11 +444,13 @@ Solo para:
 **Nunca** para duplicar interfaces.
 
 Incorrecto:
+
 ```typescript
 if (android) return DifferentScreen()
 ```
 
 Correcto:
+
 ```typescript
 if (android) adjustSpacing()
 ```
@@ -467,12 +472,14 @@ React Renderer (solo UI)
 ### Main Process
 
 Puede:
+
 - Crear ventanas
 - Gestionar procesos
 - Acceder al sistema
 - Controlar módulos nativos
 
 No puede:
+
 - Renderizar UI
 - Tener lógica empresarial
 
@@ -507,12 +514,14 @@ window.api.plugins.enable(id)
 El renderer NUNCA accede a Node.js, filesystem, o procesos. Todo pasa por `window.api`.
 
 Incorrecto:
+
 ```typescript
 const fs = require('fs')
 fs.readFile(path)
 ```
 
 Correcto:
+
 ```typescript
 window.api.files.read(path)
 ```
@@ -528,11 +537,13 @@ Un módulo solamente recibe permisos necesarios.
 Ejemplo — Plugin WhatsApp:
 
 Permitido:
+
 - `messages.send`
 - `messages.receive`
 - `contacts.read`
 
 No permitido:
+
 - `filesystem`
 - `system.execute`
 - `database.raw`
@@ -542,11 +553,13 @@ No permitido:
 Nunca confiar en datos externos.
 
 Incorrecto:
+
 ```typescript
 createUser(request.body)
 ```
 
 Correcto:
+
 ```typescript
 const data = UserSchema.parse(request.body)
 createUser(data)
@@ -577,6 +590,7 @@ Core (solo APIs permitidas)
 ```
 
 Si un plugin falla:
+
 - El proceso plugin crashea
 - La app principal NO se ve afectada
 - El plugin se desactiva automáticamente
@@ -589,11 +603,13 @@ Si un plugin falla:
 ### Repository Pattern
 
 Nunca:
+
 ```
 Feature → Database
 ```
 
 Siempre:
+
 ```
 Feature → Service → Repository → Database Adapter
 ```
@@ -610,6 +626,7 @@ El Core no debe depender directamente de una base.
 Todo dato debe pertenecer a una organización:
 
 Incorrecto:
+
 ```typescript
 interface Customer {
   id: string
@@ -618,6 +635,7 @@ interface Customer {
 ```
 
 Correcto:
+
 ```typescript
 interface Customer {
   id: string
@@ -742,11 +760,13 @@ Clientes y servidores remotos de orca-blitz se actualizan independientemente, po
 Ubicación: `packages/sdk/`
 
 Los desarrolladores externos utilizan el SDK para crear:
+
 - Plugins
 - Integraciones
 - Automatizaciones
 
 Ejemplo:
+
 ```typescript
 import { Plugin, Event, Browser } from "@platform/sdk"
 ```
@@ -756,6 +776,7 @@ import { Plugin, Event, Browser } from "@platform/sdk"
 ## Marketplace
 
 La plataforma debe tener un marketplace que permita:
+
 - Instalar plugins
 - Compartir workflows
 - Compartir plantillas
@@ -768,6 +789,7 @@ La plataforma debe tener un marketplace que permita:
 ### Multi Platform
 
 La aplicación debe funcionar en:
+
 - Windows
 - Linux
 - macOS
@@ -776,6 +798,7 @@ La aplicación debe funcionar en:
 - iOS
 
 Todas las plataformas deben compartir:
+
 - Código
 - Lógica
 - Componentes

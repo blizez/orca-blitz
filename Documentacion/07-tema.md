@@ -4,11 +4,11 @@ Puedes cambiar como se ve orca-blitz segun tu preferencia.
 
 ## Opciones de tema
 
-| Tema | Que hace |
-|------|----------|
+| Tema       | Que hace                                   |
+| ---------- | ------------------------------------------ |
 | **System** | La app se adapta al tema de tu computadora |
-| **Dark** | Todo se ve oscuro (ideal para la noche) |
-| **Light** | Todo se ve claro (ideal para el dia) |
+| **Dark**   | Todo se ve oscuro (ideal para la noche)    |
+| **Light**  | Todo se ve claro (ideal para el dia)       |
 
 ## Como cambiar el tema
 

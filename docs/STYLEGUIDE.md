@@ -39,12 +39,12 @@ Cuando tengas duda:
 
 ## Fuente de verdad
 
-| Concern | Ubicación canónica |
-|---------|-------------------|
-| Color tokens | `packages/ui/src/globals.css` (`:root`, `.dark`) |
-| Tailwind theme bindings | Mismo archivo, bloque `@theme inline { … }` |
-| Componentes primitives | `packages/ui/src/components/ui/` (shadcn-style) |
-| Tipografía / scrollbars / chrome | Mismo `globals.css` |
+| Concern                          | Ubicación canónica                               |
+| -------------------------------- | ------------------------------------------------ |
+| Color tokens                     | `packages/ui/src/globals.css` (`:root`, `.dark`) |
+| Tailwind theme bindings          | Mismo archivo, bloque `@theme inline { … }`      |
+| Componentes primitives           | `packages/ui/src/components/ui/` (shadcn-style)  |
+| Tipografía / scrollbars / chrome | Mismo `globals.css`                              |
 
 Nunca hardcodear un valor hex en código de componente si ya existe una variable que lo cubra. Si se necesita un token nuevo, agregarlo a `globals.css` (tanto `:root` como `.dark`), exponerlo en el bloque `@theme inline`, y usarlo.
 
@@ -54,11 +54,11 @@ Nunca hardcodear un valor hex en código de componente si ya existe una variable
 
 La aplicación soporta cuatro modos:
 
-| Modo | Comportamiento |
-|------|---------------|
-| **Light** | Paleta clara. Token `:root` activo. |
-| **Dark** | Paleta oscura. Clase `.dark` en ancestro. |
-| **System** | Detecta `prefers-color-scheme` del SO. Cambia automáticamente. |
+| Modo       | Comportamiento                                                     |
+| ---------- | ------------------------------------------------------------------ |
+| **Light**  | Paleta clara. Token `:root` activo.                                |
+| **Dark**   | Paleta oscura. Clase `.dark` en ancestro.                          |
+| **System** | Detecta `prefers-color-scheme` del SO. Cambia automáticamente.     |
 | **Custom** | El usuario define su propia paleta. Extiende el modo light o dark. |
 
 ### Estrategia de dark mode
@@ -91,37 +91,37 @@ El componente nunca debe asumir si está en light o dark. Siempre usar tokens se
 
 Los tokens se dividen en **dos capas**:
 
-| Capa | Qué controla | Cambia con la paleta |
-|------|-------------|---------------------|
-| **Superficie** | Fondos, bordes, texto base | **No** |
-| **Acento** | Primary, accent, ring, charts | **Sí** |
+| Capa           | Qué controla                  | Cambia con la paleta |
+| -------------- | ----------------------------- | -------------------- |
+| **Superficie** | Fondos, bordes, texto base    | **No**               |
+| **Acento**     | Primary, accent, ring, charts | **Sí**               |
 
 ### Tokens de superficie (NUNCA cambian)
 
 Estos tokens definen la estructura visual y son consistentes sin importar la paleta activa:
 
-| Token | Rol |
-|-------|-----|
-| `background` / `foreground` | Canvas de la app, texto default |
-| `card` / `card-foreground` | Paneles elevados sobre el canvas |
-| `popover` / `popover-foreground` | Menús flotantes, dropdowns |
-| `muted` / `muted-foreground` | Texto deshabilitado, captions, placeholders |
-| `destructive` / `destructive-foreground` | Eliminar, descartar, errores |
-| `border` | Hairlines: divisores, outlines de input, bordes de card |
-| `input` | Background de campos de formulario |
-| `ring` | Focus-visible outlines, halos de selección activa |
+| Token                                    | Rol                                                     |
+| ---------------------------------------- | ------------------------------------------------------- |
+| `background` / `foreground`              | Canvas de la app, texto default                         |
+| `card` / `card-foreground`               | Paneles elevados sobre el canvas                        |
+| `popover` / `popover-foreground`         | Menús flotantes, dropdowns                              |
+| `muted` / `muted-foreground`             | Texto deshabilitado, captions, placeholders             |
+| `destructive` / `destructive-foreground` | Eliminar, descartar, errores                            |
+| `border`                                 | Hairlines: divisores, outlines de input, bordes de card |
+| `input`                                  | Background de campos de formulario                      |
+| `ring`                                   | Focus-visible outlines, halos de selección activa       |
 
 ### Tokens de acento (CAMBIAN con la paleta)
 
 Estos tokens se adaptan según la paleta seleccionada:
 
-| Token | Rol |
-|-------|-----|
-| `primary` / `primary-foreground` | Acción afirmativa principal (Guardar, Confirmar) |
-| `secondary` / `secondary-foreground` | Acciones de menor énfasis junto a un primary |
-| `accent` / `accent-foreground` | Hover/active backgrounds para ghost buttons y list rows |
-| `chart-1` a `chart-5` | Gráficas |
-| `sidebar` + variantes | Sidebar de trabajo y sus hijos |
+| Token                                | Rol                                                     |
+| ------------------------------------ | ------------------------------------------------------- |
+| `primary` / `primary-foreground`     | Acción afirmativa principal (Guardar, Confirmar)        |
+| `secondary` / `secondary-foreground` | Acciones de menor énfasis junto a un primary            |
+| `accent` / `accent-foreground`       | Hover/active backgrounds para ghost buttons y list rows |
+| `chart-1` a `chart-5`                | Gráficas                                                |
+| `sidebar` + variantes                | Sidebar de trabajo y sus hijos                          |
 
 ### Pares de tokens
 
@@ -168,15 +168,15 @@ La sidebar expande tokens propios: `--sidebar`, `--sidebar-foreground`, `--sideb
 
 `--radius: 0.625rem` (10px) es la base; el resto se computan:
 
-| Token | Cálculo | Uso típico |
-|-------|---------|------------|
-| `--radius-sm` | `radius × 0.6` | Badges pequeños |
-| `--radius-md` | `radius × 0.8` | Buttons, inputs |
-| `--radius-lg` | `radius × 1` | Cards |
-| `--radius-xl` | `radius × 1.4` | Modals grandes |
-| `--radius-2xl` | `radius × 1.8` | — |
-| `--radius-3xl` | `radius × 2.2` | — |
-| `--radius-4xl` | `radius × 2.6` | — |
+| Token          | Cálculo        | Uso típico      |
+| -------------- | -------------- | --------------- |
+| `--radius-sm`  | `radius × 0.6` | Badges pequeños |
+| `--radius-md`  | `radius × 0.8` | Buttons, inputs |
+| `--radius-lg`  | `radius × 1`   | Cards           |
+| `--radius-xl`  | `radius × 1.4` | Modals grandes  |
+| `--radius-2xl` | `radius × 1.8` | —               |
+| `--radius-3xl` | `radius × 2.2` | —               |
+| `--radius-4xl` | `radius × 2.6` | —               |
 
 Buttons y inputs usan `rounded-md`; el primitive `Card` usa `rounded-xl`; badges usan `rounded-full`. Igualar el radio del primitive existente en vez de introducir uno nuevo.
 
@@ -204,33 +204,33 @@ Usar los primitives de shadcn en `packages/ui/src/components/ui/` antes de escri
 
 ### Tabla de selección de primitive
 
-| Necesitas... | Llega a... | No uses... |
-|-------------|-----------|------------|
-| Label hover en icon-only button | `Tooltip` | `HoverCard` (pesado), title attr |
-| Preview hover de contenido rico | `HoverCard` | `Tooltip` (sin contenido rico) |
-| Menu click-reveal con acciones | `DropdownMenu` | `Popover` con lista hecha a mano |
-| Acciones contextuales click-derecho | `ContextMenu` | `DropdownMenu` (invocación diferente) |
-| Click-reveal con contenido arbitrario | `Popover` | `Dialog` (traps focus y dimmea) |
-| Modal que demanda decisión | `Dialog` | `Popover`, overlay inline |
-| Panel deslizante desde borde | `Sheet` | `Dialog` centrado |
-| Selección simple de lista conocida | `Select` | Custom listbox |
-| Selección simple con search/fuzzy | `Command` dentro de `Popover` | `Select` (sin search) |
-| Multi-select con search | Custom combobox | Roll a new one |
-| Confirmación transitoria ("Guardado") | `sonner` toast | `Dialog`, banner inline |
-| Status inline persistente ("3 errores") | Texto inline + `Badge` | toast (toasts desaparecen) |
+| Necesitas...                            | Llega a...                    | No uses...                            |
+| --------------------------------------- | ----------------------------- | ------------------------------------- |
+| Label hover en icon-only button         | `Tooltip`                     | `HoverCard` (pesado), title attr      |
+| Preview hover de contenido rico         | `HoverCard`                   | `Tooltip` (sin contenido rico)        |
+| Menu click-reveal con acciones          | `DropdownMenu`                | `Popover` con lista hecha a mano      |
+| Acciones contextuales click-derecho     | `ContextMenu`                 | `DropdownMenu` (invocación diferente) |
+| Click-reveal con contenido arbitrario   | `Popover`                     | `Dialog` (traps focus y dimmea)       |
+| Modal que demanda decisión              | `Dialog`                      | `Popover`, overlay inline             |
+| Panel deslizante desde borde            | `Sheet`                       | `Dialog` centrado                     |
+| Selección simple de lista conocida      | `Select`                      | Custom listbox                        |
+| Selección simple con search/fuzzy       | `Command` dentro de `Popover` | `Select` (sin search)                 |
+| Multi-select con search                 | Custom combobox               | Roll a new one                        |
+| Confirmación transitoria ("Guardado")   | `sonner` toast                | `Dialog`, banner inline               |
+| Status inline persistente ("3 errores") | Texto inline + `Badge`        | toast (toasts desaparecen)            |
 
 ### Buttons (`button.tsx`)
 
 Variantes en orden de prioridad:
 
-| Variante | Caso de uso |
-|---------|------------|
-| `default` | La acción afirmativa principal en un flow |
-| `secondary` | Acción de menor énfasis junto a un `default` |
-| `outline` | Toolbar / acciones standalone donde un botón filled se siente pesado |
-| `ghost` | Icon buttons, triggers de list-row, donde el chrome debe desaparecer |
-| `link` | Acciones inline en párrafos |
-| `destructive` | Eliminar, descartar, irreversible. Nunca para Cancel |
+| Variante      | Caso de uso                                                          |
+| ------------- | -------------------------------------------------------------------- |
+| `default`     | La acción afirmativa principal en un flow                            |
+| `secondary`   | Acción de menor énfasis junto a un `default`                         |
+| `outline`     | Toolbar / acciones standalone donde un botón filled se siente pesado |
+| `ghost`       | Icon buttons, triggers de list-row, donde el chrome debe desaparecer |
+| `link`        | Acciones inline en párrafos                                          |
+| `destructive` | Eliminar, descartar, irreversible. Nunca para Cancel                 |
 
 Sizes: `default` (36px), `sm` (32px), `xs` (24px), `lg` (40px), más `icon`, `icon-xs`, `icon-sm`, `icon-lg`. Igualar el tamaño al row height circundante — no meter un botón `default` en un toolbar de 28px.
 
@@ -259,25 +259,25 @@ Estas son las reglas que un contributor más probablemente va a malinterpretar s
 
 ### 1. Feedback según duración percibida
 
-La pregunta no es *"¿debe cambiar este control mientras trabaja?"* — es *"¿cuánto dura la acción, y qué necesita saber el usuario durante ese tiempo?"*
+La pregunta no es _"¿debe cambiar este control mientras trabaja?"_ — es _"¿cuánto dura la acción, y qué necesita saber el usuario durante ese tiempo?"_
 
-| Duración | Feedback |
-|----------|----------|
-| 0–100 ms | Ninguno. Algo visible se lee como un glitch. |
-| 100 ms–1 s | Solo estado disabled. |
-| 1 s–3 s | Disabled + spinner o swap de label. |
+| Duración          | Feedback                                         |
+| ----------------- | ------------------------------------------------ |
+| 0–100 ms          | Ninguno. Algo visible se lee como un glitch.     |
+| 100 ms–1 s        | Solo estado disabled.                            |
+| 1 s–3 s           | Disabled + spinner o swap de label.              |
 | 3 s+ o multi-step | Labels de etapa, progress, reassurance opcional. |
 
 Dos correlatos:
 
 - **Reservar espacio de antemano.** Si un control puede cambiar a un label más largo o crecer un icono, fijar su footprint de entrada (usar `width`, no `min-width`). Un control que cambia de tamaño mid-action se ve roto incluso cuando la acción fue exitosa.
-- **No elegir el peor caso para todos.** Si la acción es rápida localmente y lenta remotamente (SSH), diferir el estado de loading visible por ~200ms. Los usuarios locales no ven nada; los remotos reciben feedback apropiado. Vincular el estado *disabled* inmediatamente (para que doble-click no doble-submit) y el estado *visible* con un timer.
+- **No elegir el peor caso para todos.** Si la acción es rápida localmente y lenta remotamente (SSH), diferir el estado de loading visible por ~200ms. Los usuarios locales no ven nada; los remotos reciben feedback apropiado. Vincular el estado _disabled_ inmediatamente (para que doble-click no doble-submit) y el estado _visible_ con un timer.
 
 ### 2. Buscar componentes hermanos antes de diseñar en aislamiento
 
 Si tu componente tiene un hermano — mismo dominio, comportamiento solapado, frecuentemente visible en momentos adyacentes en el mismo flow — los dos deben leerse como un mismo diseño. Mismos iconos, mismas convenciones de shortcut, mismas semánticas de submit. Un usuario moviéndose entre ellos no debe percibir una costura.
 
-Esto **no** es "igualar cada patrón existente". Algunos patrones del repo son deuda y copiarlos propaga la deuda. La afirmación más estrecha es sobre componentes *adyacentes*. Diverger de un hermano necesita una razón: o el hermano está mal (arreglar ambos) o el nuevo componente tiene una diferencia real en rol (comprometerse con eso).
+Esto **no** es "igualar cada patrón existente". Algunos patrones del repo son deuda y copiarlos propaga la deuda. La afirmación más estrecha es sobre componentes _adyacentes_. Diverger de un hermano necesita una razón: o el hermano está mal (arreglar ambos) o el nuevo componente tiene una diferencia real en rol (comprometerse con eso).
 
 Cuando no hay hermano, igualar el chrome circundante — tamaños de botón, peso de iconos, tono del copy — y no fabricar un hermano de una pantalla que el usuario nunca correlacionará con esta.
 
@@ -304,14 +304,14 @@ Un punto común de drift. Usar estas convenciones para cualquier fila de estilo 
 - **Idle:** background transparente.
 - **Hover:** `bg-accent` (en la sidebar, `bg-sidebar-accent`).
 - **Keyboard-selected (highlight de cmdk):** `data-[selected=true]:bg-accent` más un `border-border` outline para que la fila activa sea visible mientras el usuario escribe. El atributo `data-selected` lo setea `cmdk` automáticamente.
-- **Persistent "current" / "active"** (ej: la worktree que el usuario está viendo): también `bg-accent`, *más* un atributo `data-current="true"` para que CSS o styling futuro pueda distinguirlo del highlight de cmdk.
+- **Persistent "current" / "active"** (ej: la worktree que el usuario está viendo): también `bg-accent`, _más_ un atributo `data-current="true"` para que CSS o styling futuro pueda distinguirlo del highlight de cmdk.
 - **No hardcodear:** `bg-[#ededed]` / `bg-[#333333]` o inventar un color "selected". El token accent ya se adapta a light/dark y hace match con el resto de la app.
 
 ---
 
 ## Tooltips
 
-Los tooltips existen para *nombrar* un control cuyo significado no es obvio por su apariencia. No son el lugar para enseñar, persuadir o advertir — cualquier cosa que los usuarios necesiten leer mientras actúan va en la UI visible.
+Los tooltips existen para _nombrar_ un control cuyo significado no es obvio por su apariencia. No son el lugar para enseñar, persuadir o advertir — cualquier cosa que los usuarios necesiten leer mientras actúan va en la UI visible.
 
 - **Usar un tooltip cuando:** un icon-only button o chip compacto necesita un label. Toolbar icons, badges con abreviaturas, paths truncados.
 - **No usar un tooltip cuando:** el control ya tiene un label visible, el contenido es interactivo (links, buttons), o el mensaje es crítico (errores, warnings bloqueantes — esos van inline).
@@ -347,10 +347,10 @@ orca-blitz corre en macOS, Linux, Windows, Web y Mobile. Cada cambio de UI debe 
 
 Usar animación sutil para suavizar contenido que expande/collapse y prevenir cambios de layout bruscos. La animación debe clarificar continuidad, no decorar.
 
-| Tipo | Duración | Easing |
-|------|----------|--------|
-| Fade in/out | 150ms | ease-out |
-| Expand/collapse | 200ms | ease-in-out |
+| Tipo             | Duración  | Easing      |
+| ---------------- | --------- | ----------- |
+| Fade in/out      | 150ms     | ease-out    |
+| Expand/collapse  | 200ms     | ease-in-out |
 | Page transitions | 200-300ms | ease-in-out |
 
 - **Respetar** `prefers-reduced-motion`. Si el usuario tiene reducido el movimiento, desactivar animaciones no esenciales.
@@ -412,25 +412,25 @@ function MiComponente() {
 
 Usar sonidos **semánticamente**, no decorativamente:
 
-| Sonido | Carácter | Usar para |
-|--------|----------|-----------|
-| `chime` | Campana suave ascendente | Hover en botones de acción positiva, triggers |
-| `sparkle` | Twinkle rápido de 4 notas | Crear entidad, easter eggs, acentos juguetones |
-| `droplet` | Nota descendente | Dismiss, cerrar, cancelar, navegación hacia atrás |
-| `bloom` | swell cálido lento | Revelar, expandir, navegación hacia adelante |
-| `whisper` | swell sutil y silencioso | Hover en items de lista densa, elementos secundarios |
-| `tick` | Click instantáneo y crísp | Hover en navegación, menús, items de sidebar |
-| `press` | Golpe apagado y mutido | Pointer down (presionar botón) |
-| `release` | Tick más brillante y elástico | Pointer up (soltar botón) |
-| `toggle` | Click-clack mecánico | Switches, tabs, controles segmentados, expand/collapse |
-| `success` | Confirmación cálida de 3 notas | Acción completada (guardar, crear, copiar) |
-| `error` | Golpe suave descendente | Errores recuperables, acciones bloqueadas, eliminar |
-| `page` | Flick papeleo con tick de cristal | Paginación, galerías, cambiar de pestaña |
-| `loading` | Shimmer ascendente no resuelto | Trabajo iniciado por el usuario (clonar, instalar) |
-| `ready` | Tick de foco con bloom armónico | Contenido terminado de cargar |
-| `pulse` | Pulso electrónico | Navegación activa, items seleccionados |
-| `scan` | Barrido digital | Búsqueda, escaneo de menús |
-| `arrival` | Nota de llegada | Apertura de plataforma, cambio de contexto mayor |
+| Sonido    | Carácter                          | Usar para                                              |
+| --------- | --------------------------------- | ------------------------------------------------------ |
+| `chime`   | Campana suave ascendente          | Hover en botones de acción positiva, triggers          |
+| `sparkle` | Twinkle rápido de 4 notas         | Crear entidad, easter eggs, acentos juguetones         |
+| `droplet` | Nota descendente                  | Dismiss, cerrar, cancelar, navegación hacia atrás      |
+| `bloom`   | swell cálido lento                | Revelar, expandir, navegación hacia adelante           |
+| `whisper` | swell sutil y silencioso          | Hover en items de lista densa, elementos secundarios   |
+| `tick`    | Click instantáneo y crísp         | Hover en navegación, menús, items de sidebar           |
+| `press`   | Golpe apagado y mutido            | Pointer down (presionar botón)                         |
+| `release` | Tick más brillante y elástico     | Pointer up (soltar botón)                              |
+| `toggle`  | Click-clack mecánico              | Switches, tabs, controles segmentados, expand/collapse |
+| `success` | Confirmación cálida de 3 notas    | Acción completada (guardar, crear, copiar)             |
+| `error`   | Golpe suave descendente           | Errores recuperables, acciones bloqueadas, eliminar    |
+| `page`    | Flick papeleo con tick de cristal | Paginación, galerías, cambiar de pestaña               |
+| `loading` | Shimmer ascendente no resuelto    | Trabajo iniciado por el usuario (clonar, instalar)     |
+| `ready`   | Tick de foco con bloom armónico   | Contenido terminado de cargar                          |
+| `pulse`   | Pulso electrónico                 | Navegación activa, items seleccionados                 |
+| `scan`    | Barrido digital                   | Búsqueda, escaneo de menús                             |
+| `arrival` | Nota de llegada                   | Apertura de plataforma, cambio de contexto mayor       |
 
 ### Reglas de asignación
 

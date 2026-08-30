@@ -19,5 +19,10 @@
       "@orca-blitz/shared/*": ["../../packages/shared/src/*"]
     }
   },
-  "include": ["src/renderer/**/*", "../../packages/ui/src/**/*.ts", "../../packages/ui/src/**/*.tsx", "../../packages/shared/**/*.ts"]
+  "include": [
+    "src/renderer/**/*",
+    "../../packages/ui/src/**/*.ts",
+    "../../packages/ui/src/**/*.tsx",
+    "../../packages/shared/**/*.ts"
+  ]
 }

@@ -35,6 +35,7 @@ Settings
 ```
 
 Aqui es donde:
+
 - Ves todos tus negocios
 - Cada negocio se expande con sub-secciones (Social Media, Content, Campaigns)
 - Agregas nuevos negocios con el boton `+`

@@ -114,10 +114,10 @@ Active state: `activePage === '{bizId}:{featureId}'` → `bg-sidebar-accent font
 )}>
 ```
 
-| Property | Collapsed | Expanded |
-|----------|-----------|----------|
-| `max-h` | `max-h-0` | `max-h-40` (10rem) |
-| `opacity` | `opacity-0` | `opacity-100` |
+| Property     | Collapsed                     | Expanded                      |
+| ------------ | ----------------------------- | ----------------------------- |
+| `max-h`      | `max-h-0`                     | `max-h-40` (10rem)            |
+| `opacity`    | `opacity-0`                   | `opacity-100`                 |
 | `transition` | `transition-all duration-200` | `transition-all duration-200` |
 
 ### Border highlight
@@ -150,11 +150,11 @@ useEffect(() => {
 
 ### Menu items
 
-| Item | Icon | Accion |
-|------|------|--------|
+| Item              | Icon       | Accion                           |
+| ----------------- | ---------- | -------------------------------- |
 | Business Settings | `Settings` | `onBusinessSettings?.(business)` |
-| Change Icon | `Image` | Placeholder (no-op) |
-| Delete Business | `Trash2` | `onDelete(business.id)` |
+| Change Icon       | `Image`    | Placeholder (no-op)              |
+| Delete Business   | `Trash2`   | `onDelete(business.id)`          |
 
 ```typescript
 {showMenu && (
@@ -222,13 +222,13 @@ interface AppSidebarProps {
 
 ## Collapsed Mode
 
-| Elemento | Expanded | Collapsed |
-|----------|----------|-----------|
-| Width | `w-[220px]` | `w-[52px]` |
-| Business list | `<ul>` visible | Oculto |
-| Add button | `<Plus>` inline | Tooltip "Add Business" |
-| Settings button | `<Settings>` + "Settings" text | Icon only + tooltip |
-| Section label | "Businesses" text | Oculto |
+| Elemento        | Expanded                       | Collapsed              |
+| --------------- | ------------------------------ | ---------------------- |
+| Width           | `w-[220px]`                    | `w-[52px]`             |
+| Business list   | `<ul>` visible                 | Oculto                 |
+| Add button      | `<Plus>` inline                | Tooltip "Add Business" |
+| Settings button | `<Settings>` + "Settings" text | Icon only + tooltip    |
+| Section label   | "Businesses" text              | Oculto                 |
 
 ---
 
@@ -267,8 +267,8 @@ onClick={() => onSelect(`${business.id}:${feature.id}`)}
 
 Formato de ruta: `{businessId}:{featureId}`
 
-| Feature | Ruta | Componente |
-|---------|------|------------|
-| Social Media | `{bizId}:redes` | SocialMediaPage |
-| Content | `{bizId}:content` | ContentPage |
-| Campaigns | `{bizId}:campaigns` | CampaignsPage |
+| Feature      | Ruta                | Componente      |
+| ------------ | ------------------- | --------------- |
+| Social Media | `{bizId}:redes`     | SocialMediaPage |
+| Content      | `{bizId}:content`   | ContentPage     |
+| Campaigns    | `{bizId}:campaigns` | CampaignsPage   |

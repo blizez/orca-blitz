@@ -76,10 +76,10 @@ Usa `Collapsible` de Base UI en lugar de `Accordion`:
 const isDefault = (id: string) => defaultMethods.some((d) => d.id === id)
 ```
 
-| Tipo | Nombre editable | Account editable | Deleteable |
-|------|----------------|-----------------|------------|
-| Default (PayPal, Binance) | No | Si | No |
-| Custom | Si | Si | Si |
+| Tipo                      | Nombre editable | Account editable | Deleteable |
+| ------------------------- | --------------- | ---------------- | ---------- |
+| Default (PayPal, Binance) | No              | Si               | No         |
+| Custom                    | Si              | Si               | Si         |
 
 ---
 
@@ -212,10 +212,10 @@ Collapsible
 
 ## Dependencias
 
-| Componente | Paquete |
-|------------|---------|
-| `Collapsible`, `CollapsibleTrigger`, `CollapsibleContent` | `@orca-blitz/ui` (Base UI) |
-| `Dialog`, `DialogContent`, `DialogHeader`, `DialogTitle`, `DialogDescription`, `DialogFooter`, `DialogClose` | `@orca-blitz/ui` |
-| `Button`, `Input`, `Field`, `FieldLabel`, `FieldContent` | `@orca-blitz/ui` |
-| `cn` | `../../lib/utils` |
-| `Plus`, `Trash2`, `CreditCard`, `ChevronRight`, `Upload`, `X` | `lucide-react` |
+| Componente                                                                                                   | Paquete                    |
+| ------------------------------------------------------------------------------------------------------------ | -------------------------- |
+| `Collapsible`, `CollapsibleTrigger`, `CollapsibleContent`                                                    | `@orca-blitz/ui` (Base UI) |
+| `Dialog`, `DialogContent`, `DialogHeader`, `DialogTitle`, `DialogDescription`, `DialogFooter`, `DialogClose` | `@orca-blitz/ui`           |
+| `Button`, `Input`, `Field`, `FieldLabel`, `FieldContent`                                                     | `@orca-blitz/ui`           |
+| `cn`                                                                                                         | `../../lib/utils`          |
+| `Plus`, `Trash2`, `CreditCard`, `ChevronRight`, `Upload`, `X`                                                | `lucide-react`             |

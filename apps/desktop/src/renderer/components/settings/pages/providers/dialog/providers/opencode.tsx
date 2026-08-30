@@ -1,19 +1,19 @@
-import { Tabs, TabsList, TabsTrigger } from '@orca-blitz/ui/components/ui/tabs'
-import { ApiKeyForm } from '../api-key-form'
-import type { BuiltInProvider } from '../../types'
+import { Tabs, TabsList, TabsTrigger } from "@orca-blitz/ui/components/ui/tabs";
+import { ApiKeyForm } from "../api-key-form";
+import type { BuiltInProvider } from "../../types";
 
 interface OpenCodeSettingsProps {
-  provider: BuiltInProvider
-  activeTab: string
-  apiKey: string
-  models: string[]
-  selectedModel: string | null
-  isFetching: boolean
-  error: string | null
-  onTabChange: (tab: string) => void
-  onApiKeyChange: (key: string) => void
-  onSelectModel: (model: string) => void
-  modelListRef: React.RefObject<HTMLDivElement | null>
+  provider: BuiltInProvider;
+  activeTab: string;
+  apiKey: string;
+  models: string[];
+  selectedModel: string | null;
+  isFetching: boolean;
+  error: string | null;
+  onTabChange: (tab: string) => void;
+  onApiKeyChange: (key: string) => void;
+  onSelectModel: (model: string) => void;
+  modelListRef: React.RefObject<HTMLDivElement | null>;
 }
 
 export function OpenCodeSettings({
@@ -33,8 +33,12 @@ export function OpenCodeSettings({
     <>
       <Tabs value={activeTab} onValueChange={onTabChange}>
         <TabsList variant="line" className="w-full">
-          <TabsTrigger value="zen" className="flex-1">Zen</TabsTrigger>
-          <TabsTrigger value="go" className="flex-1">Go</TabsTrigger>
+          <TabsTrigger value="zen" className="flex-1">
+            Zen
+          </TabsTrigger>
+          <TabsTrigger value="go" className="flex-1">
+            Go
+          </TabsTrigger>
         </TabsList>
       </Tabs>
 
@@ -50,5 +54,5 @@ export function OpenCodeSettings({
         modelListRef={modelListRef}
       />
     </>
-  )
+  );
 }

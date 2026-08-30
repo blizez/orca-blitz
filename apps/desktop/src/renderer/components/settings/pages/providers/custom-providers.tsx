@@ -1,45 +1,50 @@
-import { useState } from 'react'
-import { Globe, Plus, Trash2, Key, Cpu } from 'lucide-react'
-import { Button } from '@orca-blitz/ui/components/ui/button'
-import { Input } from '@orca-blitz/ui/components/ui/input'
-import { Label } from '@orca-blitz/ui/components/ui/label'
-import { Badge } from '@orca-blitz/ui/components/ui/badge'
-import type { CustomProvider } from './types'
+import { useState } from "react";
+import { Globe, Plus, Trash2, Key, Cpu } from "lucide-react";
+import { Button } from "@orca-blitz/ui/components/ui/button";
+import { Input } from "@orca-blitz/ui/components/ui/input";
+import { Label } from "@orca-blitz/ui/components/ui/label";
+import { Badge } from "@orca-blitz/ui/components/ui/badge";
+import type { CustomProvider } from "./types";
 
 interface CustomProvidersProps {
-  providers: CustomProvider[]
-  onAdd: (provider: CustomProvider) => void
-  onRemove: (id: string) => void
+  providers: CustomProvider[];
+  onAdd: (provider: CustomProvider) => void;
+  onRemove: (id: string) => void;
 }
 
 export function CustomProviders({ providers, onAdd, onRemove }: CustomProvidersProps) {
-  const [showForm, setShowForm] = useState(false)
-  const [name, setName] = useState('')
-  const [endpoint, setEndpoint] = useState('')
-  const [apiKey, setApiKey] = useState('')
-  const [models, setModels] = useState('')
+  const [showForm, setShowForm] = useState(false);
+  const [name, setName] = useState("");
+  const [endpoint, setEndpoint] = useState("");
+  const [apiKey, setApiKey] = useState("");
+  const [models, setModels] = useState("");
 
   const handleAdd = () => {
-    if (!name.trim() || !endpoint.trim()) return
+    if (!name.trim() || !endpoint.trim()) return;
     onAdd({
       id: `custom-${Date.now()}`,
       name: name.trim(),
       endpoint: endpoint.trim(),
       apiKey: apiKey.trim(),
-      models: models.split(',').map((m) => m.trim()).filter(Boolean),
-    })
-    setName('')
-    setEndpoint('')
-    setApiKey('')
-    setModels('')
-    setShowForm(false)
-  }
+      models: models
+        .split(",")
+        .map((m) => m.trim())
+        .filter(Boolean),
+    });
+    setName("");
+    setEndpoint("");
+    setApiKey("");
+    setModels("");
+    setShowForm(false);
+  };
 
   return (
     <>
       {providers.length > 0 && (
         <div className="space-y-4">
-          <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Custom Providers</p>
+          <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
+            Custom Providers
+          </p>
           {providers.map((provider) => (
             <div
               key={provider.id}
@@ -51,14 +56,20 @@ export function CustomProviders({ providers, onAdd, onRemove }: CustomProvidersP
                 </div>
                 <div>
                   <p className="text-sm font-medium">{provider.name}</p>
-                  <p className="text-xs text-muted-foreground truncate max-w-[300px]">{provider.endpoint}</p>
+                  <p className="text-xs text-muted-foreground truncate max-w-[300px]">
+                    {provider.endpoint}
+                  </p>
                   {provider.models.length > 0 && (
                     <div className="flex gap-1 mt-1">
                       {provider.models.slice(0, 3).map((model) => (
-                        <Badge key={model} variant="secondary" className="text-[10px]">{model}</Badge>
+                        <Badge key={model} variant="secondary" className="text-[10px]">
+                          {model}
+                        </Badge>
                       ))}
                       {provider.models.length > 3 && (
-                        <Badge variant="secondary" className="text-[10px]">+{provider.models.length - 3}</Badge>
+                        <Badge variant="secondary" className="text-[10px]">
+                          +{provider.models.length - 3}
+                        </Badge>
                       )}
                     </div>
                   )}
@@ -130,7 +141,9 @@ export function CustomProviders({ providers, onAdd, onRemove }: CustomProvidersP
           </div>
 
           <div className="space-y-1.5">
-            <Label htmlFor="provider-models" className="text-xs">Models (comma separated)</Label>
+            <Label htmlFor="provider-models" className="text-xs">
+              Models (comma separated)
+            </Label>
             <Input
               id="provider-models"
               value={models}
@@ -150,5 +163,5 @@ export function CustomProviders({ providers, onAdd, onRemove }: CustomProvidersP
         </div>
       )}
     </>
-  )
+  );
 }

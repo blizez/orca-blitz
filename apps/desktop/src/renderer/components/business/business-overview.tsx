@@ -1,15 +1,23 @@
-import { Building2, TrendingUp, Calendar, DollarSign, Users, Globe, Target } from 'lucide-react'
-import { useTranslation } from 'react-i18next'
-import { Card, CardHeader, CardTitle, CardContent } from '@orca-blitz/ui/components/ui/card'
-import { Badge } from '@orca-blitz/ui/components/ui/badge'
-import { Skeleton } from '@orca-blitz/ui/components/ui/skeleton'
-import type { Business } from '@orca-blitz/shared'
+import { Building2, TrendingUp, Calendar, DollarSign, Users, Globe, Target } from "lucide-react";
+import { useTranslation } from "react-i18next";
+import { Card, CardHeader, CardTitle, CardContent } from "@orca-blitz/ui/components/ui/card";
+import { Badge } from "@orca-blitz/ui/components/ui/badge";
+import { Skeleton } from "@orca-blitz/ui/components/ui/skeleton";
+import type { Business } from "@orca-blitz/shared";
 
 interface BusinessOverviewProps {
-  business: Business
+  business: Business;
 }
 
-function StatCard({ icon: Icon, label, value }: { icon: React.ComponentType<{ className?: string }>; label: string; value: string }) {
+function StatCard({
+  icon: Icon,
+  label,
+  value,
+}: {
+  icon: React.ComponentType<{ className?: string }>;
+  label: string;
+  value: string;
+}) {
   return (
     <Card size="sm">
       <CardContent>
@@ -19,26 +27,26 @@ function StatCard({ icon: Icon, label, value }: { icon: React.ComponentType<{ cl
           </div>
           <div className="min-w-0">
             <p className="text-xs text-muted-foreground">{label}</p>
-            <p className="truncate text-sm font-medium">{value || '—'}</p>
+            <p className="truncate text-sm font-medium">{value || "—"}</p>
           </div>
         </div>
       </CardContent>
     </Card>
-  )
+  );
 }
 
 function InfoRow({ label, value }: { label: string; value: string }) {
-  if (!value) return null
+  if (!value) return null;
   return (
     <div className="space-y-1">
       <p className="text-xs font-medium text-muted-foreground">{label}</p>
       <p className="text-sm leading-relaxed">{value}</p>
     </div>
-  )
+  );
 }
 
 export function BusinessOverview({ business }: BusinessOverviewProps) {
-  const { t } = useTranslation('business')
+  const { t } = useTranslation("business");
 
   return (
     <div className="space-y-6 animate-in fade-in duration-150">
@@ -53,10 +61,18 @@ export function BusinessOverview({ business }: BusinessOverviewProps) {
       </header>
 
       <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
-        <StatCard icon={DollarSign} label={t('overview.stats.monthlyRevenue')} value={business.monthlyRevenue} />
-        <StatCard icon={Calendar} label={t('overview.stats.established')} value={business.yearEstablished} />
-        <StatCard icon={Users} label={t('overview.stats.teamSize')} value={business.teamSize} />
-        <StatCard icon={Globe} label={t('overview.stats.industry')} value={business.industry} />
+        <StatCard
+          icon={DollarSign}
+          label={t("overview.stats.monthlyRevenue")}
+          value={business.monthlyRevenue}
+        />
+        <StatCard
+          icon={Calendar}
+          label={t("overview.stats.established")}
+          value={business.yearEstablished}
+        />
+        <StatCard icon={Users} label={t("overview.stats.teamSize")} value={business.teamSize} />
+        <StatCard icon={Globe} label={t("overview.stats.industry")} value={business.industry} />
       </div>
 
       <div className="grid gap-4 md:grid-cols-2">
@@ -64,18 +80,22 @@ export function BusinessOverview({ business }: BusinessOverviewProps) {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Target className="size-4 text-muted-foreground" />
-              {t('overview.sections.productsAudience')}
+              {t("overview.sections.productsAudience")}
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            <InfoRow label={t('overview.labels.products')} value={business.products} />
-            <InfoRow label={t('overview.labels.audience')} value={business.audience} />
+            <InfoRow label={t("overview.labels.products")} value={business.products} />
+            <InfoRow label={t("overview.labels.audience")} value={business.audience} />
             {business.goals.length > 0 && (
               <div className="space-y-2">
-                <p className="text-xs font-medium text-muted-foreground">{t('overview.labels.goals')}</p>
+                <p className="text-xs font-medium text-muted-foreground">
+                  {t("overview.labels.goals")}
+                </p>
                 <div className="flex flex-wrap gap-1.5">
                   {business.goals.map((g) => (
-                    <Badge key={g} variant="outline" className="text-muted-foreground">{g}</Badge>
+                    <Badge key={g} variant="outline" className="text-muted-foreground">
+                      {g}
+                    </Badge>
                   ))}
                 </div>
               </div>
@@ -87,13 +107,13 @@ export function BusinessOverview({ business }: BusinessOverviewProps) {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <TrendingUp className="size-4 text-muted-foreground" />
-              {t('overview.sections.marketPosition')}
+              {t("overview.sections.marketPosition")}
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            <InfoRow label={t('overview.labels.usp')} value={business.usp} />
-            <InfoRow label={t('overview.labels.competitors')} value={business.competitors} />
-            <InfoRow label={t('overview.labels.painPoints')} value={business.painPoints} />
+            <InfoRow label={t("overview.labels.usp")} value={business.usp} />
+            <InfoRow label={t("overview.labels.competitors")} value={business.competitors} />
+            <InfoRow label={t("overview.labels.painPoints")} value={business.painPoints} />
           </CardContent>
         </Card>
       </div>
@@ -103,19 +123,23 @@ export function BusinessOverview({ business }: BusinessOverviewProps) {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Building2 className="size-4 text-muted-foreground" />
-              {t('overview.sections.channelsPresence')}
+              {t("overview.sections.channelsPresence")}
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             {business.website && (
-              <InfoRow label={t('overview.labels.website')} value={business.website} />
+              <InfoRow label={t("overview.labels.website")} value={business.website} />
             )}
             {business.channels.length > 0 && (
               <div className="space-y-2">
-                <p className="text-xs font-medium text-muted-foreground">{t('overview.labels.activeChannels')}</p>
+                <p className="text-xs font-medium text-muted-foreground">
+                  {t("overview.labels.activeChannels")}
+                </p>
                 <div className="flex flex-wrap gap-1.5">
                   {business.channels.map((ch) => (
-                    <Badge key={ch} variant="secondary">{ch}</Badge>
+                    <Badge key={ch} variant="secondary">
+                      {ch}
+                    </Badge>
                   ))}
                 </div>
               </div>
@@ -124,7 +148,7 @@ export function BusinessOverview({ business }: BusinessOverviewProps) {
         </Card>
       )}
     </div>
-  )
+  );
 }
 
 export function BusinessOverviewSkeleton() {
@@ -172,5 +196,5 @@ export function BusinessOverviewSkeleton() {
         ))}
       </div>
     </div>
-  )
+  );
 }

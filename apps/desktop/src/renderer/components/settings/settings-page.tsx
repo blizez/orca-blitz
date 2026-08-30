@@ -1,25 +1,25 @@
-import { useState } from 'react'
-import { SettingsSidebar } from './settings-sidebar'
-import { AppearanceSettings } from './pages/appearance'
-import { NotificationsSettings } from './pages/notifications'
-import { ShortcutsSettings } from './pages/shortcuts'
-import { StatisticsSettings } from './pages/statistics'
-import { BillingSettings } from './pages/billing'
-import { IntegrationsSettings } from './pages/integrations'
-import { ProvidersSettings } from './pages/providers'
-import { SecuritySettings } from './pages/security'
-import { BusinessSettings } from './pages/business-settings'
-import type { Business } from '@orca-blitz/shared'
+import { useState } from "react";
+import { SettingsSidebar } from "./settings-sidebar";
+import { AppearanceSettings } from "./pages/appearance";
+import { NotificationsSettings } from "./pages/notifications";
+import { ShortcutsSettings } from "./pages/shortcuts";
+import { StatisticsSettings } from "./pages/statistics";
+import { BillingSettings } from "./pages/billing";
+import { IntegrationsSettings } from "./pages/integrations";
+import { ProvidersSettings } from "./pages/providers";
+import { SecuritySettings } from "./pages/security";
+import { BusinessSettings } from "./pages/business-settings";
+import type { Business } from "@orca-blitz/shared";
 
 interface SettingsPageProps {
-  onBack: () => void
-  initialTab?: string
-  businessId?: string | null
-  business?: Business | null
-  businesses?: Business[]
-  onUpdateBusiness?: (id: string, data: Partial<Business>) => void
-  onDeleteBusiness?: (id: string) => void
-  onSelectBusiness?: (business: Business) => void
+  onBack: () => void;
+  initialTab?: string;
+  businessId?: string | null;
+  business?: Business | null;
+  businesses?: Business[];
+  onUpdateBusiness?: (id: string, data: Partial<Business>) => void;
+  onDeleteBusiness?: (id: string) => void;
+  onSelectBusiness?: (business: Business) => void;
 }
 
 const pages: Record<string, React.ComponentType> = {
@@ -31,22 +31,40 @@ const pages: Record<string, React.ComponentType> = {
   integrations: IntegrationsSettings,
   ai: ProvidersSettings,
   security: SecuritySettings,
-}
+};
 
-export function SettingsPage({ onBack, initialTab, businessId, business, businesses, onUpdateBusiness, onDeleteBusiness, onSelectBusiness }: SettingsPageProps) {
-  const [activeTab, setActiveTab] = useState(businessId ? (initialTab ?? 'business') : 'appearance')
+export function SettingsPage({
+  onBack,
+  initialTab,
+  businessId,
+  business,
+  businesses,
+  onUpdateBusiness,
+  onDeleteBusiness,
+  onSelectBusiness,
+}: SettingsPageProps) {
+  const [activeTab, setActiveTab] = useState(
+    businessId ? (initialTab ?? "business") : "appearance",
+  );
 
-  const isBusinessMode = !!businessId && business
-  const ActivePage = isBusinessMode && activeTab === 'business'
-    ? () => business && onUpdateBusiness && onDeleteBusiness ? (
-        <BusinessSettings key={business.id} business={business} onUpdate={onUpdateBusiness} onDelete={onDeleteBusiness} />
-      ) : null
-    : pages[activeTab] ?? AppearanceSettings
+  const isBusinessMode = !!businessId && business;
+  const ActivePage =
+    isBusinessMode && activeTab === "business"
+      ? () =>
+          business && onUpdateBusiness && onDeleteBusiness ? (
+            <BusinessSettings
+              key={business.id}
+              business={business}
+              onUpdate={onUpdateBusiness}
+              onDelete={onDeleteBusiness}
+            />
+          ) : null
+      : (pages[activeTab] ?? AppearanceSettings);
 
   const handleBusinessSelect = (biz: Business) => {
-    onSelectBusiness?.(biz)
-    setActiveTab('business')
-  }
+    onSelectBusiness?.(biz);
+    setActiveTab("business");
+  };
 
   return (
     <div className="flex h-full">
@@ -59,14 +77,21 @@ export function SettingsPage({ onBack, initialTab, businessId, business, busines
         onBusinessSelect={handleBusinessSelect}
       />
       <main className="flex-1 overflow-y-auto">
-          <div className={`mx-auto p-6 ${isBusinessMode ? 'max-w-4xl' : 'max-w-2xl'}`}>
-          {isBusinessMode && activeTab === 'business'
-            ? (business && onUpdateBusiness && onDeleteBusiness ? (
-                <BusinessSettings key={business.id} business={business} onUpdate={onUpdateBusiness} onDelete={onDeleteBusiness} />
-              ) : null)
-            : <ActivePage />}
+        <div className={`mx-auto p-6 ${isBusinessMode ? "max-w-4xl" : "max-w-2xl"}`}>
+          {isBusinessMode && activeTab === "business" ? (
+            business && onUpdateBusiness && onDeleteBusiness ? (
+              <BusinessSettings
+                key={business.id}
+                business={business}
+                onUpdate={onUpdateBusiness}
+                onDelete={onDeleteBusiness}
+              />
+            ) : null
+          ) : (
+            <ActivePage />
+          )}
         </div>
       </main>
     </div>
-  )
+  );
 }

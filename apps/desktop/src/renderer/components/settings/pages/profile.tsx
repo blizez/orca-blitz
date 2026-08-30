@@ -23,5 +23,5 @@ export function ProfileSettings() {
         </div>
       </div>
     </div>
-  )
+  );
 }

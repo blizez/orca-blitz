@@ -66,35 +66,35 @@ interface SoundContextValue {
 
 14 sonidos disponibles:
 
-| Sound | Uso en orca-blitz |
-|-------|-------------------|
-| `chime` | — |
-| `sparkle` | — |
-| `droplet` | Modal close |
-| `bloom` | — |
-| `whisper` | — |
-| `tick` | — |
-| `press` | — |
-| `release` | — |
-| `toggle` | Switch toggle |
-| `success` | Creation, submit |
-| `error` | Deletion |
-| `page` | Navigation |
-| `loading` | — |
-| `ready` | — |
-| `pulse` | — |
-| `scan` | — |
-| `arrival` | — |
+| Sound     | Uso en orca-blitz |
+| --------- | ----------------- |
+| `chime`   | —                 |
+| `sparkle` | —                 |
+| `droplet` | Modal close       |
+| `bloom`   | —                 |
+| `whisper` | —                 |
+| `tick`    | —                 |
+| `press`   | —                 |
+| `release` | —                 |
+| `toggle`  | Switch toggle     |
+| `success` | Creation, submit  |
+| `error`   | Deletion          |
+| `page`    | Navigation        |
+| `loading` | —                 |
+| `ready`   | —                 |
+| `pulse`   | —                 |
+| `scan`    | —                 |
+| `arrival` | —                 |
 
 ### Asignacion de sonidos por accion
 
-| Accion | Sound | Ejemplo |
-|--------|-------|---------|
-| Crear negocio | `play('success')` | AddBusinessModal submit |
-| Eliminar negocio | `play('error')` | DeleteBusinessModal confirm |
-| Cerrar modal | `play('droplet')` | AddBusinessModal close |
-| Toggle switch | `play('toggle')` | Notifications settings |
-| Navegar pagina | `play('page')` | Sidebar navigation |
+| Accion           | Sound             | Ejemplo                     |
+| ---------------- | ----------------- | --------------------------- |
+| Crear negocio    | `play('success')` | AddBusinessModal submit     |
+| Eliminar negocio | `play('error')`   | DeleteBusinessModal confirm |
+| Cerrar modal     | `play('droplet')` | AddBusinessModal close      |
+| Toggle switch    | `play('toggle')`  | Notifications settings      |
+| Navegar pagina   | `play('page')`    | Sidebar navigation          |
 
 ---
 
@@ -173,10 +173,10 @@ Si `useSound` se usa fuera del provider, lanza error explicito.
 
 ## Componentes que usan useSound
 
-| Componente | Sonido | Contexto |
-|------------|--------|----------|
-| `AddBusinessModal` | `success` | Al crear negocio |
-| `AddBusinessModal` | `droplet` | Al cerrar modal |
-| `DeleteBusinessModal` | `error` | Al confirmar eliminacion |
-| Notifications settings | `toggle` | Al cambiar switches |
-| Business sidebar | `page` | Al navegar entre paginas |
+| Componente             | Sonido    | Contexto                 |
+| ---------------------- | --------- | ------------------------ |
+| `AddBusinessModal`     | `success` | Al crear negocio         |
+| `AddBusinessModal`     | `droplet` | Al cerrar modal          |
+| `DeleteBusinessModal`  | `error`   | Al confirmar eliminacion |
+| Notifications settings | `toggle`  | Al cambiar switches      |
+| Business sidebar       | `page`    | Al navegar entre paginas |

@@ -1,48 +1,51 @@
-import { useTranslation } from 'react-i18next'
-import { Check } from 'lucide-react'
-import { Button } from '@orca-blitz/ui/components/ui/button'
-import type { BuiltInProvider, ProviderConfig } from './types'
+import { useTranslation } from "react-i18next";
+import { Check } from "lucide-react";
+import { Button } from "@orca-blitz/ui/components/ui/button";
+import type { BuiltInProvider, ProviderConfig } from "./types";
 
 interface ProviderCardProps {
-  provider: BuiltInProvider
-  config?: ProviderConfig
-  onConfigure: (id: string) => void
+  provider: BuiltInProvider;
+  config?: ProviderConfig;
+  onConfigure: (id: string) => void;
 }
 
 function getStatusText(provider: BuiltInProvider, config: ProviderConfig): string {
-  if (provider.id === 'opencode') {
-    return config.selectedModelZen || config.selectedModelGo || 'Configured'
+  if (provider.id === "opencode") {
+    return config.selectedModelZen || config.selectedModelGo || "Configured";
   }
-  if (provider.id === 'openai') {
-    if (config.authMethod === 'chatgpt') return config.chatgptModel || 'ChatGPT Connected'
-    return config.selectedModel || 'Configured'
+  if (provider.id === "openai") {
+    if (config.authMethod === "chatgpt") return config.chatgptModel || "ChatGPT Connected";
+    return config.selectedModel || "Configured";
   }
-  return config.selectedModel || 'Configured'
+  return config.selectedModel || "Configured";
 }
 
 function getStatusLabel(provider: BuiltInProvider, config: ProviderConfig): string | null {
-  if (provider.id === 'opencode') {
-    return config.selectedModelZen ? 'OpenCode Zen' : 'OpenCode Go'
+  if (provider.id === "opencode") {
+    return config.selectedModelZen ? "OpenCode Zen" : "OpenCode Go";
   }
-  if (provider.id === 'openai') {
-    return config.authMethod === 'chatgpt' ? 'ChatGPT Plus/Pro' : 'API Key'
+  if (provider.id === "openai") {
+    return config.authMethod === "chatgpt" ? "ChatGPT Plus/Pro" : "API Key";
   }
-  return null
+  return null;
 }
 
 export function ProviderCard({ provider, config, onConfigure }: ProviderCardProps) {
-  const { t } = useTranslation('providers')
-  const isConfigured = !!config && (
-    provider.id === 'opencode'
-      ? !!(config.apiKeyZen && config.selectedModelZen) || !!(config.apiKeyGo && config.selectedModelGo)
-      : provider.id === 'openai'
-        ? config.authMethod === 'chatgpt' ? !!config.chatgptModel : !!(config.apiKey && config.selectedModel)
-        : !!(config.apiKey && config.selectedModel)
-  )
+  const { t } = useTranslation("providers");
+  const isConfigured =
+    !!config &&
+    (provider.id === "opencode"
+      ? !!(config.apiKeyZen && config.selectedModelZen) ||
+        !!(config.apiKeyGo && config.selectedModelGo)
+      : provider.id === "openai"
+        ? config.authMethod === "chatgpt"
+          ? !!config.chatgptModel
+          : !!(config.apiKey && config.selectedModel)
+        : !!(config.apiKey && config.selectedModel));
 
-  const { Icon, IconDark, name } = provider
-  const label = config ? getStatusLabel(provider, config) : null
-  const status = config ? getStatusText(provider, config) : null
+  const { Icon, IconDark, name } = provider;
+  const label = config ? getStatusLabel(provider, config) : null;
+  const status = config ? getStatusText(provider, config) : null;
 
   return (
     <div className="flex items-center justify-between rounded-lg border border-border p-4">
@@ -69,13 +72,13 @@ export function ProviderCard({ provider, config, onConfigure }: ProviderCardProp
               )}
             </div>
           ) : (
-            <p className="text-xs text-muted-foreground">{t('notConfigured')}</p>
+            <p className="text-xs text-muted-foreground">{t("notConfigured")}</p>
           )}
         </div>
       </div>
       <Button variant="outline" size="sm" onClick={() => onConfigure(provider.id)}>
-        {isConfigured ? t('edit') : t('configure')}
+        {isConfigured ? t("edit") : t("configure")}
       </Button>
     </div>
-  )
+  );
 }

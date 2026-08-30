@@ -3,7 +3,9 @@ export function GeneralSettings() {
     <div className="space-y-6">
       <div>
         <h3 className="text-lg font-medium">General</h3>
-        <p className="text-sm text-muted-foreground">Manage your general application preferences.</p>
+        <p className="text-sm text-muted-foreground">
+          Manage your general application preferences.
+        </p>
       </div>
 
       <div className="space-y-4">
@@ -38,5 +40,5 @@ export function GeneralSettings() {
         </div>
       </div>
     </div>
-  )
+  );
 }

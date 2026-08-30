@@ -1,16 +1,16 @@
-import { ApiKeyForm } from '../api-key-form'
-import type { BuiltInProvider } from '../../types'
+import { ApiKeyForm } from "../api-key-form";
+import type { BuiltInProvider } from "../../types";
 
 interface DefaultSettingsProps {
-  provider: BuiltInProvider
-  apiKey: string
-  models: string[]
-  selectedModel: string | null
-  isFetching: boolean
-  error: string | null
-  onApiKeyChange: (key: string) => void
-  onSelectModel: (model: string) => void
-  modelListRef: React.RefObject<HTMLDivElement | null>
+  provider: BuiltInProvider;
+  apiKey: string;
+  models: string[];
+  selectedModel: string | null;
+  isFetching: boolean;
+  error: string | null;
+  onApiKeyChange: (key: string) => void;
+  onSelectModel: (model: string) => void;
+  modelListRef: React.RefObject<HTMLDivElement | null>;
 }
 
 export function DefaultSettings({
@@ -36,5 +36,5 @@ export function DefaultSettings({
       onSelectModel={onSelectModel}
       modelListRef={modelListRef}
     />
-  )
+  );
 }

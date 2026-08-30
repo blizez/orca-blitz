@@ -4,12 +4,12 @@ En **Settings → Integrations** puedes conectar orca-blitz con tus plataformas 
 
 ## Plataformas disponibles
 
-| Plataforma | Icono | Estado actual |
-|------------|-------|---------------|
-| **WhatsApp** | Icono verde de WhatsApp | Desconectado |
-| **Instagram** | Icono de Instagram | Desconectado |
-| **Gmail** | Icono de correo de Google | Desconectado |
-| **Slack** | Icono de Slack | Desconectado |
+| Plataforma    | Icono                     | Estado actual |
+| ------------- | ------------------------- | ------------- |
+| **WhatsApp**  | Icono verde de WhatsApp   | Desconectado  |
+| **Instagram** | Icono de Instagram        | Desconectado  |
+| **Gmail**     | Icono de correo de Google | Desconectado  |
+| **Slack**     | Icono de Slack            | Desconectado  |
 
 ---
 

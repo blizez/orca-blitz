@@ -51,15 +51,18 @@ Se abrira la app de orca-blitz.
 ## Solucion de problemas
 
 **La app no se abre:**
+
 - Asegurate de tener Node.js instalado
 - Revisa que no haya otro programa usando el mismo puerto
 
 **Error al instalar:**
+
 ```bash
 pnpm install --force
 ```
 
 **Error de Electron:**
+
 ```bash
 pnpm approve-builds
 ```

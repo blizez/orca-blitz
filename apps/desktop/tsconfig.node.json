@@ -11,5 +11,10 @@
     "isolatedModules": true,
     "outDir": "./out"
   },
-  "include": ["src/main/**/*", "src/preload/**/*", "electron.vite.config.ts", "electron-builder.config.ts"]
+  "include": [
+    "src/main/**/*",
+    "src/preload/**/*",
+    "electron.vite.config.ts",
+    "electron-builder.config.ts"
+  ]
 }

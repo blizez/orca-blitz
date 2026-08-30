@@ -1,1 +1,1 @@
-export { colorThemes, type ColorTheme } from './themes/registry'
+export { colorThemes, type ColorTheme } from "./themes/registry";

@@ -6,14 +6,14 @@ Desde la barra lateral, selecciona **Social Media** dentro de un negocio para ab
 
 Puedes abrir estas plataformas en la app:
 
-| Plataforma | Icono |
-|------------|-------|
-| **WhatsApp** | Verde de WhatsApp |
-| **Instagram** | Icono de Instagram |
-| **Facebook** | Icono azul de Facebook |
-| **TikTok** | Icono de TikTok |
-| **Telegram** | Icono azul de Telegram |
-| **X / Twitter** | Icono de X |
+| Plataforma      | Icono                  |
+| --------------- | ---------------------- |
+| **WhatsApp**    | Verde de WhatsApp      |
+| **Instagram**   | Icono de Instagram     |
+| **Facebook**    | Icono azul de Facebook |
+| **TikTok**      | Icono de TikTok        |
+| **Telegram**    | Icono azul de Telegram |
+| **X / Twitter** | Icono de X             |
 
 ---
 

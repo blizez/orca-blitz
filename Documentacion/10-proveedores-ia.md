@@ -4,13 +4,13 @@ En **Settings → AI Providers** configuras que inteligencia artificial usa la a
 
 ## Proveedores disponibles
 
-| Proveedor | Que es |
-|-----------|--------|
-| **OpenAI** | ChatGPT y otros modelos de OpenAI |
-| **Anthropic** | Claude, el asistente de Anthropic |
-| **Google AI** | Modelos de Google (Gemini, etc.) |
-| **DeepSeek** | Modelos de DeepSeek |
-| **Ollama** | IA que corre en tu propia computadora |
+| Proveedor     | Que es                                |
+| ------------- | ------------------------------------- |
+| **OpenAI**    | ChatGPT y otros modelos de OpenAI     |
+| **Anthropic** | Claude, el asistente de Anthropic     |
+| **Google AI** | Modelos de Google (Gemini, etc.)      |
+| **DeepSeek**  | Modelos de DeepSeek                   |
+| **Ollama**    | IA que corre en tu propia computadora |
 
 ---
 
@@ -23,6 +23,7 @@ En **Settings → AI Providers** configuras que inteligencia artificial usa la a
 5. Haz click en **Save**
 
 Cada proveedor tiene su propio formato de llave. Por ejemplo:
+
 - OpenAI empieza con `sk-...`
 - Anthropic empieza cons `sk-ant-...`
 - Google AI empieza con `AI...`

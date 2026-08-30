@@ -1490,11 +1490,13 @@ chart-1 a chart-5            → Gráficas
 Nunca colores dentro de componentes. El componente solo dice qué es, no cómo se ve.
 
 Incorrecto:
+
 ```
 <div style={{color:"#2563EB"}}>
 ```
 
 Correcto:
+
 ```
 <div className="text-primary">
 ```
@@ -3982,6 +3984,7 @@ Deploy
 Debe generar:
 
 Desktop:
+
 ```
 .exe
 .dmg
@@ -3989,12 +3992,14 @@ Desktop:
 ```
 
 Mobile:
+
 ```
 Android APK
 iOS Build
 ```
 
 Web:
+
 ```
 Static Build
 ```
@@ -4002,6 +4007,7 @@ Static Build
 ## 152. Release Channels
 
 Versiones:
+
 ```
 Nightly
 Beta
@@ -4011,6 +4017,7 @@ Stable
 ## 153. Documentation Requirement
 
 Toda nueva funcionalidad necesita:
+
 ```
 Code
 +
@@ -4026,6 +4033,7 @@ Examples
 Nuevo desarrollador:
 
 Debe poder ejecutar:
+
 ```
 clone repository
 install dependencies
@@ -4033,11 +4041,13 @@ run development
 ```
 
 Con:
+
 ```
 one command
 ```
 
 Ejemplo:
+
 ```
 npm run dev
 ```
@@ -4186,6 +4196,7 @@ orca-blitz/
 La construcción debe seguir etapas.
 
 No intentar crear todo al mismo tiempo.
+
 ```
 Phase 0
 Foundation
@@ -4205,6 +4216,7 @@ Objetivo:
 Resultado:
 
 Aplicación vacía funcionando en Desktop y Web.
+
 ```
 Phase 1
 Core Platform
@@ -4222,6 +4234,7 @@ Construir:
 Resultado:
 
 Plataforma base funcional.
+
 ```
 Phase 2
 Universal UI
@@ -4238,6 +4251,7 @@ Construir:
 Resultado:
 
 Todas las plataformas tienen la misma interfaz.
+
 ```
 Phase 3
 Automation Engine
@@ -4254,6 +4268,7 @@ Construir:
 Resultado:
 
 Primera automatización funcionando.
+
 ```
 Phase 4
 Integrations
@@ -4269,6 +4284,7 @@ Agregar:
 Resultado:
 
 Sistema conectado al mundo real.
+
 ```
 Phase 5
 AI Layer
@@ -4403,24 +4419,43 @@ La plataforma completa:
 ## 162. Final Principles
 
 #### Principle 1
+
 - Construir una plataforma, no una colección de funciones.
+
 #### Principle 2
+
 - Una sola base de código.
+
 #### Principle 3
+
 - TypeScript como lenguaje principal.
+
 #### Principle 4
+
 - La UI es un sistema compartido.
+
 #### Principle 5
+
 - La lógica empresarial nunca pertenece al cliente.
+
 #### Principle 6
+
 - Todo debe ser modular.
+
 #### Principle 7
+
 - Todo debe poder extenderse.
+
 #### Principle 8
+
 - El usuario controla sus datos.
+
 #### Principle 9
+
 - La IA es una herramienta empresarial, no solamente un chatbot.
+
 #### Principle 10
+
 - La arquitectura debe permitir crecer durante años.
 
 ---
@@ -4447,12 +4482,13 @@ La plataforma no vende. La plataforma **crea las condiciones para que la IA vend
 ### La plataforma NO asume qué IA usar
 
 El usuario puede conectar:
+
 - OpenAI
 - Anthropic
 - Modelo local
 - Cualquier proveedor a través del SDK
 
-La plataforma solo define **el contrato**: *"El cliente dijo X, responde en el contexto Y"*.
+La plataforma solo define **el contrato**: _"El cliente dijo X, responde en el contexto Y"_.
 
 ---
 
@@ -4465,7 +4501,7 @@ La plataforma no aprende sola. La plataforma **crea el mecanismo para que los da
 - **Repositorio de interacciones** — Cada conversación se guarda con resultado (conversión o no).
 - **Sistema de feedback** — Etiqueta cada interacción como éxito o fracaso.
 - **Análisis de patrones** — Detecta qué horarios, qué tipo de mensajes, qué clientes convierten.
-- **Contexto para la IA** — Cuando la IA va a responder, la plataforma le entrega: *"Los clientes como este suelen comprar cuando la respuesta incluye [X]"*.
+- **Contexto para la IA** — Cuando la IA va a responder, la plataforma le entrega: _"Los clientes como este suelen comprar cuando la respuesta incluye [X]"_.
 
 ### Qué hace la IA
 
@@ -4491,7 +4527,7 @@ La plataforma no sugiere campañas. La plataforma **monitorea el calendario y lo
 
 ### Qué hace la IA
 
-- Recibe el evento: *"Halloween en 2 semanas, este negocio vende [X]"*.
+- Recibe el evento: _"Halloween en 2 semanas, este negocio vende [X]"_.
 - Genera la sugerencia concreta.
 - La plataforma la entrega al usuario.
 
@@ -4526,7 +4562,7 @@ La plataforma no genera reportes. La plataforma **recopila los datos y expone lo
 
 ### Qué hace la IA (opcionalmente)
 
-- Puede narrar los datos: *"Las ventas subieron 15% porque..."*
+- Puede narrar los datos: _"Las ventas subieron 15% porque..."_
 - Puede sugerir acciones basadas en los números.
 
 ### El usuario también puede
@@ -4563,6 +4599,7 @@ La plataforma es **100% gratis**. No es una estrategia de marketing, es el model
 ### Sostenibilidad
 
 El modelo no depende de cobrar por funcionalidades. La sostenibilidad puede venir de:
+
 - Servicios de soporte.
 - Hosting administrado opcional.
 - Marketplace de plugins (comunidad crea, plataforma distribuye).
@@ -4851,14 +4888,14 @@ El store se compone de slices especializados. Cada feature tiene su propio slice
 
 ### Slices
 
-| Slice | Responsabilidad |
-|---|---|
-| ui | Sidebar, modales, filtros, sorting |
-| customers | Clientes, leads, deals |
-| workflows | Automatizaciones, ejecuciones |
-| conversations | Chat con clientes, historial |
-| integrations | Estado de integraciones externas |
-| settings | Preferencias del usuario |
+| Slice         | Responsabilidad                    |
+| ------------- | ---------------------------------- |
+| ui            | Sidebar, modales, filtros, sorting |
+| customers     | Clientes, leads, deals             |
+| workflows     | Automatizaciones, ejecuciones      |
+| conversations | Chat con clientes, historial       |
+| integrations  | Estado de integraciones externas   |
+| settings      | Preferencias del usuario           |
 
 ### Cross-Slice Cascades
 

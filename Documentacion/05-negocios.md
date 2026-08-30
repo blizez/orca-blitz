@@ -30,6 +30,7 @@
 ### Paso 4: Canales de comunicacion
 
 Selecciona donde hablas con tus clientes:
+
 - WhatsApp
 - Instagram
 - Facebook
@@ -44,6 +45,7 @@ Puedes elegir varios.
 ### Paso 5: Que quieres lograr
 
 Selecciona tus objetivos (puedes elegir varios):
+
 - Aumentar ventas
 - Mejorar atencion al cliente
 - Automatizar procesos
@@ -77,12 +79,15 @@ Para configurar un negocio en detalle, consulta la guia de [Configuracion del ne
 4. Veras estas opciones:
 
 ### Business Settings
+
 Configuracion completa del negocio. Puedes editar nombre, descripcion, productos, competidores, ingresos y mas.
 
 ### Change Icon
+
 Cambiar el icono del negocio (proximamente).
 
 ### Delete Business
+
 Eliminar el negocio. Se te pedira que escribas el nombre para confirmar.
 
 ---

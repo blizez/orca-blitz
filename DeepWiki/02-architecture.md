@@ -163,6 +163,7 @@ function pathAliasPlugin(): Plugin {
 ```
 
 **Flujo:**
+
 1. `resolveId` intercepta `@/` y `@orca-blitz/ui/` durante resolución
 2. `load` reescribe imports internos de `packages/ui/` — cuando un archivo en `ui/src/` importa `@/lib/utils`, se reemplaza con la ruta absoluta real
 

@@ -15,12 +15,12 @@ Ve a **Settings → Notifications**. Ahi encontraras:
 
 La app usa la libreria cuelume con **14 sonidos** disponibles:
 
-| Sonido | Cuando se reproduce |
-|--------|---------------------|
-| **toggle** | Cuando cambias un interruptor (on/off) |
-| **success** | Cuando creas un negocio |
-| **error** | Cuando eliminas un negocio |
-| **modal close** | Cuando cierras una ventana emergente |
+| Sonido          | Cuando se reproduce                    |
+| --------------- | -------------------------------------- |
+| **toggle**      | Cuando cambias un interruptor (on/off) |
+| **success**     | Cuando creas un negocio                |
+| **error**       | Cuando eliminas un negocio             |
+| **modal close** | Cuando cierras una ventana emergente   |
 
 ---
 

@@ -17,6 +17,7 @@ En la parte superior hay un cuadro de busqueda. Escribe lo que buscas y se filtr
 Aqui puedes cambiar como se ve la app:
 
 **Theme (Tema):**
+
 - **System** — Sigue el tema de tu computadora
 - **Dark** — Todo oscuro
 - **Light** — Todo claro
@@ -25,16 +26,19 @@ Aqui puedes cambiar como se ve la app:
 Haz click en el boton `+` para elegir colores diferentes para la app.
 
 **Language (Idioma):**
+
 - System
 - English
 - Espanol
 
 ### Notifications (Notificaciones)
+
 - **Desktop Notifications** — Avisos en tu computadora. Activalo o desactivalo con el interruptor.
 - **Sound** — Sonidos de interaccion. Tiene su interruptor para activar o desactivar.
 - **Volume** — Controla el volumen de los sonidos con una barra deslizante. Aparece cuando el sonido esta activado.
 
 Los sonidos se reproducen cuando:
+
 - Cambias un interruptor
 - Creas un negocio (sonido de exito)
 - Eliminas un negocio (sonido de error)
@@ -43,7 +47,9 @@ Los sonidos se reproducen cuando:
 - **Email Digest** — Resumen por correo electronico. Desactivado por defecto.
 
 ### Shortcuts (Atajos)
+
 Muestra los atajos de teclado:
+
 - `Ctrl+N` — Crear nuevo negocio
 - `Ctrl+I` — Importar negocio
 - `Ctrl+B` — Abrir/cerrar barra lateral
@@ -51,6 +57,7 @@ Muestra los atajos de teclado:
 - `Ctrl+Q` — Cerrar app
 
 ### Statistics & Usage (Estadisticas)
+
 Muestra cuantas veces has usado la app este mes.
 
 ---
@@ -66,6 +73,7 @@ Aqui gestionas como cobras. Para mas detalles, consulta la guia de [Metodos de p
 ## Connect (Conectar)
 
 ### Integrations (Integraciones)
+
 Aqui conectas la app con otros servicios. Cada uno tiene su icono oficial:
 
 - **WhatsApp** — Icono verde de WhatsApp
@@ -76,6 +84,7 @@ Aqui conectas la app con otros servicios. Cada uno tiene su icono oficial:
 Cada servicio muestra si esta conectado o no.
 
 ### AI Providers (Proveedores de IA)
+
 Aqui configuras que inteligencia artificial usa la app. Veras una lista de proveedores con sus iconos:
 
 - **OpenAI** — ChatGPT y otros modelos de OpenAI

@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import { useTranslation } from 'react-i18next'
+import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
   CreditCard,
   Puzzle,
@@ -12,84 +12,91 @@ import {
   Keyboard,
   BarChart3,
   Store,
-} from 'lucide-react'
-import { cn } from '@/lib/utils'
-import { Input } from '@orca-blitz/ui/components/ui/input'
-import type { Business } from '@orca-blitz/shared'
+} from "lucide-react";
+import { cn } from "@/lib/utils";
+import { Input } from "@orca-blitz/ui/components/ui/input";
+import type { Business } from "@orca-blitz/shared";
 
 interface SettingsSidebarProps {
-  activeTab: string
-  onTabChange: (tab: string) => void
-  onBack: () => void
-  businessId?: string | null
-  businesses?: Business[]
-  onBusinessSelect?: (business: Business) => void
+  activeTab: string;
+  onTabChange: (tab: string) => void;
+  onBack: () => void;
+  businessId?: string | null;
+  businesses?: Business[];
+  onBusinessSelect?: (business: Business) => void;
 }
 
 interface SidebarItem {
-  id: string
-  label: string
-  icon: typeof Store
-  business?: Business
+  id: string;
+  label: string;
+  icon: typeof Store;
+  business?: Business;
 }
 
-export function SettingsSidebar({ activeTab, onTabChange, onBack, businessId, businesses = [], onBusinessSelect }: SettingsSidebarProps) {
-  const { t } = useTranslation('settings')
-  const [search, setSearch] = useState('')
+export function SettingsSidebar({
+  activeTab,
+  onTabChange,
+  onBack,
+  businessId,
+  businesses = [],
+  onBusinessSelect,
+}: SettingsSidebarProps) {
+  const { t } = useTranslation("settings");
+  const [search, setSearch] = useState("");
 
   const settingsGroups = [
     {
-      label: t('sidebar.sections.interface'),
+      label: t("sidebar.sections.interface"),
       items: [
-        { id: 'appearance', label: t('sidebar.items.appearance'), icon: Palette },
-        { id: 'notifications', label: t('sidebar.items.notifications'), icon: Bell },
-        { id: 'shortcuts', label: t('sidebar.items.shortcuts'), icon: Keyboard },
-        { id: 'statistics', label: t('sidebar.items.statistics'), icon: BarChart3 },
+        { id: "appearance", label: t("sidebar.items.appearance"), icon: Palette },
+        { id: "notifications", label: t("sidebar.items.notifications"), icon: Bell },
+        { id: "shortcuts", label: t("sidebar.items.shortcuts"), icon: Keyboard },
+        { id: "statistics", label: t("sidebar.items.statistics"), icon: BarChart3 },
       ],
     },
     {
-      label: t('sidebar.sections.billing'),
+      label: t("sidebar.sections.billing"),
+      items: [{ id: "billing", label: t("sidebar.items.paymentMethods"), icon: CreditCard }],
+    },
+    {
+      label: t("sidebar.sections.connect"),
       items: [
-        { id: 'billing', label: t('sidebar.items.paymentMethods'), icon: CreditCard },
+        { id: "integrations", label: t("sidebar.items.integrations"), icon: Puzzle },
+        { id: "ai", label: t("sidebar.items.aiProviders"), icon: BrainCircuit },
       ],
     },
     {
-      label: t('sidebar.sections.connect'),
-      items: [
-        { id: 'integrations', label: t('sidebar.items.integrations'), icon: Puzzle },
-        { id: 'ai', label: t('sidebar.items.aiProviders'), icon: BrainCircuit },
-      ],
+      label: t("sidebar.sections.security"),
+      items: [{ id: "security", label: t("sidebar.items.security"), icon: Shield }],
     },
-    {
-      label: t('sidebar.sections.security'),
-      items: [
-        { id: 'security', label: t('sidebar.items.security'), icon: Shield },
-      ],
-    },
-  ]
+  ];
 
-  const businessGroup: Array<{ label: string; items: SidebarItem[] }> = businesses.length > 0
-    ? [{
-        label: 'Businesses',
-        items: businesses.map((biz) => ({
-          id: businessId === biz.id ? 'business' : `biz-${biz.id}`,
-          label: biz.name,
-          icon: Store,
-          business: biz,
-        })),
-      }]
-    : []
+  const businessGroup: Array<{ label: string; items: SidebarItem[] }> =
+    businesses.length > 0
+      ? [
+          {
+            label: "Businesses",
+            items: businesses.map((biz) => ({
+              id: businessId === biz.id ? "business" : `biz-${biz.id}`,
+              label: biz.name,
+              icon: Store,
+              business: biz,
+            })),
+          },
+        ]
+      : [];
 
-  const allGroups: Array<{ label: string; items: SidebarItem[] }> = [...settingsGroups, ...businessGroup]
+  const allGroups: Array<{ label: string; items: SidebarItem[] }> = [
+    ...settingsGroups,
+    ...businessGroup,
+  ];
 
   const filtered = allGroups
     .map((group) => ({
       ...group,
-      items: group.items.filter((item) =>
-        item.label.toLowerCase().includes(search.toLowerCase())
-      ),
+      items: group.items.filter((item) => item.label.toLowerCase().includes(search.toLowerCase())),
     }))
-    .filter((group) => group.items.length > 0)
+    .filter((group) => group.items.length > 0);
 
   return (
     <aside className="flex h-full w-[220px] flex-col border-r border-sidebar-border bg-sidebar text-sidebar-foreground">
@@ -98,7 +105,7 @@ export function SettingsSidebar({ activeTab, onTabChange, onBack, businessId, bu
         className="flex items-center gap-2 border-b border-sidebar-border px-3 py-2 hover:bg-sidebar-accent/50 transition-colors"
       >
         <ArrowLeft className="size-4 text-muted-foreground" />
-        <span className="text-sm font-medium">{t('sidebar.backToApp')}</span>
+        <span className="text-sm font-medium">{t("sidebar.backToApp")}</span>
       </button>
 
       <div className="px-3 py-2">
@@ -106,7 +113,7 @@ export function SettingsSidebar({ activeTab, onTabChange, onBack, businessId, bu
           <Search className="absolute left-2 top-1/2 size-3.5 -translate-y-1/2 text-sidebar-foreground/60" />
           <Input
             type="text"
-            placeholder={t('sidebar.search')}
+            placeholder={t("sidebar.search")}
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             className="h-8 pl-7 text-xs"
@@ -125,17 +132,17 @@ export function SettingsSidebar({ activeTab, onTabChange, onBack, businessId, bu
                 <li key={item.id}>
                   <button
                     onClick={() => {
-                      if ('business' in item && item.business && onBusinessSelect) {
-                        onBusinessSelect(item.business as Business)
+                      if ("business" in item && item.business && onBusinessSelect) {
+                        onBusinessSelect(item.business as Business);
                       } else {
-                        onTabChange(item.id)
+                        onTabChange(item.id);
                       }
                     }}
                     className={cn(
-                      'flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-sm transition-colors',
+                      "flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-sm transition-colors",
                       activeTab === item.id
-                        ? 'bg-primary text-primary-foreground font-semibold'
-                        : 'text-sidebar-foreground/60 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground'
+                        ? "bg-primary text-primary-foreground font-semibold"
+                        : "text-sidebar-foreground/60 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground",
                     )}
                   >
                     <item.icon className="size-4 shrink-0" />
@@ -153,5 +160,5 @@ export function SettingsSidebar({ activeTab, onTabChange, onBack, businessId, bu
         )}
       </nav>
     </aside>
-  )
+  );
 }

@@ -10,17 +10,17 @@ orca-blitz es una plataforma empresarial open source para automatizar y gestiona
 
 ## Stack
 
-| Capa | Tecnologia | Uso |
-|------|-----------|-----|
-| Desktop | Electron ^35.0.0 | Shell nativo cross-platform |
-| UI | React ^19.2.8 | Componentes |
-| Types | TypeScript ^5.7.0 | Type safety estricto |
-| CSS | Tailwind CSS ^4.1.11 | Utility-first |
-| Primitives | Base UI ^1.7.0 | Componentes headless |
-| Build | electron-vite ^3.1.0 | Dev server + HMR |
-| Pkg Manager | pnpm ^11.21.0 | Monorepo workspaces |
-| Icons | Lucide React ^0.525.0 | Iconografia |
-| Font | Geist Variable ^5.3.0 | Variable font |
+| Capa        | Tecnologia            | Uso                         |
+| ----------- | --------------------- | --------------------------- |
+| Desktop     | Electron ^35.0.0      | Shell nativo cross-platform |
+| UI          | React ^19.2.8         | Componentes                 |
+| Types       | TypeScript ^5.7.0     | Type safety estricto        |
+| CSS         | Tailwind CSS ^4.1.11  | Utility-first               |
+| Primitives  | Base UI ^1.7.0        | Componentes headless        |
+| Build       | electron-vite ^3.1.0  | Dev server + HMR            |
+| Pkg Manager | pnpm ^11.21.0         | Monorepo workspaces         |
+| Icons       | Lucide React ^0.525.0 | Iconografia                 |
+| Font        | Geist Variable ^5.3.0 | Variable font               |
 
 ---
 
@@ -65,13 +65,13 @@ UI Components (packages/ui/src/components/ui/)
 
 ## Archivos Clave
 
-| Archivo | Descripcion |
-|---------|-------------|
-| `src/main/index.ts` | Main: BrowserWindow, IPC, Menu |
-| `src/preload/index.ts` | Preload: window.api namespaces |
-| `src/renderer/App.tsx` | App shell: routing + layout |
-| `src/renderer/main.tsx` | Entry: ThemeProvider + TooltipProvider |
-| `src/renderer/components/layout/titlebar.tsx` | Titlebar custom |
-| `src/renderer/components/layout/app-sidebar.tsx` | Sidebar + CRUD negocios |
-| `src/renderer/lib/theme-context.tsx` | Theme switching |
-| `packages/ui/src/globals.css` | Design tokens (oklch) |
+| Archivo                                          | Descripcion                            |
+| ------------------------------------------------ | -------------------------------------- |
+| `src/main/index.ts`                              | Main: BrowserWindow, IPC, Menu         |
+| `src/preload/index.ts`                           | Preload: window.api namespaces         |
+| `src/renderer/App.tsx`                           | App shell: routing + layout            |
+| `src/renderer/main.tsx`                          | Entry: ThemeProvider + TooltipProvider |
+| `src/renderer/components/layout/titlebar.tsx`    | Titlebar custom                        |
+| `src/renderer/components/layout/app-sidebar.tsx` | Sidebar + CRUD negocios                |
+| `src/renderer/lib/theme-context.tsx`             | Theme switching                        |
+| `packages/ui/src/globals.css`                    | Design tokens (oklch)                  |

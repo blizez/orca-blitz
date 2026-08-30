@@ -8,31 +8,31 @@ Documentacion tecnica del proyecto orca-blitz. Basada en el codigo implementado 
 
 ## Navegacion
 
-| # | Documento | Descripcion |
-|---|-----------|-------------|
-| 01 | [Overview](01-overview.md) | Que es orca-blitz, vision, stack tecnologico |
-| 02 | [Architecture](02-architecture.md) | Arquitectura Electron de 3 procesos |
-| 03 | [Monorepo](03-monorepo.md) | Estructura del repositorio y reglas de packages |
-| 04 | [Design System](04-design-system.md) | packages/ui, 62 componentes, tokens CSS |
-| 05 | [State Management](05-state-management.md) | ThemeContext, localStorage, estado |
-| 06 | [Components](06-components.md) | Arquitectura de componentes, Base UI primitives |
-| 07 | [Roadmap](07-roadmap.md) | Que falta por implementar |
+| #   | Documento                                  | Descripcion                                     |
+| --- | ------------------------------------------ | ----------------------------------------------- |
+| 01  | [Overview](01-overview.md)                 | Que es orca-blitz, vision, stack tecnologico    |
+| 02  | [Architecture](02-architecture.md)         | Arquitectura Electron de 3 procesos             |
+| 03  | [Monorepo](03-monorepo.md)                 | Estructura del repositorio y reglas de packages |
+| 04  | [Design System](04-design-system.md)       | packages/ui, 62 componentes, tokens CSS         |
+| 05  | [State Management](05-state-management.md) | ThemeContext, localStorage, estado              |
+| 06  | [Components](06-components.md)             | Arquitectura de componentes, Base UI primitives |
+| 07  | [Roadmap](07-roadmap.md)                   | Que falta por implementar                       |
 
 ---
 
 ## Stack Tecnologico
 
-| Capa | Tecnologia | Estado |
-|------|-----------|--------|
-| Desktop Shell | Electron | Implementado |
-| Frontend UI | React + TypeScript | Implementado |
-| Styling | Tailwind CSS v4 | Implementado |
-| UI Primitives | Base UI (`@base-ui/react`) | Implementado |
-| State | React Context + localStorage | Implementado |
-| Build Tool | electron-vite | Implementado |
-| Package Manager | pnpm | Implementado |
-| Icons | Lucide React | Implementado |
-| Font | Geist Variable | Implementado |
+| Capa            | Tecnologia                   | Estado       |
+| --------------- | ---------------------------- | ------------ |
+| Desktop Shell   | Electron                     | Implementado |
+| Frontend UI     | React + TypeScript           | Implementado |
+| Styling         | Tailwind CSS v4              | Implementado |
+| UI Primitives   | Base UI (`@base-ui/react`)   | Implementado |
+| State           | React Context + localStorage | Implementado |
+| Build Tool      | electron-vite                | Implementado |
+| Package Manager | pnpm                         | Implementado |
+| Icons           | Lucide React                 | Implementado |
+| Font            | Geist Variable               | Implementado |
 
 ---
 
@@ -68,4 +68,3 @@ Scaffolding:   ~70% (directorios vacios definidos en AGENTS.md)
 - `server/` — backend
 - `apps/web/` — app web
 - `apps/mobile/` — app mobile
-

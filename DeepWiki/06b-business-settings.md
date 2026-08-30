@@ -94,14 +94,14 @@ Textarea cambia `readOnly` y `disabled` segun estado:
 
 ## Secciones
 
-| Seccion | Campos | Componentes |
-|---------|--------|-------------|
-| Header | name (inline edit), delete button | Input, Button, Trash2 |
-| About this business | type (Select), industry (Input), teamSize (Select), description (Textarea inline) | Select, Input, Textarea |
-| Market | products (Input), audience (Input), website (Input), competitors (Textarea), usp (Textarea), painPoints (Textarea) | Input, Textarea |
-| Financial | monthlyRevenue (Select), yearEstablished (Input) | Select, Input |
-| Channels | channels[] (Badge read-only) | Badge |
-| Goals | goals[] (Badge read-only) | Badge |
+| Seccion             | Campos                                                                                                             | Componentes             |
+| ------------------- | ------------------------------------------------------------------------------------------------------------------ | ----------------------- |
+| Header              | name (inline edit), delete button                                                                                  | Input, Button, Trash2   |
+| About this business | type (Select), industry (Input), teamSize (Select), description (Textarea inline)                                  | Select, Input, Textarea |
+| Market              | products (Input), audience (Input), website (Input), competitors (Textarea), usp (Textarea), painPoints (Textarea) | Input, Textarea         |
+| Financial           | monthlyRevenue (Select), yearEstablished (Input)                                                                   | Select, Input           |
+| Channels            | channels[] (Badge read-only)                                                                                       | Badge                   |
+| Goals               | goals[] (Badge read-only)                                                                                          | Badge                   |
 
 ---
 
@@ -162,14 +162,14 @@ Requiere escribir el nombre exacto del negocio para confirmar.
 
 ## Componentes shadcn usados
 
-| Componente | Paquete | Uso |
-|------------|---------|-----|
-| `Field`, `FieldLabel`, `FieldContent` | `@orca-blitz/ui` | Layout de formulario |
-| `Input` | `@orca-blitz/ui` | Campos de texto |
-| `Textarea` | `@orca-blitz/ui` | Descripcion, competidores, USP, pain points |
-| `Select`, `SelectTrigger`, `SelectValue`, `SelectContent`, `SelectItem` | `@orca-blitz/ui` | Dropdowns (type, teamSize, revenue) |
-| `Badge` | `@orca-blitz/ui` | Canales y goals (read-only) |
-| `Button` | `@orca-blitz/ui` | Acciones (save, cancel, delete) |
+| Componente                                                              | Paquete          | Uso                                         |
+| ----------------------------------------------------------------------- | ---------------- | ------------------------------------------- |
+| `Field`, `FieldLabel`, `FieldContent`                                   | `@orca-blitz/ui` | Layout de formulario                        |
+| `Input`                                                                 | `@orca-blitz/ui` | Campos de texto                             |
+| `Textarea`                                                              | `@orca-blitz/ui` | Descripcion, competidores, USP, pain points |
+| `Select`, `SelectTrigger`, `SelectValue`, `SelectContent`, `SelectItem` | `@orca-blitz/ui` | Dropdowns (type, teamSize, revenue)         |
+| `Badge`                                                                 | `@orca-blitz/ui` | Canales y goals (read-only)                 |
+| `Button`                                                                | `@orca-blitz/ui` | Acciones (save, cancel, delete)             |
 
 ---
 

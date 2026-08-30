@@ -25,12 +25,12 @@ Son planes de marketing con un nombre, canal, periodo de tiempo y descripcion. C
 
 ## Estados de una campana
 
-| Estado | Que significa | Color |
-|--------|---------------|-------|
-| **Draft** | Borrador, aun no empieza | Gris |
-| **Active** | En curso, ya empezo | Verde |
-| **Paused** | Pausada temporalmente | Amarillo |
-| **Completed** | Finalizada | Azul |
+| Estado        | Que significa            | Color    |
+| ------------- | ------------------------ | -------- |
+| **Draft**     | Borrador, aun no empieza | Gris     |
+| **Active**    | En curso, ya empezo      | Verde    |
+| **Paused**    | Pausada temporalmente    | Amarillo |
+| **Completed** | Finalizada               | Azul     |
 
 ---
 

@@ -1,5 +1,5 @@
-import { useTranslation } from 'react-i18next'
-import { Button } from '@orca-blitz/ui/components/ui/button'
+import { useTranslation } from "react-i18next";
+import { Button } from "@orca-blitz/ui/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -8,22 +8,22 @@ import {
   DialogDescription,
   DialogFooter,
   DialogClose,
-} from '@orca-blitz/ui/components/ui/dialog'
-import { OpenCodeSettings } from './providers/opencode'
-import { OpenAISettings } from './providers/openai'
-import { DefaultSettings } from './providers/default'
-import type { BuiltInProvider, DialogState } from '../types'
+} from "@orca-blitz/ui/components/ui/dialog";
+import { OpenCodeSettings } from "./providers/opencode";
+import { OpenAISettings } from "./providers/openai";
+import { DefaultSettings } from "./providers/default";
+import type { BuiltInProvider, DialogState } from "../types";
 
 interface ProviderDialogProps {
-  provider: BuiltInProvider | undefined
-  state: DialogState
-  onClose: () => void
-  onSave: () => void
-  onApiKeyChange: (key: string) => void
-  onSelectModel: (model: string) => void
-  onTabChange: (tab: string) => void
-  onStartAuth: () => void
-  modelListRef: React.RefObject<HTMLDivElement | null>
+  provider: BuiltInProvider | undefined;
+  state: DialogState;
+  onClose: () => void;
+  onSave: () => void;
+  onApiKeyChange: (key: string) => void;
+  onSelectModel: (model: string) => void;
+  onTabChange: (tab: string) => void;
+  onStartAuth: () => void;
+  modelListRef: React.RefObject<HTMLDivElement | null>;
 }
 
 export function ProviderDialog({
@@ -37,23 +37,23 @@ export function ProviderDialog({
   onStartAuth,
   modelListRef,
 }: ProviderDialogProps) {
-  const { t } = useTranslation('providers')
-  if (!provider) return null
+  const { t } = useTranslation("providers");
+  if (!provider) return null;
 
   return (
     <Dialog open={state.open} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-lg max-h-[80vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>{t('dialog.configure', { name: provider.name })}</DialogTitle>
+          <DialogTitle>{t("dialog.configure", { name: provider.name })}</DialogTitle>
           <DialogDescription>
-            {provider.id === 'openai' && state.activeTab === 'chatgpt'
-              ? t('dialog.connectChatgpt')
-              : t('dialog.enterApiKey')}
+            {provider.id === "openai" && state.activeTab === "chatgpt"
+              ? t("dialog.connectChatgpt")
+              : t("dialog.enterApiKey")}
           </DialogDescription>
         </DialogHeader>
 
         <div className="space-y-4">
-          {provider.id === 'opencode' && (
+          {provider.id === "opencode" && (
             <OpenCodeSettings
               provider={provider}
               activeTab={state.activeTab}
@@ -69,7 +69,7 @@ export function ProviderDialog({
             />
           )}
 
-          {provider.id === 'openai' && (
+          {provider.id === "openai" && (
             <OpenAISettings
               provider={provider}
               activeTab={state.activeTab}
@@ -88,7 +88,7 @@ export function ProviderDialog({
             />
           )}
 
-          {provider.id !== 'opencode' && provider.id !== 'openai' && (
+          {provider.id !== "opencode" && provider.id !== "openai" && (
             <DefaultSettings
               provider={provider}
               apiKey={state.dialogApiKey}
@@ -105,11 +105,11 @@ export function ProviderDialog({
 
         <DialogFooter>
           <DialogClose render={<Button variant="outline" />}>
-            {t('common:actions.cancel')}
+            {t("common:actions.cancel")}
           </DialogClose>
-          <Button onClick={onSave}>{t('common:actions.save')}</Button>
+          <Button onClick={onSave}>{t("common:actions.save")}</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
-  )
+  );
 }

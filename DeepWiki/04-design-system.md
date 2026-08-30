@@ -32,12 +32,12 @@ export { WhatsApp };
 
 ### Iconos disponibles
 
-| Icono | Archivo | Uso |
-|-------|---------|-----|
-| `WhatsApp` | `whatsapp.tsx` | Integracion mensajeria |
+| Icono       | Archivo         | Uso                        |
+| ----------- | --------------- | -------------------------- |
+| `WhatsApp`  | `whatsapp.tsx`  | Integracion mensajeria     |
 | `Instagram` | `instagram.tsx` | Integracion redes sociales |
-| `Gmail` | `gmail.tsx` | Integracion correo |
-| `Slack` | `slack.tsx` | Integracion equipo |
+| `Gmail`     | `gmail.tsx`     | Integracion correo         |
+| `Slack`     | `slack.tsx`     | Integracion equipo         |
 
 ### Export centralizado
 
@@ -132,27 +132,35 @@ Class-based. Agregar `.dark` en `<html>` activa dark mode.
 ## 62 Componentes
 
 ### Forms
+
 `button` `input` `textarea` `select` `native-select` `checkbox` `radio-group` `switch` `slider` `combobox` `input-otp` `input-group` `field`
 
 ### Layout
+
 `sidebar` `tabs` `resizable` `separator` `scroll-area` `collapsible`
 
 ### Overlays
+
 `dialog` `sheet` `drawer` `popover` `hover-card` `tooltip` `context-menu` `dropdown-menu` `menubar`
 
 ### Data
+
 `table` `card` `badge` `avatar` `skeleton` `progress` `chart`
 
 ### Feedback
+
 `toast` `alert` `alert-dialog` `spinner`
 
 ### Navigation
+
 `breadcrumb` `pagination` `navigation-menu` `command`
 
 ### Chat
+
 `message` `message-scroller` `bubble` `attachment`
 
 ### Specialized
+
 `accordion` `carousel` `calendar` `questionnaire` `item` `marker` `empty` `direction` `kbd` `label` `toggle` `toggle-group` `aspect-ratio` `button-group` `logo`
 
 ---
@@ -202,6 +210,7 @@ function Component({ className, ...props }) {
 ```
 
 **Patron:**
+
 - Solo un metodo expandido a la vez (`expandedId: string | null`)
 - Metodos default (PayPal, Binance) no se pueden eliminar
 - QR upload: `<input type="file" accept="image/*">` oculto + `<label>` estilizado
@@ -233,6 +242,7 @@ function Component({ className, ...props }) {
 ```
 
 **Componentes shadcn usados:**
+
 - `Field`, `FieldLabel`, `FieldContent` — layout de formulario
 - `Input`, `Textarea` — campos editables
 - `Select`, `SelectTrigger`, `SelectValue`, `SelectContent`, `SelectItem` — dropdowns

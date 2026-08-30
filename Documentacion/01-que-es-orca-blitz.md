@@ -14,7 +14,7 @@ orca-blitz es tu plataforma para gestionar y automatizar tu negocio.
 
 ## Para que sirve
 
- Imagina tener todo lo de tu negocio en una sola pantalla:
+Imagina tener todo lo de tu negocio en una sola pantalla:
 
 - Tus clientes
 - Tus ventas

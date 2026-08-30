@@ -2,12 +2,12 @@
 
 ## Estado Actual
 
-| Mecanismo | Uso | Persistencia |
-|-----------|-----|-------------|
-| React Context | Theme (light/dark/system) | localStorage |
-| useState + useEffect | Negocios | localStorage |
-| useState | Titular maximizado | IPC events |
-| useState | activePage, sidebarOpen | En memoria |
+| Mecanismo            | Uso                       | Persistencia |
+| -------------------- | ------------------------- | ------------ |
+| React Context        | Theme (light/dark/system) | localStorage |
+| useState + useEffect | Negocios                  | localStorage |
+| useState             | Titular maximizado        | IPC events   |
+| useState             | activePage, sidebarOpen   | En memoria   |
 
 No hay Zustand, TanStack Query, ni otro state manager.
 

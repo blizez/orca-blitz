@@ -67,12 +67,12 @@ const statusConfig: Record<Campaign['status'], { label: string; dot: string }> =
 
 ### Color coding
 
-| Status | Dot color | Text color |
-|--------|-----------|------------|
-| Draft | `bg-muted-foreground/40` | `text-muted-foreground` |
-| Scheduled / Paused | `bg-yellow-500` | `text-yellow-500` |
-| Published / Active | `bg-green-500` | `text-green-500` |
-| Completed | `bg-blue-500` | `text-blue-500` |
+| Status             | Dot color                | Text color              |
+| ------------------ | ------------------------ | ----------------------- |
+| Draft              | `bg-muted-foreground/40` | `text-muted-foreground` |
+| Scheduled / Paused | `bg-yellow-500`          | `text-yellow-500`       |
+| Published / Active | `bg-green-500`           | `text-green-500`        |
+| Completed          | `bg-blue-500`            | `text-blue-500`         |
 
 ---
 

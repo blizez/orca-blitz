@@ -24,11 +24,11 @@ Es un lugar donde puedes crear, ver y eliminar publicaciones para tus canales (W
 
 ## Estados de una publicacion
 
-| Estado | Que significa | Color |
-|--------|---------------|-------|
-| **Draft** | Borrador, aun no listo | Gris |
+| Estado        | Que significa            | Color    |
+| ------------- | ------------------------ | -------- |
+| **Draft**     | Borrador, aun no listo   | Gris     |
 | **Scheduled** | Programado para publicar | Amarillo |
-| **Published** | Ya fue publicado | Verde |
+| **Published** | Ya fue publicado         | Verde    |
 
 ---
 

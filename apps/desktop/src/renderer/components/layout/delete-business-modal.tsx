@@ -1,33 +1,38 @@
-import { useState } from 'react'
-import { Button } from '@orca-blitz/ui/components/ui/button'
-import { useSound } from '../../lib/sound-context'
+import { useState } from "react";
+import { Button } from "@orca-blitz/ui/components/ui/button";
+import { useSound } from "../../lib/sound-context";
 
 interface DeleteBusinessModalProps {
-  open: boolean
-  businessName: string
-  onClose: () => void
-  onConfirm: () => void
+  open: boolean;
+  businessName: string;
+  onClose: () => void;
+  onConfirm: () => void;
 }
 
-export function DeleteBusinessModal({ open, businessName, onClose, onConfirm }: DeleteBusinessModalProps) {
-  const { play } = useSound()
-  const [input, setInput] = useState('')
+export function DeleteBusinessModal({
+  open,
+  businessName,
+  onClose,
+  onConfirm,
+}: DeleteBusinessModalProps) {
+  const { play } = useSound();
+  const [input, setInput] = useState("");
 
-  if (!open) return null
+  if (!open) return null;
 
-  const canDelete = input === businessName
+  const canDelete = input === businessName;
 
   const handleConfirm = () => {
-    if (!canDelete) return
-    onConfirm()
-    setInput('')
-    onClose()
-  }
+    if (!canDelete) return;
+    onConfirm();
+    setInput("");
+    onClose();
+  };
 
   const handleClose = () => {
-    setInput('')
-    onClose()
-  }
+    setInput("");
+    onClose();
+  };
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
@@ -36,7 +41,9 @@ export function DeleteBusinessModal({ open, businessName, onClose, onConfirm }: 
         <div className="mb-4">
           <h2 className="text-lg font-semibold">Delete Business</h2>
           <p className="text-sm text-muted-foreground mt-1">
-            Are you sure you want to delete <span className="font-medium text-foreground">{businessName}</span>? This action cannot be undone.
+            Are you sure you want to delete{" "}
+            <span className="font-medium text-foreground">{businessName}</span>? This action cannot
+            be undone.
           </p>
         </div>
 
@@ -59,7 +66,10 @@ export function DeleteBusinessModal({ open, businessName, onClose, onConfirm }: 
           </Button>
           <Button
             variant="destructive"
-            onClick={() => { handleConfirm(); play('error'); }}
+            onClick={() => {
+              handleConfirm();
+              play("error");
+            }}
             disabled={!canDelete}
           >
             Delete
@@ -67,5 +77,5 @@ export function DeleteBusinessModal({ open, businessName, onClose, onConfirm }: 
         </div>
       </div>
     </div>
-  )
+  );
 }

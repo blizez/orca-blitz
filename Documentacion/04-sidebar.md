@@ -60,6 +60,7 @@ Este boton esta junto a Settings. Muestra un menu con opciones de ayuda, como en
 ### Menu de contexto
 
 Cuando pasas el mouse sobre un negocio, aparecen tres puntos `...` que abren un menu con opciones:
+
 - **Business Settings** — Configuracion completa del negocio
 - **Change Icon** — Cambiar el icono del negocio (proximamente)
 - **Delete Business** — Eliminar el negocio
