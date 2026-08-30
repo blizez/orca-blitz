@@ -371,7 +371,8 @@ export function ElementInspector() {
           style={{
             position: "fixed",
             bottom: 20,
-            left: 20,
+            left: "50%",
+            transform: "translateX(-50%)",
             fontSize: "12px",
             fontFamily: "ui-monospace, monospace",
             padding: "8px 12px",
