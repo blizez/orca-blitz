@@ -22,6 +22,7 @@
     "hooks": "@/hooks"
   },
   "registries": {
-    "@svgl": "https://svgl.app/r/{name}.json"
+    "@svgl": "https://svgl.app/r/{name}.json",
+    "@assistant-ui": "https://r.assistant-ui.com/{name}.json"
   }
 }

@@ -1,4 +1,16 @@
 {
+  "addProject": {
+    "title": "Agregar un proyecto",
+    "host": "Host",
+    "hostLocal": "Local Windows",
+    "exploreFolder": "Explorar carpeta",
+    "exploreDescription": "Proyecto local, repositorio de Git o carpeta con muchos repositorios",
+    "otherWays": "Otras formas de agregar",
+    "cloneUrl": "Clonar desde URL",
+    "cloneDescription": "Clonar un repositorio Git remoto",
+    "createNew": "Crear nuevo proyecto",
+    "createDescription": "Comenzar desde una carpeta vacía"
+  },
   "addBusiness": {
     "title": "Agregar Negocio",
     "step": "Paso {{current}} de {{total}}",
@@ -119,10 +131,15 @@
   },
   "home": {
     "title": "orca-blitz",
-    "subtitle": "Selecciona un negocio de la barra lateral para comenzar.",
-    "addBusiness": "Agregar Negocio",
-    "importBusiness": "Importar Negocio",
-    "createBusiness": "Crear negocio",
-    "importBusinessLabel": "Importar negocio"
+    "subtitle": "Selecciona un proyecto de la barra lateral para comenzar.",
+    "addBusiness": "Agregar Proyecto",
+    "importBusiness": "Importar Proyecto",
+    "createBusiness": "Crear proyecto",
+    "importBusinessLabel": "Importar proyecto",
+    "emptyGreeting": "¿Qué te gustaría hacer?",
+    "suggestionCreate": "Crear un proyecto nuevo",
+    "suggestionImport": "Importar desde plantilla",
+    "suggestionExplore": "Explorar funciones",
+    "composerPlaceholder": "Describe lo que necesitas..."
   }
 }

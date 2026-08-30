@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef, useEffect } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Receipt, BarChart3, Users, Bell, FileText } from "lucide-react";
 import {
@@ -15,9 +15,6 @@ import { SettingsPage } from "./components/settings/settings-page";
 import { HomePage } from "./components/home/home-page";
 import { BusinessPage } from "./components/business/business-page";
 import { SnippetsDrawer } from "./components/business/snippets-drawer";
-import { BrowserTabBar, type Tab } from "./components/social-media/browser-tab-bar";
-import { BrowserNavBar } from "./components/social-media/browser-nav-bar";
-import { createNewTab, type Platform } from "./components/social-media/social-media-page";
 import { OrcaLogo } from "@orca-blitz/ui/components/ui/logo";
 import { useAppStore } from "./store";
 import { ElementInspector } from "./components/dev-tools/element-inspector";
@@ -26,22 +23,8 @@ import type { Business } from "@orca-blitz/shared";
 export default function App() {
   const [activePage, setActivePage] = useState("home");
   const [sidebarOpen, setSidebarOpen] = useState(true);
-  const [tabs, setTabs] = useState<Tab[]>([createNewTab()]);
-  const [activeTabId, setActiveTabId] = useState<string>(() => tabs[0].id);
   const [businessSettingsId, setBusinessSettingsId] = useState<string | null>(null);
   const [businessSettingsTab, setBusinessSettingsTab] = useState<string>("business");
-  const forwardStack = useRef<
-    Record<
-      string,
-      {
-        title: string;
-        url: string;
-        icon: string;
-        iconComponent?: React.ComponentType<{ className?: string }>;
-        partition: string;
-      }
-    >
-  >({});
 
   const businesses = useAppStore((s) => s.businesses);
   const setBusinesses = useAppStore((s) => s.setBusinesses);
@@ -64,8 +47,6 @@ export default function App() {
     return unsubscribe;
   }, [setBusinesses]);
 
-  const isSocialMedia = activePage.includes(":redes");
-
   const handleNavigate = useCallback(
     (page: string) => {
       setActivePage(page);
@@ -79,95 +60,15 @@ export default function App() {
     [businesses, setActiveBusinessId, setRightSidebarOpen],
   );
 
-  const addTab = useCallback(() => {
-    const newTab = createNewTab(true);
-    setTabs((prev) => [...prev, newTab]);
-    setActiveTabId(newTab.id);
-  }, []);
-
-  const closeTab = useCallback((id: string) => {
-    setTabs((prev) => {
-      const next = prev.filter((t) => t.id !== id);
-      setActiveTabId((prevId) => {
-        if (prevId === id) {
-          return next.length > 0 ? next[next.length - 1].id : "";
-        }
-        return prevId;
-      });
-      if (next.length === 0) {
-        const fresh = createNewTab();
-        next.push(fresh);
-        setActiveTabId(fresh.id);
-      }
-      return next;
-    });
-  }, []);
-
-  const pickPlatform = useCallback((tabId: string, platform: Platform) => {
-    setTabs((prev) =>
-      prev.map((t) =>
-        t.id === tabId
-          ? {
-              ...t,
-              title: platform.name,
-              url: platform.url,
-              icon: platform.id,
-              iconComponent: platform.icon,
-              partition: `persist:${platform.id}`,
-              closable: true,
-            }
-          : t,
-      ),
-    );
-  }, []);
-
-  const goHome = useCallback((tabId: string) => {
-    setTabs((prev) => {
-      const tab = prev.find((t) => t.id === tabId);
-      if (tab?.url) {
-        forwardStack.current[tabId] = {
-          title: tab.title,
-          url: tab.url,
-          icon: tab.icon,
-          iconComponent: tab.iconComponent,
-          partition: tab.partition,
-        };
-      }
-      return prev.map((t) =>
-        t.id === tabId
-          ? { ...t, title: "New Tab", url: "", icon: "home", partition: "", closable: false }
-          : t,
-      );
-    });
-  }, []);
-
-  const goForwardTab = useCallback((tabId: string) => {
-    const saved = forwardStack.current[tabId];
-    if (!saved) return;
-    delete forwardStack.current[tabId];
-    setTabs((prev) =>
-      prev.map((t) =>
-        t.id === tabId
-          ? {
-              ...t,
-              title: saved.title,
-              url: saved.url,
-              icon: saved.icon,
-              iconComponent: saved.iconComponent,
-              partition: saved.partition,
-              closable: true,
-            }
-          : t,
-      ),
-    );
-  }, []);
-
-  const handleBusinessSettings = useCallback((biz: Business, tab?: string) => {
-    setBusinessSettingsId(biz.id);
-    setBusinessSettingsTab(tab ?? "business");
-    setActiveBusinessId(biz.id);
-    setActivePage("settings");
-  }, []);
+  const handleBusinessSettings = useCallback(
+    (biz: Business, tab?: string) => {
+      setBusinessSettingsId(biz.id);
+      setBusinessSettingsTab(tab ?? "business");
+      setActiveBusinessId(biz.id);
+      setActivePage("settings");
+    },
+    [setBusinessSettingsId, setBusinessSettingsTab, setActiveBusinessId, setActivePage],
+  );
 
   const handleUpdateBusiness = useCallback(
     (id: string, data: Partial<Business>) => {
@@ -258,14 +159,6 @@ export default function App() {
               >
                 <OrcaLogo className="size-4 text-foreground" />
               </div>
-            ) : isSocialMedia ? (
-              <BrowserTabBar
-                tabs={tabs}
-                activeTabId={activeTabId}
-                onSelectTab={setActiveTabId}
-                onCloseTab={closeTab}
-                onNewTab={addTab}
-              />
             ) : undefined
           }
           rightSidebarOpen={rightSidebarOpen}
@@ -273,23 +166,6 @@ export default function App() {
         />
         <div className="flex flex-1 min-w-0 min-h-0 overflow-hidden">
           <div className="flex flex-col flex-1 min-w-0 min-h-0 overflow-hidden">
-            {isSocialMedia &&
-              (() => {
-                const activeTab = tabs.find((t) => t.id === activeTabId);
-                const hasUrl = !!activeTab?.url;
-                const canForwardHome = !!forwardStack.current[activeTabId];
-                return (
-                  <BrowserNavBar
-                    viewId={activeTabId}
-                    hasUrl={hasUrl}
-                    canForwardHome={canForwardHome}
-                    platformId={activeTab?.icon ?? null}
-                    businessId={activeBusinessForPage?.id ?? null}
-                    onGoHome={() => goHome(activeTabId)}
-                    onGoForwardHome={() => goForwardTab(activeTabId)}
-                  />
-                );
-              })()}
             <main className="flex-1 overflow-hidden">
               {activePage === "settings" ? (
                 <SettingsPage
@@ -316,18 +192,7 @@ export default function App() {
               ) : activePage === "notifications" ? (
                 <NotificationsPage />
               ) : isBusinessPage ? (
-                <BusinessPage
-                  page={activePage}
-                  business={activeBusinessForPage}
-                  tabs={isSocialMedia ? tabs : undefined}
-                  activeTabId={isSocialMedia ? activeTabId : undefined}
-                  onPickPlatform={isSocialMedia ? pickPlatform : undefined}
-                  onOpenSettings={
-                    isSocialMedia && activeBusinessForPage
-                      ? () => handleBusinessSettings(activeBusinessForPage)
-                      : undefined
-                  }
-                />
+                <BusinessPage page={activePage} business={activeBusinessForPage} />
               ) : (
                 <>
                   <header className="flex h-12 items-center border-b border-border px-6">

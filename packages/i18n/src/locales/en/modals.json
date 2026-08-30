@@ -1,4 +1,16 @@
 {
+  "addProject": {
+    "title": "Add a project",
+    "host": "Host",
+    "hostLocal": "Local Windows",
+    "exploreFolder": "Explore folder",
+    "exploreDescription": "Local project, Git repository, or folder with multiple repositories",
+    "otherWays": "Other ways to add",
+    "cloneUrl": "Clone from URL",
+    "cloneDescription": "Clone a remote Git repository",
+    "createNew": "Create new project",
+    "createDescription": "Start from an empty folder"
+  },
   "addBusiness": {
     "title": "Add Business",
     "step": "Step {{current}} of {{total}}",
@@ -119,10 +131,15 @@
   },
   "home": {
     "title": "orca-blitz",
-    "subtitle": "Select a business from the sidebar to get started.",
-    "addBusiness": "Add Business",
-    "importBusiness": "Import Business",
-    "createBusiness": "Create business",
-    "importBusinessLabel": "Import business"
+    "subtitle": "Select a project from the sidebar to get started.",
+    "addBusiness": "Add Project",
+    "importBusiness": "Import Project",
+    "createBusiness": "Create project",
+    "importBusinessLabel": "Import project",
+    "emptyGreeting": "What would you like to do?",
+    "suggestionCreate": "Create a new project",
+    "suggestionImport": "Import from template",
+    "suggestionExplore": "Explore features",
+    "composerPlaceholder": "Describe what you need..."
   }
 }

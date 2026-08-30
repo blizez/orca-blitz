@@ -11,21 +11,19 @@
     "home": "Inicio"
   },
   "features": {
-    "socialMedia": "Redes Sociales",
-    "content": "Contenido",
-    "campaigns": "Campañas",
-    "notes": "Notas"
+    "assistant": "Asistente"
   },
   "menu": {
     "businessSettings": "Configuración del Negocio",
     "changeIcon": "Cambiar Icono",
     "deleteBusiness": "Eliminar Negocio"
   },
-  "completeness": {
-    "missingContent": "Crea contenido para mejorar tu presencia",
-    "missingCampaigns": "Lanza una campaña para atraer clientes",
-    "missingBoth": "Crea contenido y lanza una campaña para completar tu perfil",
-    "complete": "Perfil completo"
+  "assistant": {
+    "greeting": "¿Qué te gustaría hacer?",
+    "suggestionFix": "Corregir un error",
+    "suggestionExplain": "Explicar código",
+    "suggestionImprove": "Mejorar rendimiento",
+    "placeholder": "Preguntá algo... (probá con / para comandos)"
   },
   "rightSidebar": {
     "messages": "Mensajes",

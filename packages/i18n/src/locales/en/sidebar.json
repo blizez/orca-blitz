@@ -11,21 +11,19 @@
     "home": "Home"
   },
   "features": {
-    "socialMedia": "Social Media",
-    "content": "Content",
-    "campaigns": "Campaigns",
-    "notes": "Notes"
+    "assistant": "Assistant"
   },
   "menu": {
     "businessSettings": "Business Settings",
     "changeIcon": "Change Icon",
     "deleteBusiness": "Delete Business"
   },
-  "completeness": {
-    "missingContent": "Create content to boost your presence",
-    "missingCampaigns": "Launch a campaign to attract customers",
-    "missingBoth": "Create content and launch a campaign to complete your profile",
-    "complete": "Profile complete"
+  "assistant": {
+    "greeting": "What would you like to do?",
+    "suggestionFix": "Fix a bug",
+    "suggestionExplain": "Explain code",
+    "suggestionImprove": "Improve performance",
+    "placeholder": "Ask anything... (try / for commands)"
   },
   "rightSidebar": {
     "messages": "Messages",
