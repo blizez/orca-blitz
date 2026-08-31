@@ -1,7 +1,7 @@
 // TUI lives in blitz_tui_infraestructura/packages/tui — Electron never imports it directly; interaction is via RPC frames over stdin/stdout (JSONL + rpc_chunk reassembly).
 // RpcFrameDecoder below is synced from blitz_tui_infraestructura/packages/coding-agent/src/modes/rpc/rpc-frame.ts@18.0.4 (MIT) — preserve behavior for wire-compat.
 
-import { ipcMain, BrowserWindow } from "electron";
+import { ipcMain, BrowserWindow, shell } from "electron";
 import { spawn, type ChildProcess } from "node:child_process";
 import type { EventEmitter } from "node:events";
 import { getAgentConfig, type AgentConfig } from "./agent-config";
@@ -28,9 +28,7 @@ function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null && !Array.isArray(value);
 }
 
-function isRpcChunkFrame(
-  value: unknown,
-): value is {
+function isRpcChunkFrame(value: unknown): value is {
   type: "rpc_chunk";
   chunkId: string;
   index: number;
@@ -189,7 +187,6 @@ function handleLine(line: string) {
   if (typed.type === "ready") {
     ready = true;
     const supported = typed.supportedProtocolVersions as number[] | undefined;
-    // If ready carries error field, reject startup
     if (typed.error) {
       const err = new Error(String(typed.error));
       startupReject?.(err);
@@ -219,9 +216,23 @@ function handleLine(line: string) {
     }
   }
 
+  if (typed.type === "extension_ui_request") {
+    if (typed.method === "open_url" && typeof typed.url === "string") {
+      try {
+        void shell.openExternal(typed.url as string);
+      } catch {
+        // ignore
+      }
+    }
+    for (const win of BrowserWindow.getAllWindows()) {
+      win.webContents.send("agent:extension-request", typed);
+    }
+    broadcast(typed);
+    return;
+  }
+
   broadcast(typed);
 }
-
 function startOmp(config: AgentConfig): Promise<void> {
   if (startupPromise) return startupPromise;
 
