@@ -4,6 +4,8 @@ import type {
   ChannelSession,
   ChannelType,
   Conversation,
+  DevToolIntegration,
+  DevToolSession,
   UnifiedMessage,
 } from "@orca-blitz/shared";
 
@@ -92,6 +94,12 @@ export interface ApiContract {
     onStatus: (callback: (session: ChannelSession) => void) => Unsubscribe;
     onConversationsChanged: (callback: (data: { businessId: string }) => void) => Unsubscribe;
   };
+  devtools: {
+    getStatus: (integrationId: DevToolIntegration) => Promise<DevToolSession>;
+    connect: (integrationId: DevToolIntegration) => Promise<DevToolSession>;
+    disconnect: (integrationId: DevToolIntegration) => Promise<DevToolSession>;
+    onStatus: (callback: (session: DevToolSession) => void) => Unsubscribe;
+  };
   reports: {
     generate: (config: Record<string, unknown>) => Promise<{ reportId: string }>;
     export: (format: string) => Promise<{ path: string }>;
@@ -146,5 +154,20 @@ export interface ApiContract {
     reload: (id: string) => void;
     canGoBack: (id: string) => Promise<boolean>;
     canGoForward: (id: string) => Promise<boolean>;
+  };
+  agent: {
+    send: (message: string, images?: string[]) => Promise<void>;
+    steer: (message: string) => Promise<void>;
+    abort: () => Promise<void>;
+    getState: () => Promise<{ isStreaming: boolean; model?: string; thinkingLevel?: string }>;
+    setModel: (provider: string, modelId: string) => Promise<void>;
+    setThinkingLevel: (level: string) => Promise<void>;
+    getAvailableModels: () => Promise<Array<{ id: string; name: string; provider: string }>>;
+    login: (providerId: string) => Promise<{ success: boolean }>;
+    getLoginProviders: () => Promise<
+      Array<{ id: string; name: string; available: boolean; authenticated: boolean }>
+    >;
+    onEvent: (cb: (ev: unknown) => void) => Unsubscribe;
+    onDisconnected: (cb: (code: number | null) => void) => Unsubscribe;
   };
 }

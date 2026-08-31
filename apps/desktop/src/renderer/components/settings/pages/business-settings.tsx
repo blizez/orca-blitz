@@ -26,7 +26,7 @@ import {
 } from "@orca-blitz/ui/components/ui/select";
 import { toast } from "@orca-blitz/ui/components/ui/toast";
 import { DeleteBusinessModal } from "../../layout/delete-business-modal";
-import { BusinessIntegrations } from "./business-integrations";
+
 import type { Business } from "@orca-blitz/shared";
 
 interface BusinessSettingsProps {
@@ -415,11 +415,6 @@ export function BusinessSettings({ business, onUpdate, onDelete }: BusinessSetti
           </CardContent>
         </Card>
       )}
-
-      <div className="space-y-2">
-        <p className="text-xs font-medium text-muted-foreground">Connected channels</p>
-        <BusinessIntegrations businessId={business.id} business={business} embedded />
-      </div>
 
       <DeleteBusinessModal
         open={showDelete}

@@ -1,11 +1,9 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
-  CreditCard,
   Puzzle,
   BrainCircuit,
   Bell,
-  Shield,
   Palette,
   ArrowLeft,
   Search,
@@ -55,19 +53,11 @@ export function SettingsSidebar({
       ],
     },
     {
-      label: t("sidebar.sections.billing"),
-      items: [{ id: "billing", label: t("sidebar.items.paymentMethods"), icon: CreditCard }],
-    },
-    {
       label: t("sidebar.sections.connect"),
       items: [
         { id: "integrations", label: t("sidebar.items.integrations"), icon: Puzzle },
         { id: "ai", label: t("sidebar.items.aiProviders"), icon: BrainCircuit },
       ],
-    },
-    {
-      label: t("sidebar.sections.security"),
-      items: [{ id: "security", label: t("sidebar.items.security"), icon: Shield }],
     },
   ];
 

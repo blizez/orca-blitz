@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Sparkles } from "lucide-react";
 import {
@@ -14,7 +14,6 @@ import {
   ComposerCommandItem,
   ComposerVoice,
   ComposerVoiceButton,
-  ComposerContext,
   ComposerModelTrigger,
   ComposerModelItem,
   ComposerAttachments,
@@ -25,8 +24,10 @@ import {
   type ComposerCommand,
   type ComposerPerson,
   type ComposerAttachment,
+  type ComposerModel,
 } from "@orca-blitz/ui/components/composer";
-import { COMMANDS, PEOPLE, MODELS, USAGE } from "./types";
+import { COMMANDS, PEOPLE, MODELS } from "./types";
+import { useAgent } from "@/hooks/useAgent";
 
 interface AssistantComposerProps {
   onSend: (value: string, attachments: ComposerAttachment[]) => void;
@@ -34,13 +35,97 @@ interface AssistantComposerProps {
 
 export function AssistantComposer({ onSend }: AssistantComposerProps) {
   const { t } = useTranslation("sidebar");
+  const agent = useAgent();
   const [value, setValue] = useState("");
   const [attachments, setAttachments] = useState<ComposerAttachment[]>([]);
   const [recording, setRecording] = useState(false);
   const [seconds, setSeconds] = useState(0);
   const [modelOpen, setModelOpen] = useState(false);
-  const [selectedModel, setSelectedModel] = useState(MODELS[0]);
   const [enhancing, setEnhancing] = useState(false);
+  // Derive available models: prefer agent.availableModels, fallback to providerConfigs cached models, then static MODELS
+  const dynamicModels: ComposerModel[] = (() => {
+    if (agent.availableModels.length > 0) {
+      return agent.availableModels.map((m) => ({
+        name: `${m.provider}/${m.id}`,
+        meta: m.provider,
+      }));
+    }
+    try {
+      const configsRaw = localStorage.getItem("oc_provider_configs");
+      const cacheRaw = localStorage.getItem("oc_provider_models_cache");
+      if (configsRaw) {
+        const configs = JSON.parse(configsRaw) as Record<
+          string,
+          {
+            selectedModel?: string | null;
+            selectedModelZen?: string | null;
+            selectedModelGo?: string | null;
+          }
+        >;
+        const cache = cacheRaw ? (JSON.parse(cacheRaw) as Record<string, string[]>) : {};
+        const providerOrder = Object.keys(configs);
+        for (const pid of providerOrder) {
+          const cfg = configs[pid];
+          const sel = cfg.selectedModel ?? cfg.selectedModelZen ?? cfg.selectedModelGo;
+          if (sel) {
+            const cached = cache[pid] ?? cache[`${pid}:zen`] ?? cache[`${pid}:go`];
+            if (cached && cached.length > 0)
+              return cached.slice(0, 20).map((mid) => ({ name: mid, meta: pid }));
+            return [{ name: sel, meta: pid }];
+          }
+        }
+      }
+    } catch {
+      // ignore
+    }
+    return MODELS;
+  })();
+
+  const selectedModel: ComposerModel = (() => {
+    if (agent.model) {
+      const found = dynamicModels.find(
+        (m) =>
+          m.name === agent.model ||
+          m.name.endsWith(`/${agent.model}`) ||
+          agent.model?.endsWith(m.name),
+      );
+      if (found) return found;
+      const bySuffix = dynamicModels.find(
+        (m) => agent.model?.includes(m.name) || m.name.includes(agent.model ?? ""),
+      );
+      if (bySuffix) return bySuffix;
+      return { name: agent.model, meta: "" };
+    }
+    return (dynamicModels[0] ?? MODELS[0]) as ComposerModel;
+  })();
+  // Sync providerConfigs selectedModel to agent on first mount if agent still on default
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem("oc_provider_configs");
+      if (!raw) return;
+      const configs = JSON.parse(raw) as Record<
+        string,
+        {
+          selectedModel?: string | null;
+          selectedModelZen?: string | null;
+          selectedModelGo?: string | null;
+        }
+      >;
+      for (const [pid, cfg] of Object.entries(configs)) {
+        const sel = cfg.selectedModel ?? cfg.selectedModelZen ?? cfg.selectedModelGo;
+        if (sel && sel.trim()) {
+          const expected = `${pid}/${sel}`;
+          if (agent.model !== expected && agent.model !== sel) {
+            // Only set if agent model is still default or empty — avoid looping
+            void agent.setModel(pid, sel);
+          }
+          break;
+        }
+      }
+    } catch {
+      // ignore
+    }
+  }, [agent]);
 
   const slashMatches = useSlashMatches(value, COMMANDS);
   const mentionMatches = useMentionMatches(value, PEOPLE);
@@ -155,19 +240,44 @@ export function AssistantComposer({ onSend }: AssistantComposerProps) {
                 onClick={() => setModelOpen(!modelOpen)}
               />
               <ComposerMenu open={modelOpen} align="start">
-                {MODELS.map((m) => (
+                {dynamicModels.map((m) => (
                   <ComposerModelItem
                     key={m.name}
                     entry={m}
                     selected={m.name === selectedModel.name}
                     onClick={() => {
-                      setSelectedModel(m);
+                      // Parse provider/model from m.name or m.meta
+                      const raw = m.name;
+                      let provider = m.meta;
+                      let modelId = raw;
+                      if (raw.includes("/")) {
+                        const parts = raw.split("/");
+                        provider = parts[0];
+                        modelId = parts.slice(1).join("/");
+                      } else if (!provider) {
+                        // Fallback to first provider with that model in configs
+                        try {
+                          const configs = JSON.parse(
+                            localStorage.getItem("oc_provider_configs") ?? "{}",
+                          );
+                          for (const [pid, cfg] of Object.entries(
+                            configs as Record<string, { selectedModel?: string }>,
+                          )) {
+                            if ((cfg as { selectedModel?: string }).selectedModel === raw) {
+                              provider = pid;
+                              break;
+                            }
+                          }
+                        } catch {
+                          // ignore
+                        }
+                      }
+                      if (provider && modelId) void agent.setModel(provider, modelId);
                       setModelOpen(false);
                     }}
                   />
                 ))}
               </ComposerMenu>
-              <ComposerContext usage={USAGE} />
             </ComposerActions>
             <ComposerActions>
               <ComposerVoiceButton active={recording} onClick={handleToggleRecording} />

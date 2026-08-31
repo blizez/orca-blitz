@@ -1,7 +1,14 @@
 import { contextBridge, ipcRenderer } from "electron";
 import { electronAPI } from "@electron-toolkit/preload";
 import type { ApiContract, ChatMessage } from "./api-types";
-import type { Business, ChannelSession, ChannelType, UnifiedMessage } from "@orca-blitz/shared";
+import type {
+  Business,
+  ChannelSession,
+  ChannelType,
+  DevToolIntegration,
+  DevToolSession,
+  UnifiedMessage,
+} from "@orca-blitz/shared";
 
 const api: ApiContract = {
   window: {
@@ -107,6 +114,19 @@ const api: ApiContract = {
       const handler = (_event: unknown, data: { businessId: string }) => callback(data);
       ipcRenderer.on("integrations:conversations-changed", handler);
       return () => ipcRenderer.removeListener("integrations:conversations-changed", handler);
+    },
+  },
+  devtools: {
+    getStatus: (integrationId: DevToolIntegration) =>
+      ipcRenderer.invoke("devtools:getStatus", integrationId),
+    connect: (integrationId: DevToolIntegration) =>
+      ipcRenderer.invoke("devtools:connect", integrationId),
+    disconnect: (integrationId: DevToolIntegration) =>
+      ipcRenderer.invoke("devtools:disconnect", integrationId),
+    onStatus: (callback: (session: DevToolSession) => void) => {
+      const handler = (_event: unknown, session: DevToolSession) => callback(session);
+      ipcRenderer.on("devtools:status", handler);
+      return () => ipcRenderer.removeListener("devtools:status", handler);
     },
   },
   reports: {
@@ -221,6 +241,37 @@ const api: ApiContract = {
     reload: (id: string) => ipcRenderer.send("browser:reload", id),
     canGoBack: (id: string) => ipcRenderer.invoke("browser:canGoBack", id),
     canGoForward: (id: string) => ipcRenderer.invoke("browser:canGoForward", id),
+  },
+  agent: {
+    send: (message: string, images?: string[]) => ipcRenderer.invoke("agent:send", message, images),
+    steer: (message: string) => ipcRenderer.invoke("agent:steer", message),
+    abort: () => ipcRenderer.invoke("agent:abort"),
+    getState: () => ipcRenderer.invoke("agent:getState"),
+    setModel: (provider: string, modelId: string) =>
+      ipcRenderer.invoke("agent:setModel", provider, modelId),
+    setThinkingLevel: (level: string) => ipcRenderer.invoke("agent:setThinkingLevel", level),
+    getAvailableModels: () => ipcRenderer.invoke("agent:getAvailableModels"),
+    login: (providerId: string) => ipcRenderer.invoke("agent:login", providerId),
+    getLoginProviders: () => ipcRenderer.invoke("agent:getLoginProviders"),
+    onEvent: (cb: (ev: unknown) => void) => {
+      const handler = (_event: unknown, ev: unknown) => cb(ev);
+      ipcRenderer.on("agent:event", handler);
+      return () => ipcRenderer.removeListener("agent:event", handler);
+    },
+    onDisconnected: (cb: (code: number | null) => void) => {
+      const handler = (_event: unknown, ev: unknown) => {
+        if (!ev || typeof ev !== "object") return;
+        if (!("type" in ev)) return;
+        if ((ev as { type: unknown }).type !== "omp:disconnected") return;
+        let code: number | null = null;
+        if ("code" in ev && typeof (ev as { code: unknown }).code === "number") {
+          code = (ev as { code: number }).code;
+        }
+        cb(code);
+      };
+      ipcRenderer.on("agent:event", handler);
+      return () => ipcRenderer.removeListener("agent:event", handler);
+    },
   },
 };
 

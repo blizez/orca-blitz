@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect, useCallback } from "react";
-import { Settings, Plus, Search, PanelLeftClose, PanelLeftOpen } from "lucide-react";
+import { Settings, Plus, Search, PanelLeftClose, PanelLeftOpen, Bot } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import {
   DndContext,
@@ -261,8 +261,22 @@ export function AppSidebar({
             </DndContext>
           )}
         </div>
+        <div className="mb-2">
+          <button
+            onClick={() => onNavigate("agent")}
+            className={cn(
+              "flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-sm transition-colors",
+              activePage === "agent"
+                ? "bg-sidebar-accent text-sidebar-accent-foreground"
+                : "text-sidebar-foreground hover:bg-sidebar-accent/50",
+              collapsed && "justify-center px-0",
+            )}
+          >
+            <Bot className="size-4 shrink-0" />
+            {!collapsed && <span>Agente</span>}
+          </button>
+        </div>
       </nav>
-
       <div className={cn("border-t border-sidebar-border py-1.5", collapsed ? "px-1" : "px-1.5")}>
         <div className={cn("flex items-center gap-1", collapsed ? "flex-col-reverse" : "flex-row")}>
           {collapsed ? (

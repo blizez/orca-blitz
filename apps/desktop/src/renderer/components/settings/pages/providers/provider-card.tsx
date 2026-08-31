@@ -10,8 +10,11 @@ interface ProviderCardProps {
 }
 
 function getStatusText(provider: BuiltInProvider, config: ProviderConfig): string {
-  if (provider.id === "opencode") {
-    return config.selectedModelZen || config.selectedModelGo || "Configured";
+  if (provider.id === "opencode-zen") {
+    return config.selectedModelZen || "Configured";
+  }
+  if (provider.id === "opencode-go") {
+    return config.selectedModelGo || "Configured";
   }
   if (provider.id === "openai") {
     if (config.authMethod === "chatgpt") return config.chatgptModel || "ChatGPT Connected";
@@ -20,13 +23,8 @@ function getStatusText(provider: BuiltInProvider, config: ProviderConfig): strin
   return config.selectedModel || "Configured";
 }
 
-function getStatusLabel(provider: BuiltInProvider, config: ProviderConfig): string | null {
-  if (provider.id === "opencode") {
-    return config.selectedModelZen ? "OpenCode Zen" : "OpenCode Go";
-  }
-  if (provider.id === "openai") {
-    return config.authMethod === "chatgpt" ? "ChatGPT Plus/Pro" : "API Key";
-  }
+function getStatusLabel(_provider: BuiltInProvider, config: ProviderConfig): string | null {
+  if (config.authMethod === "chatgpt") return "ChatGPT Plus/Pro";
   return null;
 }
 
@@ -34,14 +32,15 @@ export function ProviderCard({ provider, config, onConfigure }: ProviderCardProp
   const { t } = useTranslation("providers");
   const isConfigured =
     !!config &&
-    (provider.id === "opencode"
-      ? !!(config.apiKeyZen && config.selectedModelZen) ||
-        !!(config.apiKeyGo && config.selectedModelGo)
-      : provider.id === "openai"
-        ? config.authMethod === "chatgpt"
-          ? !!config.chatgptModel
-          : !!(config.apiKey && config.selectedModel)
-        : !!(config.apiKey && config.selectedModel));
+    (provider.id === "opencode-zen"
+      ? !!(config.apiKeyZen && config.selectedModelZen)
+      : provider.id === "opencode-go"
+        ? !!(config.apiKeyGo && config.selectedModelGo)
+        : provider.id === "openai"
+          ? config.authMethod === "chatgpt"
+            ? !!config.chatgptModel
+            : !!(config.apiKey && config.selectedModel)
+          : !!(config.apiKey && config.selectedModel));
 
   const { Icon, IconDark, name } = provider;
   const label = config ? getStatusLabel(provider, config) : null;

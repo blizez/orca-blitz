@@ -4,10 +4,8 @@ import { AppearanceSettings } from "./pages/appearance";
 import { NotificationsSettings } from "./pages/notifications";
 import { ShortcutsSettings } from "./pages/shortcuts";
 import { StatisticsSettings } from "./pages/statistics";
-import { BillingSettings } from "./pages/billing";
 import { IntegrationsSettings } from "./pages/integrations";
 import { ProvidersSettings } from "./pages/providers";
-import { SecuritySettings } from "./pages/security";
 import { BusinessSettings } from "./pages/business-settings";
 import type { Business } from "@orca-blitz/shared";
 
@@ -27,10 +25,8 @@ const pages: Record<string, React.ComponentType> = {
   notifications: NotificationsSettings,
   shortcuts: ShortcutsSettings,
   statistics: StatisticsSettings,
-  billing: BillingSettings,
   integrations: IntegrationsSettings,
   ai: ProvidersSettings,
-  security: SecuritySettings,
 };
 
 export function SettingsPage({
@@ -48,18 +44,7 @@ export function SettingsPage({
   );
 
   const isBusinessMode = !!businessId && business;
-  const ActivePage =
-    isBusinessMode && activeTab === "business"
-      ? () =>
-          business && onUpdateBusiness && onDeleteBusiness ? (
-            <BusinessSettings
-              key={business.id}
-              business={business}
-              onUpdate={onUpdateBusiness}
-              onDelete={onDeleteBusiness}
-            />
-          ) : null
-      : (pages[activeTab] ?? AppearanceSettings);
+  const ActivePage = pages[activeTab] ?? AppearanceSettings;
 
   const handleBusinessSelect = (biz: Business) => {
     onSelectBusiness?.(biz);

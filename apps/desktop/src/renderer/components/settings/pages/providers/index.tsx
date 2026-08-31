@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useTranslation } from "react-i18next";
-import { builtInProviders, opencodeTabs } from "./constants";
+import { builtInProviders } from "./constants";
 import { ProviderCard } from "./provider-card";
 import { CustomProviders } from "./custom-providers";
 import { ProviderDialog } from "./dialog";
@@ -8,8 +8,22 @@ import type { ProviderConfig, CustomProvider, DialogState } from "./types";
 
 export function ProvidersSettings() {
   const { t } = useTranslation("providers");
-  const [providerConfigs, setProviderConfigs] = useState<Record<string, ProviderConfig>>({});
-  const [customProviders, setCustomProviders] = useState<CustomProvider[]>([]);
+  const [providerConfigs, setProviderConfigs] = useState<Record<string, ProviderConfig>>(() => {
+    try {
+      const saved = localStorage.getItem("oc_provider_configs");
+      return saved ? JSON.parse(saved) : {};
+    } catch {
+      return {};
+    }
+  });
+  const [customProviders, setCustomProviders] = useState<CustomProvider[]>(() => {
+    try {
+      const saved = localStorage.getItem("oc_custom_providers");
+      return saved ? JSON.parse(saved) : [];
+    } catch {
+      return [];
+    }
+  });
   const [modelsCache, setModelsCache] = useState<Record<string, string[]>>(() => {
     try {
       const saved = localStorage.getItem("oc_provider_models_cache");
@@ -65,9 +79,13 @@ export function ProvidersSettings() {
       let models: string[] = [];
       let endpoint = "";
 
-      if (activeProvider.id === "opencode") {
-        const tab = opencodeTabs.find((t) => t.id === dialog.activeTab);
-        endpoint = tab?.endpoint || opencodeTabs[0].endpoint;
+      if (activeProvider.id === "opencode-zen" || activeProvider.id === "opencode-go") {
+        const tabs = [
+          { id: "zen", endpoint: "https://opencode.ai/zen/v1/models" },
+          { id: "go", endpoint: "https://opencode.ai/zen/go/v1/models" },
+        ];
+        const tab = tabs.find((t) => t.id === dialog.activeTab);
+        endpoint = tab?.endpoint || tabs[0].endpoint;
       } else if (activeProvider.id === "openai") {
         endpoint = "https://api.openai.com/v1/models";
       } else if (activeProvider.id === "google") {
@@ -97,7 +115,7 @@ export function ProvidersSettings() {
         models = [];
       } else if (endpoint) {
         const headers: Record<string, string> = {};
-        if (["opencode", "openai", "deepseek"].includes(activeProvider.id)) {
+        if (["opencode-zen", "opencode-go", "openai", "deepseek"].includes(activeProvider.id)) {
           headers["Authorization"] = `Bearer ${key}`;
         }
 
@@ -125,7 +143,7 @@ export function ProvidersSettings() {
       if (models.length > 0) {
         const cacheKey = getCacheKey(
           activeProvider.id,
-          activeProvider.id === "opencode" ? dialog.activeTab : undefined,
+          activeProvider.id.startsWith("opencode") ? dialog.activeTab : undefined,
         );
         setModelsCache((prev) => ({ ...prev, [cacheKey]: models }));
         setDialog((prev) => ({ ...prev, fetchedModels: models }));
@@ -157,6 +175,22 @@ export function ProvidersSettings() {
   }, [modelsCache]);
 
   useEffect(() => {
+    try {
+      localStorage.setItem("oc_provider_configs", JSON.stringify(providerConfigs));
+    } catch {
+      // ignore
+    }
+  }, [providerConfigs]);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem("oc_custom_providers", JSON.stringify(customProviders));
+    } catch {
+      // ignore
+    }
+  }, [customProviders]);
+
+  useEffect(() => {
     if (dialog.open && dialog.selectedModel && dialog.fetchedModels.length > 0) {
       setTimeout(scrollToSelected, 100);
     }
@@ -168,7 +202,7 @@ export function ProvidersSettings() {
       return;
     }
 
-    if (activeProvider.id === "opencode") {
+    if (activeProvider.id.startsWith("opencode")) {
       const cacheKey = getCacheKey(activeProvider.id, dialog.activeTab);
       const cached = modelsCache[cacheKey];
       if (cached && cached.length > 0) {
@@ -195,11 +229,17 @@ export function ProvidersSettings() {
       oauthToken: null,
     };
 
-    if (providerId === "opencode") {
+    if (providerId === "opencode-zen") {
       newDialog.activeTab = "zen";
       newDialog.dialogApiKey = existing?.apiKeyZen || "";
       newDialog.selectedModel = existing?.selectedModelZen || null;
       const cacheKey = getCacheKey(providerId, "zen");
+      newDialog.fetchedModels = modelsCache[cacheKey] || [];
+    } else if (providerId === "opencode-go") {
+      newDialog.activeTab = "go";
+      newDialog.dialogApiKey = existing?.apiKeyGo || "";
+      newDialog.selectedModel = existing?.selectedModelGo || null;
+      const cacheKey = getCacheKey(providerId, "go");
       newDialog.fetchedModels = modelsCache[cacheKey] || [];
     } else if (providerId === "openai") {
       newDialog.activeTab = existing?.authMethod || "api-key";
@@ -240,7 +280,7 @@ export function ProvidersSettings() {
         authStatus: null as string | null,
       };
 
-      if (dialog.selectedProvider === "opencode") {
+      if (dialog.selectedProvider?.startsWith("opencode")) {
         if (tab === "zen") {
           next.dialogApiKey = existing?.apiKeyZen || "";
           next.selectedModel = existing?.selectedModelZen || null;
@@ -332,30 +372,32 @@ export function ProvidersSettings() {
   const saveProvider = () => {
     if (!dialog.selectedProvider) return;
 
-    if (dialog.selectedProvider === "opencode") {
+    if (dialog.selectedProvider === "opencode-zen") {
       const existing = providerConfigs[dialog.selectedProvider] || {
         apiKey: "",
         selectedModel: null,
       };
-      if (dialog.activeTab === "zen") {
-        setProviderConfigs((prev) => ({
-          ...prev,
-          [dialog.selectedProvider!]: {
-            ...existing,
-            apiKeyZen: dialog.dialogApiKey.trim(),
-            selectedModelZen: dialog.selectedModel,
-          },
-        }));
-      } else {
-        setProviderConfigs((prev) => ({
-          ...prev,
-          [dialog.selectedProvider!]: {
-            ...existing,
-            apiKeyGo: dialog.dialogApiKey.trim(),
-            selectedModelGo: dialog.selectedModel,
-          },
-        }));
-      }
+      setProviderConfigs((prev) => ({
+        ...prev,
+        [dialog.selectedProvider!]: {
+          ...existing,
+          apiKeyZen: dialog.dialogApiKey.trim(),
+          selectedModelZen: dialog.selectedModel,
+        },
+      }));
+    } else if (dialog.selectedProvider === "opencode-go") {
+      const existing = providerConfigs[dialog.selectedProvider] || {
+        apiKey: "",
+        selectedModel: null,
+      };
+      setProviderConfigs((prev) => ({
+        ...prev,
+        [dialog.selectedProvider!]: {
+          ...existing,
+          apiKeyGo: dialog.dialogApiKey.trim(),
+          selectedModelGo: dialog.selectedModel,
+        },
+      }));
     } else if (dialog.selectedProvider === "openai") {
       const existing = providerConfigs[dialog.selectedProvider] || {
         apiKey: "",
@@ -390,6 +432,24 @@ export function ProvidersSettings() {
           selectedModel: dialog.selectedModel,
         },
       }));
+    }
+
+    // Sync selected model to agent CORE immediately (mismo CORE que TUI)
+    try {
+      const api = (
+        window as unknown as {
+          api?: { agent?: { setModel: (p: string, m: string) => Promise<void> } };
+        }
+      ).api;
+      if (api?.agent && dialog.selectedProvider && dialog.selectedModel) {
+        const pid =
+          dialog.selectedProvider === "opencode-zen" || dialog.selectedProvider === "opencode-go"
+            ? dialog.selectedProvider
+            : dialog.selectedProvider;
+        void api.agent.setModel(pid, dialog.selectedModel);
+      }
+    } catch {
+      // ignore - agent may be unavailable in web mode
     }
 
     setDialog((prev) => ({ ...prev, open: false }));

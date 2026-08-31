@@ -1,12 +1,12 @@
-# Enterprise Automation Platform
+# Blitz
 
-## Technical Architecture & Development Blueprint
+## AI Coding Agent Platform — Technical Architecture & Development Blueprint
 
-Version: 1.0
+Version: 3.0
 
-Status: Planning
+Status: Active Development
 
-Language: TypeScript
+Language: TypeScript + Rust (OMP Core)
 
 ---
 
@@ -14,84 +14,118 @@ Language: TypeScript
 
 ### Mission
 
-Crear una plataforma empresarial open source capaz de automatizar, analizar y mejorar operaciones completas de negocios mediante:
+Blitz es una plataforma que envuelve OMP (Oh My Pi) para ofrecer una experiencia de coding agent completa. La arquitectura tiene tres capas:
 
-- Automatizaciones.
-- Inteligencia artificial.
-- Integraciones externas.
-- Gestión empresarial.
-- Análisis predictivo.
-- Recomendaciones inteligentes.
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                         BLITZ                                   │
+│                    (Plataforma Principal)                       │
+│                                                                 │
+│  ┌─────────────────────────────────────────────────────────┐   │
+│  │              Blitz UI App (apps/desktop)                 │   │
+│  │         Nuestra UI Graphical - Electron + React          │   │
+│  │    Terminal embebida, Editor, Chat, File Explorer         │   │
+│  └─────────────────────────────────────────────────────────┘   │
+│                              │                                  │
+│  ┌─────────────────────────────────────────────────────────┐   │
+│  │              OMP TUI (packages/coding-agent)             │   │
+│  │         Terminal UI created by OMP                       │   │
+│  │    Session management, Tool execution, Agent runtime     │   │
+│  └─────────────────────────────────────────────────────────┘   │
+│                              │                                  │
+│  ┌─────────────────────────────────────────────────────────┐   │
+│  │              OMP Core (blitz_tui_infraestructura)        │   │
+│  │         Foundation - 80k+ lines Rust core                │   │
+│  │    LLM providers, Wire protocol, Native operations       │   │
+│  └─────────────────────────────────────────────────────────┘   │
+└─────────────────────────────────────────────────────────────────┘
+```
 
-El objetivo no es crear solamente un chatbot o un constructor de workflows.
+### ¿Qué es Blitz?
 
-El objetivo es crear una plataforma donde una empresa pueda centralizar:
+Blitz es la **envoltura completa** que toma OMP (un coding agent TUI) y lo convierte en una aplicación de escritorio moderna.
 
-- Comunicación.
-- Clientes.
-- Ventas.
-- Marketing.
-- Operaciones.
-- Datos.
-- Automatizaciones.
-- Inteligencia empresarial.
+- **OMP Core** → La base: provedores LLM, operaciones nativas, protocolo wire
+- **OMP TUI** → La interfaz de terminal: sesiones, ejecución de herramientas, runtime del agente
+- **Blitz UI App** → Nuestra interfaz gráfica: todo lo que tiene la TUI pero en una app visual
+
+### Objetivo
+
+Crear una aplicación de escritorio donde un desarrollador pueda:
+
+- Ver y interactuar con sesiones de chat con IA
+- Ejecutar comandos en terminal integrado
+- Navegar y editar archivos del proyecto
+- Usar herramientas de desarrollo (git, grep, LSP, DAP)
+- Conectar con cualquier provider LLM (60+ providers soportados)
+- Toda la funcionalidad de OMP TUI pero en una UI gráfica
 
 ---
 
 ## 2. Core Philosophy
 
-### Principle: Business First
+### Principle: Wrapper First
 
-La plataforma no debe estar orientada a herramientas.
+Blitz es un wrapper de OMP. No reinventa la rueda — toma el poder de OMP TUI y lo entrega en una UI gráfica.
 
 Incorrecto:
 
 ```
-"Conecta WhatsApp"
-"Usa n8n"
-"Configura un bot"
+Crear un coding agent desde cero
+Ignorar OMP TUI
+Reescribir funcionalidad existente
 ```
 
 Correcto:
 
 ```
-"Mejora la operación de tu negocio"
+Envolver OMP TUI
+Reutilizar OMP Core
+Crear UI gráfica sobre la base existente
 ```
 
-La tecnología debe estar oculta.
+La tecnología de OMP debe ser accesible.
 
-El usuario piensa en objetivos:
+El desarrollador obtiene:
 
-- Aumentar ventas.
-- Reducir costos.
-- Mejorar atención.
-- Automatizar procesos.
-- Analizar datos.
+- Toda la potencia de OMP (60+ providers, 31 tools, Rust core)
+- En una interfaz visual moderna y amigable
+- Sin perder funcionalidad de la TUI
 
-La plataforma decide cómo lograrlo.
+Blitz es OMP, pero más accesible.
 
 ---
 
 ## 3. Main Goals
 
-### Multi Platform
+### Wrapper Architecture
+
+Blitz tiene un objetivo claro: ser la envoltura gráfica de OMP.
+
+```
+OMP Core (Base)
+    ↓
+OMP TUI (Terminal Interface)
+    ↓
+Blitz UI App (Graphical Interface)
+```
+
+### Plataformas
 
 La aplicación debe funcionar en:
 
 - Windows
 - Linux
 - macOS
-- Web
-- Android
-- iOS
+- Web (futuro)
 
-Todas las plataformas deben compartir:
+### Core Integration
 
-- Código.
-- Lógica.
-- Componentes.
-- Diseño.
-- Experiencia.
+Blitz se comunica con OMP a través de:
+
+- **@oh-my-pi/pi-wire** — Wire protocol para comunicación
+- **IPC** — Electron IPC para UI ↔ Main process
+- **OMP Process** — Proceso OMP corriendo en background
 
 ---
 
@@ -129,93 +163,127 @@ TypeScript
 
 ## 5. Application Architecture
 
-La plataforma estará dividida en capas.
+Blitz es un wrapper de OMP. La arquitectura refleja esto:
 
 ```
-+------------------------------------------------+
-|              Client Applications               |
-|                                                |
-|         Desktop | Web | Android | iOS          |
-+------------------------------------------------+
-                |
-+------------------------------------------------+
-|                Presentation Layer              |
-|                                                |
-|                 React Components               |
-|                 Design System                  |
-|                 UI                             |
-+------------------------------------------------+
-                |
-+------------------------------------------------+
-|               Application Layer                |
-|                                                |
-| Features                                       |
-| CRM                                            |
-| Automation                                     |
-| Analytics                                      |
-| AI                                             |
-+------------------------------------------------+
-                |
-+------------------------------------------------+
-|                  Domain Layer                  |
-|                                                |
-|                Business Rules                  |
-|                Entities                        |
-|                Events                          |
-+------------------------------------------------+
-                |
-+------------------------------------------------+
-|                   Infrastructure               |
-|                                                |
-|                  Database                      |
-|                  APIs                          |
-|                  External Services             |
-+------------------------------------------------+
+┌─────────────────────────────────────────────────────────────────┐
+│                         BLITZ                                   │
+│                                                                 │
+│  ┌─────────────────────────────────────────────────────────┐   │
+│  │                    Blitz UI App                          │   │
+│  │              (apps/desktop - Electron)                   │   │
+│  │                                                         │   │
+│  │  ┌─────────────┐ ┌─────────────┐ ┌─────────────┐      │   │
+│  │  │  Sessions   │ │  Terminal   │ │   Editor    │      │   │
+│  │  │    Panel    │ │   Emulator  │ │   Panel     │      │   │
+│  │  └─────────────┘ └─────────────┘ └─────────────┘      │   │
+│  │  ┌─────────────┐ ┌─────────────┐ ┌─────────────┐      │   │
+│  │  │  Chat with  │ │    File     │ │    Tool     │      │   │
+│  │  │     AI      │ │  Explorer   │ │   Results   │      │   │
+│  │  └─────────────┘ └─────────────┘ └─────────────┘      │   │
+│  └─────────────────────────────────────────────────────────┘   │
+│                              │                                  │
+│                              ↓ IPC / Wire Protocol              │
+│  ┌─────────────────────────────────────────────────────────┐   │
+│  │                    OMP TUI                               │   │
+│  │              (packages/coding-agent)                     │   │
+│  │                                                         │   │
+│  │  - Session management                                   │   │
+│  │  - Tool execution engine                                │   │
+│  │  - Agent runtime                                        │   │
+│  │  - Event bus                                            │   │
+│  └─────────────────────────────────────────────────────────┘   │
+│                              │                                  │
+│                              ↓                                  │
+│  ┌─────────────────────────────────────────────────────────┐   │
+│  │                    OMP Core                              │   │
+│  │              (blitz_tui_infraestructura)                 │   │
+│  │                                                         │   │
+│  │  - @oh-my-pi/pi-ai (60+ LLM providers)                 │   │
+│  │  - @oh-my-pi/pi-wire (wire protocol)                    │   │
+│  │  - @oh-my-pi/pi-natives (Rust operations)               │   │
+│  │  - crates/pi-natives (performance critical)             │   │
+│  └─────────────────────────────────────────────────────────┘   │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+### Capas de Blitz
+
+| Capa         | Descripción                       | Ubicación                                          |
+| ------------ | --------------------------------- | -------------------------------------------------- |
+| **Blitz UI** | Interfaz gráfica Electron + React | `apps/desktop/`                                    |
+| **OMP TUI**  | Terminal UI runtime               | `blitz_tui_infraestructura/packages/coding-agent/` |
+| **OMP Core** | Base Rust + TypeScript            | `blitz_tui_infraestructura/`                       |
+
+### Comunicación
+
+```
+Blitz UI App
+    ↓ window.api.sessions.* (IPC)
+Electron Main Process
+    ↓ OMP Process spawn
+OMP TUI
+    ↓ @oh-my-pi/pi-wire
+OMP Core
 ```
 
 ---
 
 ## 6. Monorepo Architecture
 
-El proyecto utiliza un único repositorio. Desktop y Web comparten packages. Mobile es un workspace separado con sus propias dependencias.
+Blitz es un wrapper de OMP. El repositorio contiene:
 
 ```
 orca-blitz/
+├── blitz_tui_infraestructura/    ← OMP Core (submodule/fork)
+│   ├── packages/
+│   │   ├── coding-agent/         ← OMP TUI
+│   │   ├── ai/                   ← LLM providers
+│   │   ├── wire/                 ← Wire protocol
+│   │   ├── natives/              ← Rust bindings
+│   │   └── ...
+│   └── crates/
+│       └── pi-natives/           ← Rust core
+│
 ├── apps/
-│   ├── desktop/             ← Electron
-│   └── web/                 ← Browser
+│   └── desktop/                  ← Blitz UI App (Electron)
+│       ├── src/
+│       │   ├── main/             ← Main process (spawns OMP)
+│       │   ├── preload/          ← IPC bridge
+│       │   └── renderer/         ← React UI
+│       └── package.json
+│
 ├── packages/
-│   ├── shared/
-│   ├── core/
-│   ├── infrastructure/
-│   ├── ui/
-│   ├── features/
-│   ├── ai/
-│   ├── plugins/
-│   └── sdk/
-├── server/
-├── relay/
-├── plugins/
-├── config/
-├── docs/
-└── tests/
+│   ├── shared/                   ← Shared types
+│   ├── ui/                       ← Design system
+│   └── ...
+│
+└── LuxAuth.md                    ← Este documento
 ```
 
-Mobile vive aparte:
+### Relación con OMP
 
-```
-orca-blitz/
-└── mobile/                  ← PROYECTO SEPARADO
-    ├── pnpm-workspace.yaml  ← Sus propias dependencias
-    ├── pnpm-lock.yaml
-    └── package.json
-```
+OMP vive en `blitz_tui_infraestructura/` como un fork o submodule.
+
+Blitz toma:
+
+- **OMP Core** — La base Rust
+- **OMP TUI** — El runtime de terminal
+- **Wire protocol** — La comunicación
+
+Blitz agrega:
+
+- **UI gráfica** — La experiencia visual
+- **Electron** — La plataforma desktop
+- **Integración** — El glue entre OMP y la UI
 
 ---
 
 ## 7. Applications
 
-### Desktop
+### Blitz UI App (Desktop)
+
+La aplicación principal de Blitz — una UI gráfica que envuelve OMP.
 
 Tecnología:
 
@@ -225,45 +293,74 @@ Electron + React + TypeScript
 
 Responsabilidades:
 
-- Crear ventanas.
-- Acceso al sistema operativo.
-- Integraciones nativas.
-- Navegador integrado.
-- Gestión de archivos.
-- Notificaciones.
-
-Electron NO contiene lógica empresarial.
+- **Spawn OMP process** — Iniciar y controlar OMP TUI
+- **UI Rendering** — Mostrar sesiones, chat, terminal, archivos
+- **IPC Communication** — Comunicarse con OMP via wire protocol
+- **File System** — Acceso a archivos del proyecto
+- **Window Management** — Crear y gestionar ventanas
 
 Arquitectura:
 
 ```
-Electron Main
-    |
-    |
-Preload
-    |
-    |
-React Renderer
-    |
-    |
-Shared Packages
+┌─────────────────────────────────────────┐
+│            Electron Main                │
+│                                         │
+│  ┌─────────────┐   ┌─────────────────┐ │
+│  │ OMP Process │   │ Window Manager  │ │
+│  │  (spawned)  │   │                 │ │
+│  └─────────────┘   └─────────────────┘ │
+│           │                             │
+│     Wire Protocol                       │
+│           │                             │
+│  ┌─────────────────────────────────┐   │
+│  │        Preload (IPC)            │   │
+│  └─────────────────────────────────┘   │
+│           │                             │
+│  ┌─────────────────────────────────┐   │
+│  │      React Renderer (UI)        │   │
+│  │  ┌─────┐ ┌─────┐ ┌─────────┐  │   │
+│  │  │Chat │ │Term │ │  Files  │  │   │
+│  │  └─────┘ └─────┘ └─────────┘  │   │
+│  └─────────────────────────────────┘   │
+└─────────────────────────────────────────┘
 ```
 
----
+### OMP TUI (Terminal)
 
-### Web
+La interfaz de terminal que OMP provee — Blitz la envuelve gráficamente.
 
 Tecnología:
 
 ```
-React + TypeScript
+TypeScript + Bun
 ```
 
-Responsabilidad:
+Responsabilidades:
 
-Ser otro cliente del mismo sistema.
+- **Session Management** — Crear, cargar, guardar sesiones
+- **Tool Execution** — Ejecutar herramientas (shell, files, git, LSP)
+- **Agent Runtime** — Comunicarse con providers LLM
+- **Event Bus** — Emitir y escuchar eventos
+- **Wire Protocol** — Comunicación con clientes externos
 
-No contiene lógica empresarial.
+### OMP Core (Foundation)
+
+La base Rust que OMP provee — el corazón del sistema.
+
+Tecnología:
+
+```
+Rust + TypeScript bindings
+```
+
+Responsabilidades:
+
+- **LLM Providers** — 60+ providers (OpenAI, Anthropic, local)
+- **Native Operations** — Text processing, grep, image handling
+- **Performance Critical** — Operaciones que necesitan Rust
+- **Wire Protocol** — Protocolo de comunicación
+
+No contiene lógica de la aplicación.
 
 ---
 
@@ -292,28 +389,28 @@ Ejemplo:
 Windows:
 
 ```
-Dashboard
-CRM
-Automation
-Analytics
+Sessions
+Terminal
+Editor
+Chat
 ```
 
 Linux:
 
 ```
-Dashboard
-CRM
-Automation
-Analytics
+Sessions
+Terminal
+Editor
+Chat
 ```
 
-Android:
+Web:
 
 ```
-Dashboard
-CRM
-Automation
-Analytics
+Sessions
+Terminal
+Editor
+Chat
 ```
 
 La experiencia debe ser consistente.
@@ -374,15 +471,14 @@ Ejemplo:
 ```
 packages/features/
 ├── index.ts
-├── crm/
-├── automation/
-├── analytics/
-├── sales-engine/
-├── self-learning/
-├── advisor/
-├── reporting/
-├── marketing/
-└── ...
+├── sessions/
+├── terminal/
+├── editor/
+├── tools/
+├── chat/
+├── providers/
+├── files/
+└── git/
 ```
 
 Cada feature contiene:
@@ -397,22 +493,21 @@ feature/
 └── events/
 ```
 
-#### Ejemplo CRM
+#### Ejemplo Sessions
 
 ```
-crm/
+sessions/
 domain/
-Customer.ts
-Company.ts
-Lead.ts
+Session.ts
+Message.ts
 application/
-CreateCustomer.ts
-ConvertLead.ts
+CreateSession.ts
+LoadSession.ts
 infrastructure/
-CRMRepository.ts
+SessionRepository.ts
 ui/
-CustomerTable.tsx
-CustomerCard.tsx
+SessionList.tsx
+SessionChat.tsx
 ```
 
 ---
@@ -426,21 +521,19 @@ Ejemplo:
 Nueva función:
 
 ```
-"Crear campaña automática de Navidad"
+"Agregar soporte para nuevo provider LLM"
 ```
 
 Lugar correcto:
 
 ```
-packages/features/marketing/
+packages/features/providers/
 ```
 
 Después automáticamente estará disponible para:
 
 - Desktop.
 - Web.
-- Android.
-- iOS.
 
 ---
 
@@ -455,24 +548,23 @@ Utilizar:
 Ejemplo:
 
 ```
-customer.created
+session.created
     |
     |
-Automation Engine
+Terminal
     |
     |
-Send Welcome Message
+Initialize Shell
 ```
 
 Eventos:
 
 ```
 user.created
-customer.updated
-invoice.created
+session.created
 message.received
-workflow.completed
-ai.generated
+tool.executed
+agent.completed
 ```
 
 ---
@@ -488,7 +580,7 @@ Instalar:
 Plugin:
 
 ```
-WhatsApp Integration
+LSP Support
 ```
 
 La plataforma agrega:
@@ -496,9 +588,9 @@ La plataforma agrega:
 Capability:
 
 ```
-sendMessage()
-receiveMessage()
-templates()
+diagnostics()
+completions()
+hover()
 ```
 
 Sin modificar el Core.
@@ -511,32 +603,32 @@ La IA no es solamente chat.
 
 Debe funcionar como:
 
-### Business Intelligence Assistant
+### Coding Assistant
 
 Capacidades:
 
-- Analizar datos.
-- Detectar patrones.
-- Crear recomendaciones.
-- Generar campañas.
+- Analizar código.
+- Detectar errores.
+- Crear refactorizaciones.
+- Generar código.
 - Explicar problemas.
-- Automatizar decisiones.
+- Automatizar tareas.
 
 Ejemplo:
 
 Sistema:
 
-- Las ventas bajaron 15%.
+- Hay un bug en el módulo de autenticación.
 - Razones detectadas:
-- Menos clientes recurrentes.
-- Producto X perdió demanda.
-- Competidor lanzó promoción.
+- Token no se valida correctamente.
+- Falta manejo de errores.
+- Timeout no configurado.
 
 Recomendaciones:
 
-- Crear campaña.
-- Ajustar precio.
-- Contactar clientes antiguos.
+- Corregir validación.
+- Agregar try-catch.
+- Configurar timeout.
 
 ---
 
@@ -589,7 +681,7 @@ Repository Pattern
 Ejemplo:
 
 ```
-CustomerRepository
+SessionRepository
 |
 |
 PostgreSQL
@@ -682,31 +774,25 @@ utils/
 Ejemplo:
 
 ```
-export interface Customer {
+export interface Session {
     id: string;
-    name: string;
-    email: string;
+    title: string;
+    cwd: string;
 }
 ```
 
-Todos los clientes utilizan exactamente la misma definición.
+Todas las plataformas utilizan exactamente la misma definición.
 
 Desktop:
 
 ```
-import { Customer } from "@shared/types";
-```
-
-Mobile:
-
-```
-import { Customer } from "@shared/types";
+import { Session } from "@shared/types";
 ```
 
 Web:
 
 ```
-import { Customer } from "@shared/types";
+import { Session } from "@shared/types";
 ```
 
 ## 20. Core Package
@@ -721,7 +807,7 @@ packages/core/
 
 Responsabilidades:
 
-- Reglas de negocio.
+- Reglas de la aplicación.
 - Entidades.
 - Casos de uso.
 - Eventos.
@@ -731,7 +817,6 @@ No conoce:
 
 - Electron.
 - React.
-- React Native.
 - Navegadores.
 - UI.
 
@@ -753,26 +838,27 @@ Ejemplo
 Entidad:
 
 ```
-Customer.ts
-class Customer {
+Session.ts
+class Session {
 id:string;
-name:string;
+title:string;
+cwd:string;
 }
 ```
 
 Servicio:
 
 ```
-CustomerService
-createCustomer()
-updateCustomer()
-deleteCustomer()
+SessionService
+createSession()
+updateSession()
+deleteSession()
 ```
 
 Repositorio:
 
 ```
-CustomerRepository
+SessionRepository
 save()
 find()
 remove()
@@ -780,18 +866,20 @@ remove()
 
 ## 21. Feature Architecture
 
-Cada módulo empresarial vive separado.
+Cada módulo vive separado.
 
 Ejemplo:
 
 ```
 features/
-crm/
-automation/
-marketing/
-sales/
-inventory/
-support/
+sessions/
+terminal/
+editor/
+tools/
+chat/
+providers/
+files/
+git/
 ```
 
 Cada feature contiene:
@@ -804,22 +892,21 @@ infrastructure/
 ui/
 ```
 
-#### Ejemplo CRM
+#### Ejemplo Sessions
 
 ```
-crm/
+sessions/
 domain/
-Customer.ts
-Company.ts
-Lead.ts
+Session.ts
+Message.ts
 application/
-CreateCustomer.ts
-ConvertLead.ts
+CreateSession.ts
+LoadSession.ts
 infrastructure/
-CRMRepository.ts
+SessionRepository.ts
 ui/
-CustomerTable.tsx
-CustomerCard.tsx
+SessionList.tsx
+SessionChat.tsx
 ```
 
 ## 22. Runtime Architecture
@@ -893,7 +980,7 @@ Puede:
 No puede:
 
 - Renderizar UI.
-- Tener lógica empresarial.
+- Tener lógica de la aplicación.
 
 #### Main Structure
 
@@ -902,17 +989,17 @@ main/
 ├── index.ts
 ├── ipc/
 │   ├── register-core-handlers.ts
-│   ├── customers.ts
-│   ├── workflows.ts
-│   ├── integrations.ts
-│   └── reports.ts
+│   ├── sessions.ts
+│   ├── tools.ts
+│   ├── terminal.ts
+│   └── providers.ts
 ├── persistence/
 │   ├── store.ts
 │   ├── schema.ts
 │   └── migrations/
-├── runtime/
-│   ├── orca-runtime.ts
-│   └── rpc/
+├── omp/
+│   ├── omp-process.ts
+│   └── wire-protocol.ts
 ├── window/
 ├── browser/
 ├── plugins/
@@ -956,21 +1043,21 @@ Main:
 
 ```
 ipcMain.handle(
-"customer:create",
-createCustomer
+"session:create",
+createSession
 )
 ```
 
 Preload:
 
 ```
-window.api.customer.create()
+window.api.session.create()
 ```
 
 React:
 
 ```
-window.api.customer.create(data)
+window.api.session.create(data)
 ```
 
 ## 27. IPC Architecture
@@ -1004,7 +1091,7 @@ ipcRenderer.send(
 Siempre:
 
 ```
-api.customer.create()
+api.session.create()
 ```
 
 Cada acción tiene:
@@ -1039,7 +1126,7 @@ Gestiona:
 
 ```
 Architecture
-Automation
+Agent Runtime
     |
     |
 Browser Manager
@@ -1050,13 +1137,13 @@ Electron BrowserView
 
 Ejemplo
 
-WhatsApp Plugin:
+LSP Plugin:
 
 Solicita:
 
 ```
 browser.createSession({
-name:"whatsapp"
+name:"typescript-lsp"
 })
 ```
 
@@ -1067,7 +1154,7 @@ Crea:
 Session:
 
 ```
-whatsapp-profile
+typescript-lsp-profile
 ```
 
 Cookies:
@@ -1090,10 +1177,9 @@ Ejemplo:
 
 ```
 Profiles/
-whatsapp/
-instagram/
-facebook/
-google/
+typescript-lsp/
+rust-analyzer/
+python-lsp/
 ```
 
 No compartir:
@@ -1102,9 +1188,9 @@ No compartir:
 - Tokens.
 - Sesiones.
 
-## 30. Automation Engine
+## 30. Tool Execution Engine
 
-El sistema de automatizaciones es un motor propio.
+El sistema de ejecución de herramientas es un motor propio.
 
 No depende de una herramienta externa.
 
@@ -1112,7 +1198,7 @@ No depende de una herramienta externa.
 Concepto
 ```
 
-Una automatización es:
+Una ejecución de herramienta es:
 
 ```
 Trigger
@@ -1125,22 +1211,20 @@ Actions
 Ejemplo:
 
 ```
-Cuando llega un mensaje
+Cuando el usuario escribe un comando
 SI
-cliente es nuevo
+el comando es válido
 ENTONCES
-crear contacto
-enviar bienvenida
-Workflow Architecture
-Workflow
+ejecutar comando
+capturar output
+Tool Execution Architecture
+Tool
 |
-Trigger
-|
-Rules
-|
-Actions
+Input
 |
 Execution
+|
+Output
 |
 Logs
 ```
@@ -1151,41 +1235,39 @@ Todas las partes del sistema comunican eventos.
 
 Ejemplo:
 
-Cliente creado:
+Sesión creada:
 
 ```
 event.emit(
-"customer.created",
-customer
+"session.created",
+session
 )
 ```
 
 Escuchan:
 
-CRM:
+Terminal:
 
 ```
-guardar historial
+iniciar proceso
 ```
 
-Marketing:
+Editor:
 
 ```
-crear segmento
+cargar archivos
 ```
 
-IA:
+Chat:
 
 ```
-analizar cliente
+cargar historial
 Event Examples
 user.created
-customer.created
+session.created
 message.received
-sale.completed
-workflow.started
-workflow.finished
-ai.analysis.completed
+tool.executed
+agent.completed
 ```
 
 ## 32. Plugin Architecture
@@ -1196,12 +1278,12 @@ Ejemplos:
 
 Plugins:
 
-- WhatsApp.
-- Instagram.
-- ERP.
-- CRM externo.
-- Email.
-- IA.
+- LSP.
+- DAP.
+- Git.
+- Theme.
+- AI Provider.
+- Terminal.
 
 #### Plugin Structure
 
@@ -1220,11 +1302,11 @@ Ejemplo:
 
 ```
 {
-"name":"whatsapp",
+"name":"lsp-typescript",
 "version":"1.0.0",
-"permissions":[
-"browser",
-"messages"
+"permissions:[
+"lsp",
+"diagnostics"
 ]
 }
 ```
@@ -1240,8 +1322,8 @@ packages/sdk/
 Para crear:
 
 - Plugins.
-- Integraciones.
-- Automatizaciones.
+- Extensions.
+- Tools.
 
 Ejemplo:
 
@@ -1268,14 +1350,14 @@ Un módulo solamente recibe permisos necesarios.
 
 Ejemplo:
 
-- Plugin WhatsApp:
+- Plugin LSP:
 
 Permisos:
 
 ```
-browser
-messages
-contacts
+diagnostics
+completions
+hover
 ```
 
 No tiene:
@@ -1290,20 +1372,18 @@ system
 
 Caso:
 
-Cliente envía mensaje.
+Usuario ejecuta comando.
 
 ```
-WhatsApp
+Terminal Input
 ↓
-Browser Manager
+Shell Process
 ↓
-Plugin WhatsApp
+Command Execution
 ↓
 Event Bus
 ↓
-Automation Engine
-↓
-CRM
+Session Manager
 ↓
 AI Analysis
 ↓
@@ -1320,7 +1400,6 @@ Nunca:
 
 ```
 Crear código en Desktop
-Crear código en Mobile
 Crear código en Web
 ```
 
@@ -1337,7 +1416,7 @@ Registrar en el Registry
 
 ## 37. Golden Architecture Rule
 
-La aplicación debe poder reemplazar cualquier cliente.
+La aplicación debe poder reemplazar cualquier plataforma.
 
 Ejemplo:
 
@@ -1353,7 +1432,7 @@ NO debe romper:
 Cambiar React:
 
 - NO debe romper:
-- Business Logic.
+- Application Logic.
 - Data.
 - Services.
 
@@ -1386,11 +1465,9 @@ Incorrecto:
 
 ```
 desktop/
-CustomerPage.tsx
-mobile/
-CustomerPage.tsx
+SessionPage.tsx
 web/
-CustomerPage.tsx
+SessionPage.tsx
 ```
 
 Esto genera:
@@ -1407,8 +1484,8 @@ Correcto:
 packages/
 ui/
 features/
-crm/
-    CustomerPage.tsx
+sessions/
+    SessionPage.tsx
 ```
 
 Todos consumen la misma implementación.
@@ -1449,7 +1526,7 @@ Contiene solamente:
 
 Nunca contiene:
 
-- Lógica empresarial.
+- Lógica de la aplicación.
 - API calls.
 - Base de datos.
 
@@ -1588,16 +1665,16 @@ ModalLayout
 
 #### Business Components
 
-Componentes con información empresarial.
+Componentes con información de la aplicación.
 
 Ejemplo:
 
 ```
-CustomerCard
-InvoiceCard
-ProductCard
+SessionCard
+ToolCallCard
 MessageBubble
-WorkflowNode
+FileTree
+TerminalOutput
 ```
 
 ## 45. Feature UI
@@ -1608,11 +1685,11 @@ Ejemplo:
 
 ```
 features/
-crm/
+sessions/
 ui/
-CustomerTable.tsx
-CustomerDetails.tsx
-CustomerTimeline.tsx
+SessionList.tsx
+SessionChat.tsx
+SessionHistory.tsx
 ```
 
 Pero utilizan:
@@ -1628,10 +1705,10 @@ Una pantalla no debe contener lógica.
 Incorrecto:
 
 ```
-function Customers(){
-fetchCustomers()
+function Sessions(){
+fetchSessions()
 calculateStats()
-saveCustomer()
+saveSession()
 return <Table />
 }
 ```
@@ -1639,12 +1716,12 @@ return <Table />
 Correcto:
 
 ```
-function Customers(){
-const customers =
-useCustomers()
+function Sessions(){
+const sessions =
+useSessions()
 return (
-<CustomerTable
-data={customers}
+<SessionTable
+data={sessions}
 />
 )
 }
@@ -1691,9 +1768,9 @@ Datos externos.
 
 Ejemplo:
 
-- Clientes.
-- Productos.
-- Ventas.
+- Sesiones.
+- Mensajes.
+- Herramientas.
 - Herramienta:
 - TanStack Query.
 
@@ -1725,21 +1802,21 @@ Database
 
 ## 49. Example Complete Flow
 
-Usuario crea cliente.
+Usuario crea sesión.
 
 ```
 UI
-CustomerForm
+SessionForm
 ```
 
 llama:
 
 ```
-useCreateCustomer()
+useCreateSession()
 Hook
-createCustomer(data)
+createSession(data)
 Application Service
-CustomerService.create()
+SessionService.create()
 Core
 ```
 
@@ -1765,7 +1842,7 @@ Event
 Emite:
 
 ```
-customer.created
+session.created
 ```
 
 ## 50. Responsive Philosophy
@@ -1972,7 +2049,7 @@ Ejemplo:
 Nueva función:
 
 ```
-"Gestión de proveedores"
+"Soporte para nuevo provider LLM"
 ```
 
 Proceso:
@@ -1990,7 +2067,7 @@ provider.created
 4.
 Crear componentes UI
 ProviderCard
-ProviderTable
+ProviderList
 5.
 Crear pantalla
 ProvidersPage
@@ -2009,16 +2086,16 @@ Resultado:
                    |
         ---------------------
         |         |         |
-     Desktop     Web    Mobile
-        |         |         |
-     Electron  Browser React Native
+     Desktop     Web
+        |         |
+     Electron  Browser
 ```
 
 ## 62. Main UI Principle
 
-La plataforma no tiene tres aplicaciones.
+La plataforma no tiene dos aplicaciones.
 
-Tiene una aplicación ejecutándose en tres tipos de clientes.
+Tiene una aplicación ejecutándose en dos tipos de plataformas.
 
 ---
 
@@ -2026,8 +2103,8 @@ Tiene una aplicación ejecutándose en tres tipos de clientes.
 
 La plataforma debe separar completamente:
 
-- Cliente.
-- Lógica empresarial.
+- Presentación.
+- Lógica de la aplicación.
 - Infraestructura.
 
 Arquitectura general:
@@ -2036,7 +2113,6 @@ Arquitectura general:
 Client Applications
 Desktop
 Web
-Mobile
     |
     |
 API Gateway
@@ -2063,11 +2139,10 @@ Responsabilidades:
 
 - Autenticación.
 - Usuarios.
-- Organizaciones.
 - Datos.
-- Automatizaciones.
+- Sesiones.
 - IA.
-- Integraciones.
+- Plugins.
 - Permisos.
 
 ---
@@ -2118,12 +2193,11 @@ server/
 │   │   ├── index.ts
 │   │   ├── auth.routes.ts
 │   │   ├── users.routes.ts
-│   │   ├── organizations.routes.ts
-│   │   ├── customers.routes.ts
-│   │   ├── workflows.routes.ts
+│   │   ├── sessions.routes.ts
+│   │   ├── providers.routes.ts
 │   │   ├── ai.routes.ts
-│   │   ├── integrations.routes.ts
-│   │   ├── reports.routes.ts
+│   │   ├── tools.routes.ts
+│   │   ├── files.routes.ts
 │   │   └── plugins.routes.ts
 │   ├── services/
 │   ├── workers/
@@ -2164,11 +2238,11 @@ Ejemplo:
 
 ```
 GET
-/customers
+/sessions
 POST
-/customers
+/sessions
 PUT
-/customers/:id
+/sessions/:id
 ```
 
 ---
@@ -2219,36 +2293,36 @@ createdAt:Date;
 }
 ```
 
-## 69. Organization System
+## 69. Workspace System
 
-La unidad principal no es el usuario.
-
-Es la organización.
+Dentro de un usuario pueden existir espacios.
 
 Ejemplo:
 
-Empresa:
+Usuario:
 
 ```
-Empresa ABC
+Personal
     |
     |
-Usuarios
+Projects
     |
     |
-Permisos
-Organization Model
-Organization
+Workspaces
+    |
+    |
+Settings
+Workspace Model
+Workspace
 id
 name
-plan
 settings
 createdAt
 ```
 
 ## 70. Multi Tenant Architecture
 
-La plataforma debe soportar múltiples empresas.
+La plataforma debe soportar múltiples usuarios.
 
 Ejemplo:
 
@@ -2256,60 +2330,59 @@ Ejemplo:
 Database
    |
    |
-Organization A
-Customers
-Automations
-Users
-Organization B
-Customers
-Automations
-Users
+User A
+Sessions
+Projects
+Settings
+User B
+Sessions
+Projects
+Settings
 ```
 
 #### Tenant Isolation
 
-Todo dato debe pertenecer a una organización.
+Todo dato debe pertenecer a un usuario.
 
 Ejemplo:
 
 Incorrecto:
 
 ```
-Customer
+Session
 id
-name
+title
 ```
 
 Correcto:
 
 ```
-Customer
+Session
 id
-organizationId
-name
+userId
+title
 ```
 
 ## 71. Workspace System
 
-Dentro de una empresa pueden existir espacios.
+Dentro de un usuario pueden existir espacios.
 
 Ejemplo:
 
-Empresa:
+Usuario:
 
 ```
-Marketing
-Ventas
-Soporte
-Administración
+Frontend
+Backend
+DevOps
+Personal
 ```
 
 Cada workspace puede tener:
 
-- Usuarios.
-- Automatizaciones.
-- Datos.
+- Proyectos.
 - Configuración.
+- Settings.
 
 ## 72. Permission System
 
@@ -2322,8 +2395,7 @@ Roles:
 ```
 Owner
 Admin
-Manager
-Employee
+Developer
 Viewer
 Permissions
 ```
@@ -2331,11 +2403,10 @@ Permissions
 Ejemplo:
 
 ```
-customers.read
-customers.create
-customers.delete
-automation.execute
-automation.manage
+sessions.read
+sessions.create
+sessions.delete
+tools.execute
 plugins.install
 Permission Flow
 User Action
@@ -2380,8 +2451,6 @@ Ejemplo:
     |
 Desktop Session
     |
-Mobile Session
-    |
 Web Session
 ```
 
@@ -2416,9 +2485,9 @@ Siempre:
         |
 Database Adapter
     Example
-CustomerService
+SessionService
         |
-CustomerRepository
+SessionRepository
         |
 ----------------
 	PostgreSQL
@@ -2489,10 +2558,10 @@ Funciones críticas deben funcionar sin conexión.
 
 Ejemplos:
 
-- Ver clientes.
+- Ver historial de sesiones.
 - Crear notas.
-- Crear tareas.
-- Revisar automatizaciones.
+- Editar archivos.
+- Revisar código.
 
 ## 78. AI Architecture
 
@@ -2504,12 +2573,12 @@ No una simple ventana de chat.
 
 Debe permitir:
 
-- Chat empresarial.
+- Chat con código.
 - Análisis.
 - Recomendaciones.
 - Generación.
-- Automatización.
-- Predicción.
+- Refactorización.
+- Depuración.
 
 ```
 AI Layer
@@ -2581,7 +2650,7 @@ Utilizar:
 
 ## 81. Platform AI Key
 
-La empresa desarrolladora puede ofrecer:
+El equipo desarrollador puede ofrecer:
 
 ```
 Managed AI
@@ -2613,7 +2682,7 @@ Preferencias.
 
 #### Organization Memory
 
-Información empresarial.
+Información del proyecto.
 
 #### Conversation Memory
 
@@ -2632,16 +2701,16 @@ Prompt Builder
 AI Provider
 ```
 
-## 83. Business Intelligence Engine
+## 83. Code Intelligence Engine
 
-La IA debe analizar eventos.
+La IA debe analizar código.
 
 Ejemplo:
 
 Evento:
 
 ```
-sales.decreased
+error.detected
 ```
 
 Proceso:
@@ -2649,7 +2718,7 @@ Proceso:
 ```
 Event
  |
-Analytics Engine
+Code Analysis Engine
  |
 AI Analysis
  |
@@ -2658,45 +2727,49 @@ Recommendation
 
 Resultado:
 
-Las ventas bajaron 15%.
+Hay errores en el módulo de autenticación.
 
 Motivos:
 
-- Menor frecuencia de compra.
-- Menos clientes nuevos.
+- Token no se valida correctamente.
+- Falta manejo de errores.
 
 Acciones sugeridas:
 
-- Crear campaña.
-- Contactar clientes antiguos.
+- Corregir validación.
+- Agregar try-catch.
 
-## 84. Automation + AI
+## 84. Code Generation + AI
 
-La IA puede crear automatizaciones.
+La IA puede generar código.
 
 Ejemplo:
 
 Usuario:
 
 ```
-"Quiero mejorar mis ventas"
+"Necesito una función para parsear JSON"
 ```
 
 Sistema:
 
 - Analiza:
-- Clientes.
-- Productos.
-- Historial.
+- Contexto del proyecto.
+- Código existente.
+- Dependencias.
 
 Propone:
 
-Workflow:
+Código:
 
-```
-Cuando cliente no compra durante 60 días
-Enviar mensaje personalizado
-Crear seguimiento
+```typescript
+function parseJSON(data: string) {
+try {
+return JSON.parse(data);
+} catch (error) {
+throw new Error(`Failed to parse JSON: ${error}`);
+}
+}
 ```
 
 ## 85. Notification System
@@ -2725,27 +2798,27 @@ Tipos:
 ```
 System Logs
 User Logs
-Automation Logs
+Tool Execution Logs
 AI Logs
 Security Logs
 ```
 
 ## 87. Audit System
 
-Las empresas necesitan trazabilidad.
+Los proyectos necesitan trazabilidad.
 
 Ejemplo:
 
 Usuario:
 
 ```
-Carlos
+Developer
 ```
 
 Acción:
 
 ```
-Eliminó cliente
+Executed Shell Command
 ```
 
 Fecha:
@@ -2768,7 +2841,6 @@ Resultado:
                 Clients
 Desktop
 Web
-Mobile
                     |
                  API
                     |
@@ -2776,12 +2848,12 @@ Mobile
                     |
         -----------------------
         |          |          |
-    Database    AI       Integrations
+    Database    AI       Tools
 ```
 
 ## 89. Backend Golden Rules
 
-- Toda lógica empresarial vive en servicios.
+- Toda lógica de la aplicación vive en servicios.
 - Nunca conectar UI directamente con datos.
 - Toda acción importante genera eventos.
 - Toda integración externa usa adapters.
@@ -2790,176 +2862,169 @@ Mobile
 
 ---
 
-## 90. Automation Platform Philosophy
+## 90. Tool Execution Philosophy
 
-La automatización es una de las partes centrales del sistema.
+La ejecución de herramientas es una de las partes centrales del sistema.
 
 No debe ser solamente:
 
 ```
-"Enviar mensajes"
+"Ejecutar comandos"
 ```
 
-Debe ser un motor capaz de automatizar procesos completos.
+Debe ser un motor capaz de ejecutar herramientas complejas.
 
 Ejemplos:
 
-- Atención al cliente.
-- Ventas.
-- Marketing.
-- Inventario.
-- Finanzas.
-- Recursos humanos.
-- Operaciones.
+- Terminal.
+- Editor.
+- Git.
+- LSP.
+- DAP.
+- File operations.
+- Search.
 
 ---
 
-## 91. Automation Engine
+## 91. Tool Execution Engine
 
-El Automation Engine es un sistema independiente.
+El Tool Execution Engine es un sistema independiente.
 
 Ubicación:
 
 ```
-packages/automation/
+packages/tools/
 ```
 
 Responsabilidades:
 
-- Crear workflows.
-- Ejecutar workflows.
+- Ejecutar herramientas.
 - Controlar estados.
 - Manejar errores.
 - Registrar historial.
-- Ejecutar acciones.
+- Retornar resultados.
 
 ---
 
-## 92. Workflow Concept
+## 92. Tool Execution Concept
 
-Un workflow está compuesto por:
+Una ejecución de herramienta está compuesta por:
 
 ```
-Trigger
-Nodes
-Conditions
-Actions
+Input
+Tool
 Execution
+Output
 ```
 
 Ejemplo:
 
 ```
-Nuevo cliente creado
+User Input
     |
     |
-Validar información
+Shell Command
     |
     |
-Enviar bienvenida
+Execute
     |
     |
-Crear tarea comercial
+Output
 ```
 
 ---
 
-## 93. Workflow Model
+## 93. Tool Execution Model
 
 Entidad principal:
 
 ```
-Workflow
+ToolExecution
 ```
 
 Modelo:
 
 ```
-interface Workflow {
+interface ToolExecution {
 id:string;
-organizationId:string;
-name:string;
-status:"active"|"inactive";
-nodes:Node[];
+userId:string;
+toolName:string;
+status:"pending"|"running"|"completed"|"error";
+input:unknown;
+output:unknown;
 createdAt:Date;
 }
 ```
 
-## 94. Node System
+## 94. Tool System
 
-Todo dentro del workflow es un nodo.
+Cada herramienta es un módulo independiente.
 
 Tipos:
 
 ```
-Trigger Node
-Action Node
-Condition Node
-Transform Node
-AI Node
-Integration Node
+Shell Tool
+File Tool
+Search Tool
+LSP Tool
+DAP Tool
+Git Tool
+AI Tool
 ```
 
-## 95. Trigger Nodes
+## 95. Shell Tool
 
-Inician un workflow.
+Ejecuta comandos en el shell.
 
 Ejemplos:
 
 ```
-customer.created
-message.received
-sale.completed
-schedule.time
-webhook.received
+ls -la
+git status
+npm install
 ```
 
-## 96. Action Nodes
+## 96. File Tool
 
-Ejecutan acciones.
+Opera con archivos.
 
 Ejemplos:
 
 ```
-sendMessage()
-createCustomer()
-updateDatabase()
-sendEmail()
-createTask()
+readFile()
+writeFile()
+deleteFile()
+renameFile()
 ```
 
-## 97. Condition Nodes
+## 97. Search Tool
 
-Permiten lógica.
+Busca en el código fuente.
 
 Ejemplo:
 
 ```
-IF
-customer.totalPurchases > 1000
-THEN
-VIP Customer
-ELSE
-Normal Customer
+grep -r "function" .
+find . -name "*.ts"
 ```
 
-## 98. AI Nodes
+## 98. AI Tool
 
-La IA es un nodo más.
+La IA es una herramienta más.
 
 Ejemplo:
 
 ```
-Message Received
+User Input
         |
         |
-AI Analyze Intent
+AI Analysis
         |
         |
-Select Response
+Code Generation
 ```
 
-## 99. Workflow Execution Engine
+## 99. Tool Execution Engine
 
 Cada ejecución tiene un contexto.
 
@@ -2967,19 +3032,19 @@ Ejemplo:
 
 ```
 ExecutionContext {
-	workflowId:string;
-	variables:Object;
+	toolName:string;
+	input:unknown;
 	user:Object;
-	organization:Object;
+	project:Object;
 }
 
 Execution Flow
 
-Workflow Start
+Tool Start
         |
 	Load Context
         |
-	Execute Node
+	Execute Tool
         |
 	Save Result
         |
@@ -2994,10 +3059,10 @@ Toda ejecución debe guardarse.
 
 Ejemplo:
 
-Workflow:
+Tool:
 
 ```
-Customer Welcome
+Shell Command
 ```
 
 Execution:
@@ -3014,20 +3079,20 @@ Completed
 
 Steps:
 
-1. Customer Created
-2. Email Sent
-3. Task Created
+1. Command Executed
+2. Output Captured
+3. Result Returned
 
 ## 101. Error Handling
 
-Los workflows deben soportar errores.
+Las herramientas deben soportar errores.
 
 Ejemplo:
 
 ```
-Enviar mensaje
+Execute Command
        X
-WhatsApp error
+Command Error
        |
 Retry
        |
@@ -3044,20 +3109,18 @@ Fallback action
 Notification
 ```
 
-## 102. Visual Workflow Builder
+## 102. Visual Tool Builder
 
-La interfaz debe permitir crear workflows visualmente.
+La interfaz debe permitir crear herramientas visualmente.
 
 Ejemplo:
 
 ```
-[Trigger]
+[Input]
     |
-[Condition]
+[Tool]
     |
-   [AI]
-    |
-[Action]
+[Output]
 ```
 
 #### Builder Architecture
@@ -3069,16 +3132,16 @@ No ejecuta.
 Flujo:
 
 ```
-Workflow Builder UI
+Tool Builder UI
         |
-Workflow Definition
+Tool Definition
         |
-Automation Engine
+Tool Execution Engine
         |
 	Execution
 ```
 
-## 103. Workflow Definition Format
+## 103. Tool Definition Format
 
 Formato interno:
 
@@ -3088,16 +3151,16 @@ Ejemplo:
 
 ```
 {
-	"name":"Customer Welcome",
-	"nodes":[
-		{
-			"type":"trigger",
-			"event":"customer.created"
-		},
-		{
-			"type":"action",
-			"action":"sendMessage"
-		}
+	"name":"Shell Command",
+	"input":{
+		"command":"ls -la"
+	},
+	"output":{
+		"stdout":"",
+		"stderr":"",
+		"exitCode":0
+	}
+}
 	]
 }
 ```
@@ -3113,7 +3176,7 @@ Incorrecto:
 ```
 Core
  |
-WhatsApp API
+LSP API
 ```
 
 Correcto:
@@ -3123,7 +3186,7 @@ Core
  |
 Integration Layer
  |
-WhatsApp Plugin
+LSP Plugin
 ```
 
 ## 105. Integration Layer
@@ -3135,7 +3198,7 @@ Incorrecto:
 ```
 Core
 ↓
-WhatsApp API
+LSP API
 ```
 
 Correcto:
@@ -3145,18 +3208,17 @@ Core
 ↓
 Integration Layer
 ↓
-WhatsApp Plugin
+LSP Plugin
 ```
 
 Ubicación:
 
 ```
 plugins/
-├── whatsapp/
-├── instagram/
-├── email/
-├── telegram/
-└── payments/
+├── lsp/
+├── dap/
+├── git/
+└── theme/
 ```
 
 ## 106. Integration Adapter Pattern
@@ -3166,53 +3228,48 @@ Todas las integraciones tienen una interfaz común.
 Ejemplo:
 
 ```
-interface MessagingProvider {
-sendMessage()
-receiveMessage()
-getContacts()
+interface LSPProvider {
+diagnose()
+complete()
+hover()
 }
 ```
 
 Entonces:
 
-WhatsApp:
+TypeScript:
 
 ```
-class WhatsAppProvider
-implements MessagingProvider
+class TypeScriptLSPProvider
+implements LSPProvider
 ```
 
-Email:
+Rust:
 
 ```
-class EmailProvider
-implements MessagingProvider
+class RustAnalyzerProvider
+implements LSPProvider
 ```
 
 ## 107. Supported Integrations
 
 Primera etapa:
 
-Comunicación:
+Lenguajes:
 
-- WhatsApp.
-- Instagram.
-- Facebook Messenger.
-- Email.
-- Telegram.
+- TypeScript.
+- JavaScript.
+- Python.
+- Rust.
+- Go.
 
-Negocio:
+Herramientas:
 
-- CRM.
-- ERP.
-- E-commerce.
-- Payments.
-
-Productividad:
-
-- Calendar.
-- Documents.
-- Storage.
+- LSP.
+- DAP.
+- Git.
+- Shell.
+- File System.
 
 ## 108. Plugin System
 
@@ -3221,10 +3278,9 @@ La plataforma debe permitir extensiones externas.
 Un plugin puede agregar:
 
 - Integraciones.
-- Pantallas.
-- Automatizaciones.
-- Nodos.
+- Herramientas.
 - Herramientas IA.
+- Lenguajes.
 
 ## 109. Plugin Architecture
 
@@ -3259,12 +3315,12 @@ Ejemplo:
 
 ```
 {
-	"name":"whatsapp-plugin",
+	"name":"lsp-typescript",
 	"version":"1.0.0",
 	"author":"Developer",
 	"permissions":[
-		"messages",
-		"contacts"
+		"lsp",
+		"diagnostics"
 	]
 }
 ```
@@ -3291,14 +3347,14 @@ Un plugin nunca tiene acceso total.
 
 Ejemplo:
 
-WhatsApp:
+LSP Plugin:
 
 Permitido:
 
 ```
-messages.send
-messages.receive
-contacts.read
+diagnostics
+completions
+hover
 ```
 
 No permitido:
@@ -3316,9 +3372,9 @@ La plataforma debe tener un marketplace.
 Permite:
 
 - Instalar plugins.
-- Compartir workflows.
+- Compartir herramientas.
 - Compartir plantillas.
-- Compartir integraciones.
+- Compartir configuraciones.
 
 ```
 Marketplace Architecture
@@ -3365,16 +3421,10 @@ Plugins:
 createPlugin()
 ```
 
-Eventos:
+Herramientas:
 
 ```
-subscribeEvent()
-```
-
-Automatizaciones:
-
-```
-createNode()
+createTool()
 ```
 
 UI:
@@ -3416,16 +3466,6 @@ Características:
 - Auto hospedado.
 - Usuario coloca sus API Keys.
 
-#### Cloud Edition
-
-Servicio administrado:
-
-Incluye:
-
-- Hosting.
-- Actualizaciones.
-- IA administrada.
-
 Soporte.
 
 ## 119. Feature Flags
@@ -3443,7 +3483,7 @@ feature.isEnabled(
 Usos:
 
 - Beta testing.
-- Planes comerciales.
+- Feature flags.
 - Experimentos.
 
 ## 120. Versioning Strategy
@@ -3464,7 +3504,7 @@ Plugin:
 2.1.0
 ```
 
-Workflow:
+Tool:
 
 ```
 1.5.0
@@ -3493,7 +3533,6 @@ Componentes:
 ```
 Application Update
 Plugin Update
-Database Migration
 Configuration Migration
 ```
 
@@ -3506,14 +3545,14 @@ Ejemplo:
 Antes:
 
 ```
-Customer.name
+Session.title
 ```
 
 Después:
 
 ```
-Customer.firstName
-Customer.lastName
+Session.name
+Session.description
 ```
 
 Debe existir:
@@ -3527,11 +3566,10 @@ Migration Script
 Repositorio:
 
 ```
-orca-blitz/
+Blitz/
 ├── apps/
 │   ├── desktop/
-│   ├── web/
-│   └── mobile/
+│   └── web/
 ├── packages/
 │   ├── shared/
 │   ├── core/
@@ -3556,7 +3594,7 @@ Los colaboradores pueden agregar:
 
 - Plugins.
 - Componentes.
-- Integraciones.
+- Herramientas.
 - Mejoras.
 - Pero deben seguir:
 - Arquitectura.
@@ -3564,34 +3602,34 @@ Los colaboradores pueden agregar:
 - Tests.
 - Documentación.
 
-## 126. Final Automation Architecture
+## 126. Final Tool Execution Architecture
 
 Resultado:
 
 ```
                 User
                   |
-          Workflow Builder
+          Tool Builder
                   |
-          Workflow Definition
+          Tool Definition
                   |
-          Automation Engine
+          Tool Execution Engine
                   |
         ---------------------
         |         |         |
-    Actions    AI     Integrations
+    Shell    File    Search
                   |
               Execution
                   |
                Logs
 ```
 
-## 127. Automation Golden Rules
+## 127. Tool Execution Golden Rules
 
-- Los workflows son datos, no código.
-- Toda acción importante genera eventos.
+- Las herramientas son datos, no código.
+- Toda ejecución importante genera eventos.
 - Las integraciones son plugins.
-- La IA es un componente del workflow.
+- La IA es una herramienta más.
 - Todo debe poder auditarse.
 - Todo debe poder exportarse.
 
@@ -3745,7 +3783,7 @@ Plugin
  |
 Permission Layer
  |
-Allowed APIs
+Allowed Tools
 ```
 
 ## 136. Audit Logs
@@ -3757,13 +3795,13 @@ Ejemplo:
 User:
 
 ```
-Maria
+Developer
 ```
 
 Action:
 
 ```
-Created Automation
+Executed Shell Command
 ```
 
 Date:
@@ -3772,10 +3810,10 @@ Date:
 2026-01-01
 ```
 
-Organization:
+Project:
 
 ```
-Company A
+my-project
 ```
 
 ## 137. Security Events
@@ -3788,7 +3826,7 @@ user.logout
 permission.changed
 api_key.created
 plugin.installed
-data.exported
+tool.executed
 ```
 
 ## 138. Testing Strategy
@@ -3813,8 +3851,8 @@ Prueban piezas pequeñas.
 Ejemplo:
 
 ```
-CustomerService
-WorkflowParser
+SessionService
+ToolExecutor
 PermissionChecker
 ```
 
@@ -3841,9 +3879,9 @@ Ejemplo:
 ```
 User Login
         |
-Create Customer
+Create Session
         |
-Run Automation
+Execute Tool
         |
 Verify Result
 ```
@@ -3864,7 +3902,7 @@ Medir:
 - Tiempo de carga.
 - Uso memoria.
 - Ejecuciones simultáneas.
-- Workflows grandes.
+- Herramientas complejas.
 
 ## 144. Code Quality Rules
 
@@ -3891,24 +3929,24 @@ Activar:
 Archivos:
 
 ```
-CustomerService.ts
-CustomerRepository.ts
-CustomerCard.tsx
+SessionService.ts
+SessionRepository.ts
+SessionCard.tsx
 ```
 
 Clases:
 
 ```
-CustomerService
-WorkflowEngine
+SessionService
+ToolExecutor
 PluginManager
 ```
 
 Funciones:
 
 ```
-createCustomer()
-executeWorkflow()
+createSession()
+executeTool()
 loadPlugin()
 ```
 
@@ -3925,14 +3963,16 @@ Ejemplo:
 Correcto:
 
 ```
-workflowEngine
+sessionManager
+toolExecutor
 pluginManager
 ```
 
 Incorrecto:
 
 ```
-Workflow-engine
+Session-manager
+tool_executor
 plugin_manager
 ```
 
@@ -3959,7 +3999,7 @@ test:
 chore:
 Ejemplo:
 
-feat: add workflow scheduler
+feat: add session manager
 
 ## 150. CI/CD Pipeline
 
@@ -3989,13 +4029,6 @@ Desktop:
 .exe
 .dmg
 .AppImage
-```
-
-Mobile:
-
-```
-Android APK
-iOS Build
 ```
 
 Web:
@@ -4054,87 +4087,46 @@ npm run dev
 
 ## 155. Technology Stack
 
-Stack tecnológico completo del proyecto. Todo lo que se usa está aquí definido.
+Stack tecnológico completo del proyecto. Blitz es un wrapper de OMP.
 
-### Lenguaje
-
-```
-TypeScript (strict mode)
-Node.js
-```
-
-### Frontend Desktop
+### Blitz UI App (Nuestra Capa)
 
 ```
-Electron
-React
-Vite + electron-vite
+Lenguaje:    TypeScript (strict mode)
+Frontend:    Electron + React + Vite + electron-vite
+UI:          shadcn/ui + Radix UI + Tailwind CSS
+State:       Zustand (slices pattern)
+Build:       electron-builder
 ```
 
-### Frontend Web
+### OMP Core (Capa Base)
 
 ```
-React
-Vite
+Lenguaje:    TypeScript + Rust
+Runtime:     Bun
+TUI:         packages/coding-agent
+AI:          packages/ai (60+ providers)
+Protocol:    packages/wire (wire protocol)
+Natives:     crates/pi-natives (Rust)
 ```
 
-### Frontend Mobile
+### Comunicación entre capas
 
 ```
-React Native + Expo
+Blitz UI App
+    ↓ IPC (Electron)
+Main Process
+    ↓ OMP Process spawn
+OMP TUI
+    ↓ @oh-my-pi/pi-wire
+OMP Core
 ```
 
-### UI / Design System
+### Package Managers
 
 ```
-shadcn/ui (librería completa de componentes)
-Radix UI (primitivas headless)
-Tailwind CSS (styling)
-CSS Variables (temas)
-Lucide React (iconos)
-cmdk (command palette - futuro)
-clsx / cn() (class merging)
-CVA (variantes de componentes)
-```
-
-### State Management
-
-```
-Zustand (con slices pattern)
-```
-
-### Backend / Server
-
-```
-Node.js
-Fastify o Hono (por definir)
-WebSocket Relay
-REST API
-```
-
-### Base de Datos
-
-```
-PostgreSQL (cloud)
-SQLite (local)
-Drizzle ORM
-```
-
-### Build / Monorepo
-
-```
-pnpm (package manager)
-Turborepo (monorepo)
-Vite (build web)
-electron-vite (build desktop)
-electron-builder (empaquetado)
-```
-
-### Testing
-
-```
-Vitest (unit tests)
-Playwright (e2e tests)
+Blitz:   pnpm (UI app)
+OMP:     Bun (core)
 ```
 
 ### Code Quality
@@ -4149,6 +4141,7 @@ Husky (git hooks)
 ### Comunicación
 
 ```
+@oh-my-pi/pi-wire (wire protocol)
 Event Bus
 WebSocket Relay
 IPC tipado (contextBridge)
@@ -4168,11 +4161,10 @@ shadcn/ui es la librería completa. No crear componentes nuevos. Si shadcn tiene
 ## 156. Repository Structure Final
 
 ```
-orca-blitz/
+Blitz/
 ├── apps/
 │   ├── desktop/
-│   ├── web/
-│   └── mobile/
+│   └── web/
 ├── packages/
 │   ├── shared/
 │   ├── core/
@@ -4193,117 +4185,196 @@ orca-blitz/
 
 ## 157. Development Roadmap
 
-La construcción debe seguir etapas.
-
-No intentar crear todo al mismo tiempo.
+El objetivo es envolver OMP en una UI gráfica. Fases:
 
 ```
-Phase 0
-Foundation
+Phase 1
+OMP Integration
 ```
 
 Objetivo:
 
-- Crear la base.
-- Construir:
-- Monorepo.
-- TypeScript.
-- React.
-- Electron.
-- Shared packages.
-- Design System inicial.
+- Conectar Blitz UI con OMP Core
+- Spawn OMP process desde Electron
+- Comunicación via wire protocol
 
 Resultado:
 
-Aplicación vacía funcionando en Desktop y Web.
-
-```
-Phase 1
-Core Platform
-```
-
-Construir:
-
-- Usuarios.
-- Organizaciones.
-- Login.
-- Permisos.
-- Base de datos.
-- API.
-
-Resultado:
-
-Plataforma base funcional.
+- Blitz UI ejecutando OMP en background
 
 ```
 Phase 2
-Universal UI
+Session Panel
 ```
 
-Construir:
+Objetivo:
 
-- Sistema visual completo.
-- Dashboard.
-- Navegación.
-- Temas.
-- Componentes.
+- Mostrar sesiones de OMP en UI
+- Seleccionar y cargar sesiones
+- Ver historial de mensajes
 
 Resultado:
 
-Todas las plataformas tienen la misma interfaz.
+- Panel de sesiones funcionando
 
 ```
 Phase 3
-Automation Engine
+Terminal Emulator
+```
+
+Objetivo:
+
+- Terminal embebida en Blitz UI
+- Output de OMP TUI visible
+- Input del usuario enviado a OMP
+
+Resultado:
+
+- Terminal funcionando en UI
+
+```
+Phase 4
+Chat Interface
+```
+
+Objetivo:
+
+- Interfaz de chat con IA
+- Streaming de respuestas
+- Tool calls visuales
+
+Resultado:
+
+- Chat con AI funcionando
+
+```
+Phase 5
+File Explorer
+```
+
+Objetivo:
+
+- Explorador de archivos del proyecto
+- Abrir archivos en editor
+- Navegación de directorios
+
+Resultado:
+
+- File explorer integrado
+
+```
+Phase 6
+Tool Results
+```
+
+Objetivo:
+
+- Mostrar resultados de herramientas
+- Diff viewer para cambios
+- Output de comandos
+
+Resultado:
+
+- Tool results renderizados
+
+```
+Phase 7
+Provider Manager
+```
+
+Objetivo:
+
+- Seleccionar provider LLM
+- Configurar API keys
+- Gestión de modelos
+
+Resultado:
+
+- Provider manager funcionando
+
+```
+Phase 8
+Polish & Distribution
+```
+
+Objetivo:
+
+- UI pulida
+- Build y distribución
+- Documentación
+
+Resultado:
+
+- Blitz listo para usar
+
 ```
 
 Construir:
 
-- Workflows.
-- Triggers.
-- Actions.
-- Execution Engine.
-- Logs.
+- Terminal emulator.
+- Shell integration.
+- Process management.
 
 Resultado:
 
-Primera automatización funcionando.
+- Terminal funcionando en la UI.
 
 ```
+
 Phase 4
-Integrations
+Tool Execution
+
 ```
 
-Agregar:
+Construir:
 
-- WhatsApp.
-- Email.
-- Redes sociales.
-- APIs externas.
+- Tool registry.
+- Tool execution engine.
+- Tool results rendering.
 
 Resultado:
 
-Sistema conectado al mundo real.
+- Herramientas ejecutándose correctamente.
 
 ```
+
 Phase 5
-AI Layer
+AI Chat
+
 ```
 
-Agregar:
+Construir:
 
-- AI Providers.
-- Memory.
-- Analysis.
-- Recommendations.
+- Chat interface.
+- Streaming support.
+- Provider integration.
 
 Resultado:
 
-Asistente empresarial inteligente.
+- Chat con IA funcionando.
 
 ```
+
 Phase 6
-Plugin Marketplace
+Plugin System
+
+```
+
+Construir:
+
+- Plugin manager.
+- Plugin loader.
+- Plugin sandbox.
+
+Resultado:
+
+- Sistema de plugins funcionando.
+
+```
+
+Phase 7
+Marketplace
+
 ```
 
 Construir:
@@ -4315,11 +4386,30 @@ Construir:
 
 Resultado:
 
-Comunidad creando extensiones.
+- Comunidad creando extensiones.
 
 ```
-Phase 7
-Enterprise Features
+
+Phase 8
+Code Intelligence
+
+```
+
+Agregar:
+
+- LSP integration.
+- DAP integration.
+- Code analysis.
+
+Resultado:
+
+- IDE completo funcionando.
+
+```
+
+Phase 9
+Advanced Features
+
 ```
 
 Agregar:
@@ -4332,152 +4422,195 @@ Agregar:
 
 ## 158. MVP Definition
 
-El MVP NO debe intentar competir con todo.
-
-Debe demostrar el concepto.
+El MVP es Blitz envolviendo OMP.
 
 MVP:
 
 ```
-Desktop Application
-+
-Web Application
-+
-User System
-+
-CRM Básico
-+
-Automation Engine
-+
-AI Assistant
-+
-Plugin Example
+
+Blitz UI App (Electron)
+
+- OMP Core Integration
+- Session Panel
+- Terminal Emulator
+- Chat Interface
+- Tool Results
+
 ```
+
+Este MVP demuestra que Blitz puede:
+- Spawn OMP process
+- Comunicarse via wire protocol
+- Mostrar sesiones de OMP
+- Ejecutar herramientas de OMP
+- Chat con IA usando providers de OMP
 
 ## 159. First Plugin Example
 
 El primer plugin debe ser:
 
 ```
-Messaging Plugin
+
+LSP Plugin
+
 ```
 
 Debe demostrar:
 
 - Integración externa.
 - Eventos.
-- Automatización.
+- Herramientas.
 - UI.
 - Permisos.
 
-## 160. First Automation Example
+## 160. First Tool Execution Example
 
 Caso:
 
-Nuevo cliente.
+Ejecutar comando.
 
 Flujo:
 
 ```
-Customer Created
-        |
-AI Analysis
-        |
-Create Welcome Message
-        |
-Send Message
-        |
-Create Follow Up Task
+
+User Input
+|
+Shell Command
+|
+Execute
+|
+Output
+|
+Return Result
+
 ```
 
 ## 161. Final Architecture Vision
 
-La plataforma completa:
+Blitz es un wrapper de OMP. La arquitectura completa:
 
 ```
-                         Users
-                           |
-              Desktop / Web / Mobile
-                           |
-                     Universal UI
-                           |
-                    Application Layer
-                           |
-                        Core
-                           |
-        ----------------------------------
-        |                |               |
-   Automation            AI           Integrations
-        |                |               |
-        ----------------------------------
-                           |
-                    Infrastructure
-                           |
-               Database / External APIs
+
+┌─────────────────────────────────────────────────────────────────┐
+│ BLITZ │
+│ │
+│ ┌─────────────────────────────────────────────────────────┐ │
+│ │ Users (Developer) │ │
+│ └─────────────────────────────────────────────────────────┘ │
+│ │ │
+│ ↓ │
+│ ┌─────────────────────────────────────────────────────────┐ │
+│ │ Blitz UI App │ │
+│ │ (Electron + React) │ │
+│ │ │ │
+│ │ ┌───────────┐ ┌───────────┐ ┌───────────┐ │ │
+│ │ │ Sessions │ │ Terminal │ │ Chat │ │ │
+│ │ │ Panel │ │ Emulator │ │ AI │ │ │
+│ │ └───────────┘ └───────────┘ └───────────┘ │ │
+│ │ ┌───────────┐ ┌───────────┐ ┌───────────┐ │ │
+│ │ │ File │ │ Tool │ │ Provider │ │ │
+│ │ │ Explorer │ │ Results │ │ Manager │ │ │
+│ │ └───────────┘ └───────────┘ └───────────┘ │ │
+│ └─────────────────────────────────────────────────────────┘ │
+│ │ │
+│ ↓ IPC / Wire Protocol │
+│ ┌─────────────────────────────────────────────────────────┐ │
+│ │ OMP TUI │ │
+│ │ (coding-agent package) │ │
+│ │ │ │
+│ │ - Session management │ │
+│ │ - Tool execution │ │
+│ │ - Agent runtime │ │
+│ │ - Event bus │ │
+│ └─────────────────────────────────────────────────────────┘ │
+│ │ │
+│ ↓ │
+│ ┌─────────────────────────────────────────────────────────┐ │
+│ │ OMP Core │ │
+│ │ (blitz_tui_infraestructura) │ │
+│ │ │ │
+│ │ ┌─────────────┐ ┌─────────────┐ ┌─────────────┐ │ │
+│ │ │ LLM AI │ │ Wire │ │ Natives │ │ │
+│ │ │ 60+ │ │ Protocol │ │ Rust │ │ │
+│ │ └─────────────┘ └─────────────┘ └─────────────┘ │ │
+│ └─────────────────────────────────────────────────────────┘ │
+└─────────────────────────────────────────────────────────────────┘
+
 ```
+
+### Resumen de capas
+
+| Capa | Qué es | Qué provee |
+|------|--------|------------|
+| **Blitz** | La plataforma | Envoltura completa |
+| **Blitz UI** | Nuestra app | Interfaz gráfica |
+| **OMP TUI** | Terminal UI | Runtime del agente |
+| **OMP Core** | Base Rust | Providers, protocolo, nativos |
 
 ## 162. Final Principles
 
-#### Principle 1
+#### Principle 1: Wrapper First
 
-- Construir una plataforma, no una colección de funciones.
+- Blitz envuelve OMP, no lo reemplaza.
 
-#### Principle 2
+#### Principle 2: Reuse Over Rewrite
 
-- Una sola base de código.
+- Reutilizar OMP TUI y Core, no crear desde cero.
 
-#### Principle 3
+#### Principle 3: UI as Interface
 
-- TypeScript como lenguaje principal.
+- La UI gráfica es solo una forma de interactuar con OMP.
 
-#### Principle 4
+#### Principle 4: Wire Protocol
 
-- La UI es un sistema compartido.
+- Toda comunicación UI ↔ Core usa wire protocol.
 
-#### Principle 5
+#### Principle 5: Session Parity
 
-- La lógica empresarial nunca pertenece al cliente.
+- Blitz UI debe poder toda la funcionalidad de OMP TUI.
 
-#### Principle 6
+#### Principle 6: Open Core
 
-- Todo debe ser modular.
+- OMP es open source, Blitz es open source.
 
-#### Principle 7
+#### Principle 7: Provider Agnostic
 
-- Todo debe poder extenderse.
+- Soportar cualquier provider LLM que OMP soporte.
 
-#### Principle 8
+#### Principle 8: Tool Equivalence
 
-- El usuario controla sus datos.
+- Blitz UI expone todas las herramientas de OMP TUI.
 
-#### Principle 9
+#### Principle 9: Performance
 
-- La IA es una herramienta empresarial, no solamente un chatbot.
+- No degradar el rendimiento de OMP con la capa UI.
 
-#### Principle 10
+#### Principle 10: Extensible
+
+- Blitz debe poder extenderse con plugins como OMP.
 
 - La arquitectura debe permitir crecer durante años.
 
 ---
 
-## 163. Conversational Sales Engine
+## 163. Code Intelligence Engine
 
-La plataforma no vende. La plataforma **crea las condiciones para que la IA venda**.
+La plataforma no escribe código. La plataforma **crea las condiciones para que la IA escriba código**.
 
 ### Qué construye la plataforma
 
-- **Motor de conversación** — Maneja el flujo de mensajes entre cliente y negocio.
-- **Detector de intención** — Clasifica cada mensaje del cliente (quiere comprar, curiosea, tiene duda, objeción).
-- **Gestor de contexto** — Mantiene el historial completo de cada conversación.
-- **Plantillas de conversación** — Define las etapas: Descubrimiento, Interés, Decisión, Cierre.
+- **Motor de código** — Maneja el flujo de código entre desarrollador y proyecto.
+- **Detector de contexto** — Clasifica cada solicitud del desarrollador (quiere escribir, depurar, refactorizar, explicar).
+- **Gestor de contexto** — Mantiene el historial completo de cada sesión.
+- **Plantillas de código** — Define los patrones: Component, Service, Hook, Utility.
 - **Captura de datos** — Registra qué funcionó y qué no en cada interacción.
 
 ### Qué hace la IA (conectada a través de la plataforma)
 
-- Interpreta el mensaje del cliente.
-- Decide qué tipo de respuesta dar.
-- Genera la respuesta.
-- La plataforma la entrega al canal correcto (WhatsApp, Email, etc.).
+- Interpreta la solicitud del desarrollador.
+- Decide qué tipo de código generar.
+- Genera el código.
+- La plataforma lo entrega al editor correcto.
 
 ### La plataforma NO asume qué IA usar
 
@@ -4488,7 +4621,7 @@ El usuario puede conectar:
 - Modelo local
 - Cualquier proveedor a través del SDK
 
-La plataforma solo define **el contrato**: _"El cliente dijo X, responde en el contexto Y"_.
+La plataforma solo define **el contrato**: _"El desarrollador dijo X, responde en el contexto Y"_.
 
 ---
 
@@ -4498,10 +4631,10 @@ La plataforma no aprende sola. La plataforma **crea el mecanismo para que los da
 
 ### Qué construye la plataforma
 
-- **Repositorio de interacciones** — Cada conversación se guarda con resultado (conversión o no).
+- **Repositorio de interacciones** — Cada sesión se guarda con resultado (éxito o error).
 - **Sistema de feedback** — Etiqueta cada interacción como éxito o fracaso.
-- **Análisis de patrones** — Detecta qué horarios, qué tipo de mensajes, qué clientes convierten.
-- **Contexto para la IA** — Cuando la IA va a responder, la plataforma le entrega: _"Los clientes como este suelen comprar cuando la respuesta incluye [X]"_.
+- **Análisis de patrones** — Detecta qué tipos de código, qué herramientas, qué patrones funcionan mejor.
+- **Contexto para la IA** — Cuando la IA va a responder, la plataforma le entrega: _"Los desarrolladores como este suelen escribir cuando la respuesta incluye [X]"_.
 
 ### Qué hace la IA
 
@@ -4514,55 +4647,57 @@ La plataforma **alimenta** al modelo con datos. El modelo decide cómo usarlos. 
 
 ---
 
-## 165. Proactive Business Advisor
+## 165. Proactive Code Advisor
 
-La plataforma no sugiere campañas. La plataforma **monitorea el calendario y los datos, y genera contexto para que la IA sugiera**.
+La plataforma no sugiere código. La plataforma **monitorea el proyecto y los datos, y genera contexto para que la IA sugiera**.
 
 ### Qué construye la plataforma
 
-- **Monitor de calendario** — Revisa fechas futuras y detecta eventos relevantes (Navidad, Halloween, etc.).
-- **Análisis de tendencias** — Compara datos de ventas periodo a periodo.
-- **Detección de clientes inactivos** — Identifica clientes que no compran en X días.
+- **Monitor de proyecto** — Revisa cambios recientes y detecta áreas relevantes (bugs, deuda técnica, etc.).
+- **Análisis de tendencias** — Compara patrones de código periodo a periodo.
+- **Detección de código inactivo** — Identifica archivos que no se modifican en X días.
 - **Sistema de notificaciones** — Cuando hay algo que sugerir, la plataforma emite un evento.
 
 ### Qué hace la IA
 
-- Recibe el evento: _"Halloween en 2 semanas, este negocio vende [X]"_.
+- Recibe el evento: _"Hay bugs en el módulo de autenticación"_.
 - Genera la sugerencia concreta.
 - La plataforma la entrega al usuario.
 
 ### Ejemplo de flujo
 
 ```
-Plataforma detecta: Halloween en 15 días
-    ↓
-Plataforma emite evento: calendar.event_upcoming
-    ↓
-IA recibe contexto + datos del negocio
-    ↓
-IA genera sugerencia: "Crear promoción de disfrazes"
-    ↓
+
+Plataforma detecta: Bugs en auth module
+↓
+Plataforma emite evento: code.bug_detected
+↓
+IA recibe contexto + datos del proyecto
+↓
+IA genera sugerencia: "Corregir validación de token"
+↓
 Plataforma entrega al usuario
+
 ```
 
 La plataforma **no sabe qué sugerir**. Solo sabe que hay un evento y tiene datos. La IA decide la sugerencia.
 
 ---
 
-## 166. Reporting System
+## 166. Code Analytics System
 
 La plataforma no genera reportes. La plataforma **recopila los datos y expone los formatos para que la IA o el usuario los generen**.
 
 ### Qué construye la plataforma
 
-- **Data Warehouse ligero** — Almacena ventas, mensajes, conversiones, productos.
-- **Exportadores de formato** — Excel, PDF, CSV.
-- **Programación de reportes** — El usuario puede pedir: "envíame un reporte cada lunes".
-- **Métricas calculadas** — Tasa de conversión, ventas por periodo, tendencias.
+- **Data Warehouse ligero** — Almacena sesiones, herramientas, código, errores.
+- **Exportadores de formato** — JSON, CSV.
+- **Programación de reportes** — El usuario puede pedir: "envíame un reporte de actividad".
+- **Métricas calculadas** — Tiempo de desarrollo, herramientas usadas, tendencias.
 
 ### Qué hace la IA (opcionalmente)
 
-- Puede narrar los datos: _"Las ventas subieron 15% porque..."_
+- Puede narrar los datos: _"El uso de herramientas subió 15% porque..."_
 - Puede sugerir acciones basadas en los números.
 
 ### El usuario también puede
@@ -4573,19 +4708,19 @@ La plataforma no genera reportes. La plataforma **recopila los datos y expone lo
 
 ### La plataforma no asume qué formato
 
-El usuario elige: Excel, PDF, CSV. La plataforma provee los exportadores. Si mañana se necesita un formato nuevo, se agrega un exportador sin tocar el resto.
+El usuario elige: JSON, CSV. La plataforma provee los exportadores. Si mañana se necesita un formato nuevo, se agrega un exportador sin tocar el resto.
 
 ---
 
 ## 167. Free & Open Source
 
-La plataforma es **100% gratis**. No es una estrategia de marketing, es el modelo.
+La plataforma es **100% gratis**. No es una estrategia comercial, es el modelo.
 
 ### Qué significa
 
 - Sin versiones de pago.
 - Sin funciones premium.
-- Sin límites de usuarios, contactos o automatizaciones.
+- Sin límites de sesiones, herramientas o plugins.
 - Self-hosted sin costo.
 - Cloud Managed sin costo adicional.
 
@@ -4606,73 +4741,94 @@ El modelo no depende de cobrar por funcionalidades. La sostenibilidad puede veni
 
 ---
 
-## 168. Architecture Reference: Orca ADE Patterns
+## 168. Architecture Reference: OMP Core
 
-La arquitectura de esta plataforma se inspira en patrones probados de Orca ADE (stablyai/orca), una aplicación Electron de 40k+ stars que nunca se cae, es escalable, y no rompe la UI.
+OMP (Oh My Pi) es la base de Blitz. Es un coding agent TUI con 80k+ líneas de Rust core que provee las capacidades fundamentales del agente.
 
-### Patrones adoptados
+### Qué toma Blitz de OMP
 
-- **Tres procesos estrictos** (Main, Preload, Renderer) con aislamiento total.
-- **Preload como Application API** tipada con namespaces.
-- **Zustand slices + cross-slice cascades** para state management.
-- **Persistencia atómica** con write-then-rename y schema versionado.
-- **Session hydration** al iniciar la aplicación.
-- **Mobile como workspace separado** con dependencias propias.
-- **Plugins en proceso separado** con sandbox.
-- **Relay WebSocket** para multi-cliente (desktop ↔ mobile ↔ CLI).
-- **Quality gates** con max-lines ratchet y reliability budgets.
-- **Shared types como source of truth** entre todos los procesos.
+Blitz **reutiliza** OMP, no lo reescribe:
+
+| Componente | OMP provee | Blitz lo envuelve |
+|------------|------------|-------------------|
+| **LLM Providers** | 60+ providers | UI para seleccionar providers |
+| **Session Management** | Crear/cargar/guardar sesiones | Panel de sesiones en UI |
+| **Tool Execution** | Ejecutar shell, files, git, LSP | Terminal embebida + resultados |
+| **Agent Runtime** | Comunicación con IA | Chat interface |
+| **Wire Protocol** | Comunicación UI ↔ core | IPC bridge |
+
+### OMP Core Packages (Lo que Blitz consume)
+
+- **@oh-my-pi/pi-coding-agent** — CLI principal con session management, tool execution, agent runtime.
+- **@oh-my-pi/pi-ai** — Multi-provider LLM client con streaming support.
+- **@oh-my-pi/pi-agent** — Agent runtime con tool calling y state management.
+- **@oh-my-pi/pi-catalog** — Model catalog con 60+ providers.
+- **@oh-my-pi/pi-wire** — Wire protocol para comunicación UI ↔ core.
+- **@oh-my-pi/pi-natives** — Bindings para operaciones nativas (text, grep).
+- **crates/pi-natives** — Rust crate para operaciones performance-critical.
+
+### Patrones de OMP que Blitz adopta
+
+- **Wire protocol** — Comunicación estructurada entre UI y core
+- **Session hydration** — Cargar sesiones al iniciar
+- **Event-driven** — Comunicación por eventos
+- **Plugin isolation** — Plugins en proceso separado
 
 ---
 
-## 169. Corrected Folder Structure
+## 169. Repository Structure
 
 ```
+
 orca-blitz/
 │
+├── blitz_tui_infraestructura/ ← OMP Core (fork/submodule)
+│ ├── packages/
+│ │ ├── coding-agent/ ← OMP TUI (terminal UI)
+│ │ ├── ai/ ← LLM providers (60+)
+│ │ ├── wire/ ← Wire protocol
+│ │ ├── natives/ ← Rust bindings
+│ │ ├── agent/ ← Agent runtime
+│ │ ├── tui/ ← Terminal UI library
+│ │ ├── catalog/ ← Model catalog
+│ │ ├── utils/ ← Shared utilities
+│ │ └── ...
+│ ├── crates/
+│ │ └── pi-natives/ ← Rust core (performance)
+│ └── ...
+│
 ├── apps/
-│   ├── desktop/                         ← Electron (Windows, Linux, macOS)
-│   │   ├── src/
-│   │   │   ├── main/                    ← Proceso con permisos del SO
-│   │   │   │   ├── index.ts
-│   │   │   │   ├── ipc/
-│   │   │   │   │   ├── register-core-handlers.ts
-│   │   │   │   │   ├── customers.ts
-│   │   │   │   │   ├── workflows.ts
-│   │   │   │   │   ├── integrations.ts
-│   │   │   │   │   └── reports.ts
-│   │   │   │   ├── persistence/
-│   │   │   │   │   ├── store.ts
-│   │   │   │   │   ├── schema.ts
-│   │   │   │   │   └── migrations/
-│   │   │   │   ├── runtime/
-│   │   │   │   │   ├── orca-runtime.ts
-│   │   │   │   │   └── rpc/
-│   │   │   │   ├── window/
-│   │   │   │   ├── browser/
-│   │   │   │   ├── plugins/
-│   │   │   │   │   ├── plugin-host-entry.ts
-│   │   │   │   │   ├── plugin-host-process.ts
-│   │   │   │   │   ├── plugin-event-bus.ts
-│   │   │   │   │   ├── plugin-content-safety.ts
-│   │   │   │   │   └── plugin-registry.ts
-│   │   │   │   ├── notifications/
-│   │   │   │   ├── updater/
-│   │   │   │   └── daemon/
-│   │   │   │
-│   │   │   ├── preload/
-│   │   │   │   ├── index.ts
-│   │   │   │   └── api-types.ts
-│   │   │   │
-│   │   │   ├── renderer/
-│   │   │   │   ├── App.tsx
-│   │   │   │   ├── main.tsx
-│   │   │   │   ├── components/
-│   │   │   │   │   ├── ui/
-│   │   │   │   │   ├── layout/
-│   │   │   │   │   ├── crm/
-│   │   │   │   │   ├── automation/
-│   │   │   │   │   └── chat/
+│ └── desktop/ ← Blitz UI App (Electron)
+│ ├── src/
+│ │ ├── main/ ← Main process
+│ │ │ ├── index.ts ← Entry point
+│ │ │ ├── omp/ ← OMP process manager
+│ │ │ │ ├── omp-process.ts ← Spawn OMP
+│ │ │ │ └── wire-protocol.ts ← IPC with OMP
+│ │ │ ├── ipc/ ← IPC handlers
+│ │ │ └── window/ ← Window manager
+│ │ ├── preload/ ← Security bridge
+│ │ │ ├── index.ts
+│ │ │ └── api-types.ts
+│ │ └── renderer/ ← React UI
+│ │ ├── App.tsx
+│ │ ├── components/
+│ │ │ ├── sessions/ ← Session panel
+│ │ │ ├── terminal/ ← Terminal emulator
+│ │ │ ├── chat/ ← Chat interface
+│ │ │ ├── files/ ← File explorer
+│ │ │ └── tools/ ← Tool results
+│ │ └── store/ ← Zustand store
+│ ├── electron.vite.config.ts
+│ └── package.json
+│
+├── packages/
+│ ├── shared/ ← Shared types
+│ └── ui/ ← Design system
+│
+└── LuxAuth.md ← Este documento
+
+```
 │   │   │   │   ├── hooks/
 │   │   │   │   │   └── useIpcEvents.ts
 │   │   │   │   ├── store/
@@ -4681,10 +4837,10 @@ orca-blitz/
 │   │   │   │   │   ├── selectors.ts
 │   │   │   │   │   └── slices/
 │   │   │   │   │       ├── ui.ts
-│   │   │   │   │       ├── customers.ts
-│   │   │   │   │       ├── workflows.ts
-│   │   │   │   │       ├── conversations.ts
-│   │   │   │   │       ├── integrations.ts
+│   │   │   │   │       ├── sessions.ts
+│   │   │   │   │       ├── terminal.ts
+│   │   │   │   │       ├── chat.ts
+│   │   │   │   │       ├── tools.ts
 │   │   │   │   │       └── settings.ts
 │   │   │   │   ├── assets/
 │   │   │   │   │   └── main.css
@@ -4706,25 +4862,6 @@ orca-blitz/
 │   │   ├── vite.config.ts
 │   │   └── package.json
 │   │
-│   └── mobile/                          ← PROYECTO SEPARADO
-│       ├── pnpm-workspace.yaml
-│       ├── pnpm-lock.yaml
-│       ├── package.json
-│       ├── app.json
-│       ├── app/
-│       │   ├── _layout.tsx
-│       │   ├── index.tsx
-│       │   └── settings.tsx
-│       ├── src/
-│       │   ├── components/
-│       │   ├── transport/
-│       │   │   ├── client-context.tsx
-│       │   │   ├── host-store.ts
-│       │   │   └── types.ts
-│       │   ├── storage/
-│       │   └── hooks/
-│       └── packages/
-│
 ├── packages/
 │   ├── shared/
 │   │   ├── types/
@@ -4746,8 +4883,8 @@ orca-blitz/
 │   │   │   └── migrations/
 │   │   ├── external/
 │   │   │   ├── ai-providers/
-│   │   │   ├── messaging/
-│   │   │   └── payments/
+│   │   │   ├── lsp/
+│   │   │   └── tools/
 │   │   └── storage/
 │   │
 │   ├── ui/
@@ -4755,19 +4892,19 @@ orca-blitz/
 │   │   ├── icons/
 │   │   ├── primitives/
 │   │   ├── layout/
-│   │   ├── business/
+│   │   ├── components/
 │   │   └── charts/
 │   │
 │   ├── features/
 │   │   ├── index.ts
-│   │   ├── crm/
-│   │   ├── automation/
-│   │   ├── sales-engine/
-│   │   ├── self-learning/
-│   │   ├── advisor/
-│   │   ├── reporting/
-│   │   ├── marketing/
-│   │   └── analytics/
+│   │   ├── sessions/
+│   │   ├── terminal/
+│   │   ├── editor/
+│   │   ├── tools/
+│   │   ├── chat/
+│   │   ├── providers/
+│   │   ├── files/
+│   │   └── git/
 │   │
 │   ├── ai/
 │   │   ├── contracts/
@@ -4806,10 +4943,10 @@ orca-blitz/
 │   └── package.json
 │
 ├── plugins/
-│   ├── whatsapp/
-│   ├── instagram/
-│   ├── email/
-│   └── payments/
+│   ├── lsp/
+│   ├── dap/
+│   ├── git/
+│   └── theme/
 │
 ├── config/
 │   ├── max-lines-baseline.txt
@@ -4840,19 +4977,18 @@ El preload es la capa de seguridad entre UI y sistema. Expone `window.api` con n
 ### Namespaces
 
 ```
-window.api.customers.create(data)
-window.api.customers.list()
-window.api.customers.onChanged(cb)
+window.api.sessions.create(data)
+window.api.sessions.list()
+window.api.sessions.onChanged(cb)
 
-window.api.workflows.create(data)
-window.api.workflows.execute(id)
-window.api.workflows.onChanged(cb)
+window.api.terminal.execute(command)
+window.api.terminal.onOutput(cb)
 
-window.api.integrations.sendMessage(channel, data)
-window.api.integrations.onMessage(cb)
+window.api.tools.execute(toolName, args)
+window.api.tools.onResult(cb)
 
-window.api.reports.generate(config)
-window.api.reports.export(format)
+window.api.chat.send(message)
+window.api.chat.onMessage(cb)
 
 window.api.settings.get()
 window.api.settings.update(prefs)
@@ -4865,13 +5001,13 @@ window.api.plugins.enable(id)
 
 ```
 Renderer
-    ↓ window.api.customers.create(data)
+    ↓ window.api.sessions.create(data)
 Preload (contextBridge)
-    ↓ ipcRenderer.invoke('customers:create', data)
+    ↓ ipcRenderer.invoke('sessions:create', data)
 Main Process
-    ↓ CustomerService.create(data)
-Core
-    ↓ CustomerRepository.save()
+    ↓ SessionService.create(data)
+OMP Core
+    ↓ Wire Protocol
 Infrastructure
     ↓ PostgreSQL / SQLite
 ```
@@ -4888,26 +5024,25 @@ El store se compone de slices especializados. Cada feature tiene su propio slice
 
 ### Slices
 
-| Slice         | Responsabilidad                    |
-| ------------- | ---------------------------------- |
-| ui            | Sidebar, modales, filtros, sorting |
-| customers     | Clientes, leads, deals             |
-| workflows     | Automatizaciones, ejecuciones      |
-| conversations | Chat con clientes, historial       |
-| integrations  | Estado de integraciones externas   |
-| settings      | Preferencias del usuario           |
+| Slice    | Responsabilidad                       |
+| -------- | ------------------------------------- |
+| ui       | Sidebar, modales, filtros, sorting    |
+| sessions | Sesiones de chat, historial           |
+| terminal | Output del terminal, procesos activos |
+| chat     | Mensajes del agent, streaming         |
+| tools    | Estado de herramientas, resultados    |
+| settings | Preferencias del usuario              |
 
 ### Cross-Slice Cascades
 
 Cuando se elimina una entidad, se limpia todo el estado relacionado:
 
 ```
-Eliminar customer
+Eliminar session
     ↓
-Conversations del customer → eliminadas
-Workflows que usan el customer → actualizados
-Tags del customer → eliminados
-Reports que mencionan al customer → invalidated
+Messages de la session → eliminadas
+Terminal output de la session → limpiado
+Tools en ejecución → abortados
 ```
 
 ### Selectores
@@ -4925,7 +5060,7 @@ Al iniciar la app:
 ```
 App Start
     ↓
-Load persisted state (orca-data.json)
+Load persisted state (blitz-data.json)
     ↓
 Merge with defaults (deep merge)
     ↓
@@ -4947,9 +5082,9 @@ La persistencia usa un JSON atomic con write-then-rename.
 ### Estrategia
 
 ```
-1. Write to temp file (orca-data.json.[uuid].tmp)
+1. Write to temp file (blitz-data.json.[uuid].tmp)
 2. Check write generation (no sobreescribir cambios recientes)
-3. Rename to orca-data.json (atómico en la mayoría de filesystems)
+3. Rename to blitz-data.json (atómico en la mayoría de filesystems)
 4. On shutdown: synchronous flush
 ```
 
@@ -4963,13 +5098,11 @@ Al cargar, se hace deep merge con defaults para manejar versiones anteriores.
 
 ### Entidades persistidas
 
-- Projects (organizaciones)
-- Workflows (automatizaciones)
-- Customers (clientes)
-- Conversations (historial de chat)
+- Sessions (sesiones de chat)
+- Messages (mensajes del agent)
 - Settings (preferencias)
 - Plugin states (estado de plugins)
-- Session state (tabs abiertos, layout)
+- Terminal state (historial de terminal)
 
 ### Seguridad
 
@@ -4981,14 +5114,14 @@ Al cargar, se hace deep merge con defaults para manejar versiones anteriores.
 
 ## 173. Relay WebSocket Architecture
 
-El relay conecta desktop ↔ mobile ↔ CLI ↔ SSH.
+El relay conecta desktop ↔ web ↔ CLI ↔ SSH.
 
 ### Conexiones
 
 ```
 Desktop (Electron)
     ↕ WebSocket
-Mobile (React Native)
+Web (Browser)
     ↕ WebSocket
 CLI (Node.js)
     ↕ WebSocket
@@ -4997,7 +5130,7 @@ SSH Remote
 
 ### Funciones del relay
 
-- Autenticación de clientes
+- Autenticación de conexiones
 - Enrutamiento de mensajes
 - Streaming de terminal output
 - Operaciones de archivos
@@ -5007,7 +5140,7 @@ SSH Remote
 ### Seguridad
 
 - Cada conexión autenticada
-- Permisos por cliente
+- Permisos por conexión
 - Auditoría de operaciones
 
 ---
@@ -5054,9 +5187,9 @@ Core (solo APIs permitidas)
 Cada archivo tiene un límite de líneas en `config/max-lines-baseline.txt`. El límite solo puede BAJAR, nunca subir. Esto fuerza la modularidad.
 
 ```
-src/main/customers.ts: 500
+src/main/sessions.ts: 500
 src/renderer/src/App.tsx: 2000
-packages/core/services/CustomerService.ts: 300
+packages/core/services/SessionService.ts: 300
 ```
 
 Si un archivo crece más allá de su límite, CI falla.
@@ -5067,12 +5200,12 @@ Si un archivo crece más allá de su límite, CI falla.
 
 ```jsonc
 {
-  "customers": {
+  "sessions": {
     "maxResponseTime": "200ms",
     "maxMemoryUsage": "50MB",
     "testCoverage": "90%"
   },
-  "workflows": {
+  "terminal": {
     "maxExecutionTime": "30s",
     "maxConcurrent": 10
   }
@@ -5098,30 +5231,30 @@ Cada feature es una carpeta que entrega un contrato al sistema. El sistema sabe 
 ### Qué puede contener una feature
 
 ```
-CRM:
+Sessions:
     Ajustes     → Configuración del módulo
     Rutas       → Páginas que ofrece
     Eventos     → Qué eventos maneja
     Store       → Estado que necesita
     UI          → Componentes visuales
 
-Inventario:
-    Ajustes     → Alertas de stock, umbrales
-    Rutas       → Página de productos
-    Eventos     → stock.low, product.created
-    Store       → Lista de productos
-    UI          → Tabla de productos
+Terminal:
+    Ajustes     → Configuración del shell
+    Rutas       → Página de terminal
+    Eventos     → terminal.output, process.exit
+    Store       → Historial de output
+    UI          → Terminal emulator
 ```
 
 ### Regla
 
-Si una feature no entrega algo, no lo tiene. Si CRM no entrega `Ajustes`, no tiene pantalla de configuración. Si Inventario no entrega `Rutas`, no tiene página propia. Simple.
+Si una feature no entrega algo, no lo tiene. Si Sessions no entrega `Ajustes`, no tiene pantalla de configuración. Si Terminal no entrega `Rutas`, no tiene página propia. Simple.
 
 ---
 
 ## 177. Feature Registry
 
-El registry es un archivo central que lista todas las features. Es explícito. Igual que Orca.
+El registry es un archivo central que lista todas las features. Es explícito. Igual que OMP.
 
 ### Cómo funciona
 
@@ -5215,7 +5348,6 @@ shadcn/ui es una librería de componentes React construida sobre Radix UI y Tail
 - Los componentes son tuyos, no de un paquete externo
 - Puedes modificarlos sin esperar actualizaciones
 - Funciona con CSS variables (temas)
-- Orca ADE lo usa como base
 - Simple, elegante, monocromático
 - 60+ componentes listos
 
@@ -5366,7 +5498,6 @@ shadcn/ui es una librería de componentes React construida sobre Radix UI y Tail
 - Los componentes son tuyos, no de un paquete externo
 - Puedes modificarlos sin esperar actualizaciones
 - Funciona con CSS variables (temas)
-- Orca ADE lo usa como base
 - Simple, elegante, monocromático
 - 60+ componentes listos
 
@@ -5421,12 +5552,6 @@ electron-builder (empaquetado para Windows, Linux, macOS)
 electron-updater (actualizaciones automáticas sin romper el sistema)
 ```
 
-### Mobile
-
-```
-Fastlane (deploy a App Store y Google Play)
-```
-
 ### Web
 
 ```
@@ -5440,11 +5565,10 @@ Vite build (archivos estáticos)
 ### Linting
 
 ```
-OxLint (con custom plugins de Orca)
+OxLint (con custom plugins de Blitz)
     renderer-scrollbar-style
     app-store-performance
     quadratic-buffer-concat
-    mobile-pairing
 ```
 
 ### Formateo
@@ -5489,7 +5613,7 @@ PostHog (tracking de uso anónimo)
 ### Qué NO se trackea
 
 ```
-- Datos de clientes del usuario
+- Código fuente del usuario
 - Contenido de mensajes
 - API keys
 - Información sensible
@@ -5507,6 +5631,6 @@ Se cumple GDPR
 
 END OF PROJECT ARCHITECTURE DOCUMENT
 
-Version 1.5
+Version 2.0
 
 ---

@@ -1,7 +1,13 @@
 type Listener = (...args: unknown[]) => void;
 
 import type { ApiContract, CustomerRecord, WorkflowRecord } from "../preload/api-types";
-import type { Business, ChannelSession, ChannelType } from "@orca-blitz/shared";
+import type {
+  Business,
+  ChannelSession,
+  ChannelType,
+  DevToolIntegration,
+  DevToolSession,
+} from "@orca-blitz/shared";
 import type { AppSettings } from "@orca-blitz/shared";
 
 function createEventEmitter() {
@@ -257,6 +263,28 @@ const api: ApiContract = {
     hasToken: async () => false,
     onStreamChunk: () => () => {},
   },
+  devtools: (() => {
+    const devSessions = new Map<string, DevToolSession>();
+    const get = (id: DevToolIntegration): DevToolSession =>
+      devSessions.get(id) ?? { integrationId: id, status: "disconnected" };
+    const set = (id: DevToolIntegration, patch: Partial<DevToolSession>): DevToolSession => {
+      const next = { ...get(id), ...patch, integrationId: id };
+      devSessions.set(id, next);
+      bus.emit("devtools:status", next);
+      return next;
+    };
+    return {
+      getStatus: async (id: DevToolIntegration) => get(id),
+      connect: async (id: DevToolIntegration) =>
+        set(id, { status: "error", error: "not_configured" }),
+      disconnect: async (id: DevToolIntegration) =>
+        set(id, { status: "disconnected", orgName: undefined, error: undefined }),
+      onStatus: (cb: (session: DevToolSession) => void) => {
+        bus.on("devtools:status", cb as unknown as Listener);
+        return () => bus.off("devtools:status", cb as unknown as Listener);
+      },
+    };
+  })(),
   browser: {
     create: async (_id: string, _url: string, _partition: string, _platformId: string) => {},
     show: (_id: string, _bounds: { x: number; y: number; width: number; height: number }) => {},
@@ -272,7 +300,24 @@ const api: ApiContract = {
     canGoBack: async (_id: string) => false,
     canGoForward: async (_id: string) => false,
   },
+  agent: {
+    send: async (_message: string, _images?: string[]) => {
+      throw new Error("agent unavailable in web mode");
+    },
+    steer: async (_message: string) => {
+      throw new Error("agent unavailable in web mode");
+    },
+    abort: async () => {},
+    getState: async () => ({ isStreaming: false }),
+    setModel: async (_provider: string, _modelId: string) => {},
+    setThinkingLevel: async (_level: string) => {},
+    getAvailableModels: async () => [],
+    login: async (_providerId: string) => ({ success: false }),
+    getLoginProviders: async () => [],
+    onEvent: (_cb: (ev: unknown) => void) => () => {},
+    onDisconnected: (_cb: (code: number | null) => void) => () => {},
+  },
 };
 
-(window as any).api = api;
+(window as unknown as { api: typeof api }).api = api;
 export {};

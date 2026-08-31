@@ -16,8 +16,10 @@ import { HomePage } from "./components/home/home-page";
 import { BusinessPage } from "./components/business/business-page";
 import { SnippetsDrawer } from "./components/business/snippets-drawer";
 import { OrcaLogo } from "@orca-blitz/ui/components/ui/logo";
+import { AgentPanel } from "./components/agent/agent-panel";
 import { useAppStore } from "./store";
 import { ElementInspector } from "./components/dev-tools/element-inspector";
+
 import type { Business } from "@orca-blitz/shared";
 
 export default function App() {
@@ -183,6 +185,8 @@ export default function App() {
                 />
               ) : activePage === "home" ? (
                 <HomePage />
+              ) : activePage === "agent" ? (
+                <AgentPanel />
               ) : activePage === "billing" ? (
                 <BillingPage />
               ) : activePage === "reports" ? (

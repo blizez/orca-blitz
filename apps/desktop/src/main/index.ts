@@ -8,6 +8,8 @@ import { registerChatGPTHandlers } from "./ipc/chatgpt-handlers";
 import { registerMessagingHandlers } from "./ipc/messaging-handlers";
 import { registerMetaAuthHandlers } from "./ipc/meta-auth";
 import { registerGmailAuthHandlers } from "./ipc/gmail-auth";
+import { registerDevToolHandlers } from "./ipc/devtool-integrations";
+import { registerAgentHandlers } from "./ipc/agent-handlers";
 
 let mainWindow: BrowserWindow | null = null;
 
@@ -76,12 +78,12 @@ app.whenReady().then(() => {
   });
 
   Menu.setApplicationMenu(null);
-
   registerCoreHandlers();
+  registerAgentHandlers();
   registerMessagingHandlers();
   registerMetaAuthHandlers();
   registerGmailAuthHandlers();
-
+  registerDevToolHandlers();
   ipcMain.on("window:minimize", () => mainWindow?.minimize());
   ipcMain.on("window:maximize", () => {
     if (mainWindow?.isMaximized()) {

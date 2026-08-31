@@ -53,7 +53,7 @@ export function ProviderDialog({
         </DialogHeader>
 
         <div className="space-y-4">
-          {provider.id === "opencode" && (
+          {provider.id === "opencode-zen" || provider.id === "opencode-go" ? (
             <OpenCodeSettings
               provider={provider}
               activeTab={state.activeTab}
@@ -67,9 +67,7 @@ export function ProviderDialog({
               onSelectModel={onSelectModel}
               modelListRef={modelListRef}
             />
-          )}
-
-          {provider.id === "openai" && (
+          ) : provider.id === "openai" ? (
             <OpenAISettings
               provider={provider}
               activeTab={state.activeTab}
@@ -86,9 +84,7 @@ export function ProviderDialog({
               onStartAuth={onStartAuth}
               modelListRef={modelListRef}
             />
-          )}
-
-          {provider.id !== "opencode" && provider.id !== "openai" && (
+          ) : (
             <DefaultSettings
               provider={provider}
               apiKey={state.dialogApiKey}

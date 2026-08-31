@@ -7,4 +7,14 @@ export type {
   Conversation,
   MessageType,
   UnifiedMessage,
+  DevToolIntegration,
+  DevToolConnectionStatus,
+  DevToolSession,
 } from "./types/messaging";
+export type {
+  AgentEvent,
+  AgentSessionEvent,
+  SessionInfo,
+  SessionStatus,
+  ModelInfo,
+} from "./types/agent";

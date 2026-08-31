@@ -120,8 +120,24 @@
   },
   "integrations": {
     "title": "Integraciones",
-    "description": "Conecta servicios y plataformas externas.",
+    "description": "Conecta tus herramientas de desarrollo y canales de mensajería.",
     "notConnected": "No conectado",
-    "disconnected": "Desconectado"
+    "disconnected": "Desconectado",
+    "connected": "Conectado",
+    "categories": {
+      "developer": "Herramientas de Desarrollo",
+      "messaging": "Canales de Mensajería"
+    },
+    "descriptions": {
+      "github": "Conecta repositorios, pull requests e issues.",
+      "gitlab": "Conecta repositorios, merge requests e issues.",
+      "linear": "Rastrea issues, proyectos y progreso del equipo.",
+      "jira": "Gestiona proyectos, tareas y sprints.",
+      "whatsapp": "Escanea un código QR. Sin configuración extra.",
+      "instagram": "Inicia sesión con tu usuario y contraseña.",
+      "telegram": "Usa tu número de teléfono y código de verificación.",
+      "facebook": "Inicia sesión con tu email y contraseña.",
+      "gmail": "Conecta tu correo con Google."
+    }
   }
 }

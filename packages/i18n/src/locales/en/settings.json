@@ -120,8 +120,24 @@
   },
   "integrations": {
     "title": "Integrations",
-    "description": "Connect external services and platforms.",
+    "description": "Connect your development tools and messaging channels.",
     "notConnected": "Not connected",
-    "disconnected": "Disconnected"
+    "disconnected": "Disconnected",
+    "connected": "Connected",
+    "categories": {
+      "developer": "Developer Tools",
+      "messaging": "Messaging Channels"
+    },
+    "descriptions": {
+      "github": "Connect repositories, pull requests, and issues.",
+      "gitlab": "Connect repositories, merge requests, and issues.",
+      "linear": "Track issues, projects, and team progress.",
+      "jira": "Manage projects, tasks, and sprints.",
+      "whatsapp": "Scan a QR code. No extra setup required.",
+      "instagram": "Log in with your username and password.",
+      "telegram": "Use your phone number and verification code.",
+      "facebook": "Log in with your email and password.",
+      "gmail": "Connect your email with Google."
+    }
   }
 }

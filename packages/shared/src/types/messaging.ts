@@ -7,6 +7,17 @@ export type ChannelType =
   | "twitter"
   | "gmail";
 
+export type DevToolIntegration = "github" | "gitlab" | "linear" | "jira";
+
+export type DevToolConnectionStatus = "disconnected" | "connecting" | "connected" | "error";
+
+export interface DevToolSession {
+  integrationId: DevToolIntegration;
+  status: DevToolConnectionStatus;
+  orgName?: string;
+  error?: string;
+}
+
 export type ChannelConnectionStatus =
   | "disconnected"
   | "connecting"

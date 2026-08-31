@@ -59,3 +59,11 @@ export const QUOTE_ACTIONS: QuoteAction[] = [
   { key: "explain", label: "Explain", icon: "explain" },
   { key: "rewrite", label: "Rewrite", icon: "rewrite" },
 ];
+
+export interface ToolCall {
+  id: string;
+  name: string;
+  status: "running" | "done" | "error";
+  args?: Record<string, unknown>;
+  result?: string;
+}
